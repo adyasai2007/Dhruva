@@ -1,0 +1,57 @@
+[
+  {
+    "id": "dev-deepawali-varanasi",
+    "destinationId": "varanasi",
+    "name": "Dev Deepawali (Festival of Lights of the Gods)",
+    "category": "Spiritual Festival",
+    "period": "November (Kartik Purnima)",
+    "description": "Over one million earthen oil lamps (diyas) illuminate all 84 ghats along the crescent Ganges. Grand Maha Aarti, classical music recitals, and green firework displays celebrate the victory of Shiva over Tripurasura.",
+    "culturalSignificance": "Celebrated 15 days after Diwali; belief that gods descend from the heavens to bathe in the holy Ganga.",
+    "image": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=800&q=80",
+    "travelTips": "Book boats and riverside havelis 4 to 6 months in advance due to global traveler influx."
+  },
+  {
+    "id": "durga-puja-kolkata",
+    "destinationId": "kolkata",
+    "name": "Kolkata Durga Puja Festival",
+    "category": "Cultural Heritage",
+    "period": "September / October (Sharad Navratri)",
+    "description": "UNESCO Intangible Cultural Heritage of Humanity. The entire metropolis transforms into a 24-hour open-air art installation with thousands of thematic pandals, dhak drumming, and culinary feasts.",
+    "culturalSignificance": "The largest public arts and cultural festival in South Asia celebrating the divine feminine power of Goddess Durga.",
+    "image": "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
+    "travelTips": "Join organized morning VIP pandal heritage walks or evening river immersion cruises."
+  },
+  {
+    "id": "hampi-utsav",
+    "destinationId": "hampi",
+    "name": "Hampi Utsav (Vijaya Utsava)",
+    "category": "Music & Arts Festival",
+    "period": "November / January (3 Days)",
+    "description": "A grand state festival with illuminated granite ruins, classical Carnatic and Hindustani music, classical dance troupes, puppet shows, and equestrian processions reviving the Vijayanagara glory.",
+    "culturalSignificance": "State-sponsored renaissance celebration recreating the royal splendor described by ancient Portuguese and Persian travelers.",
+    "image": "https://images.unsplash.com/photo-1600100397608-f010f443b71a?auto=format&fit=crop&w=800&q=80",
+    "travelTips": "Evenings feature majestic lighting of the Vittala Temple and Hemakuta Hill shrines."
+  },
+  {
+    "id": "jaipur-lit-fest",
+    "destinationId": "jaipur",
+    "name": "Jaipur Literature Festival (JLF)",
+    "category": "Literary & Cultural",
+    "period": "January",
+    "description": "Known as the 'greatest literary show on Earth', bringing together global Nobel laureates, historians, Indian classical musicians, and thought leaders in the heritage setting of Diggi Palace and Clarks Amer.",
+    "culturalSignificance": "International cultural dialogue, bilingual poetry recitations, and royal Rajasthani musical performances.",
+    "image": "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80",
+    "travelTips": "Register online for delegate passes to access author networking and evening heritage concerts."
+  },
+  {
+    "id": "chithirai-festival-madurai",
+    "destinationId": "madurai",
+    "name": "Chithirai Thiruvizha",
+    "category": "Spiritual Festival",
+    "period": "April / May (Tamil month of Chithirai)",
+    "description": "A month-long celebration marking the celestial coronation and wedding of Goddess Meenakshi to Lord Sundareswarar, followed by Lord Kallazhagar's entry into the Vaigai River.",
+    "culturalSignificance": "One of South India's oldest documented temple car chariot festivals, unifying Shaivite and Vaishnavite traditions.",
+    "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80",
+    "travelTips": "Witness the pulling of the massive carved wooden temple rathams (chariots) on East Masi Street."
+  }
+]

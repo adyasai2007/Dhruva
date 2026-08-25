@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DHRUVA — Your Journey, Guided | Cultural Travel Planning</title>
+  <meta name="description" content="DHRUVA is a culturally focused travel-planning web application guiding travelers through the heritage, architecture, and spiritual traditions of India.">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Global Header Navigation -->
+  <header class="site-header" role="banner">
+    <div class="container-wide nav-wrapper">
+      <a href="index.html" class="brand-logo" aria-label="DHRUVA Home">
+        <svg class="brand-star-icon" viewBox="0 0 32 32">
+          <!-- Dhruva 8-point guiding star -->
+          <path d="M16 2 L19 12 L29 12 L21 18 L24 28 L16 22 L8 28 L11 18 L3 12 L13 12 Z" />
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">DHRUVA</span>
+          <span class="brand-tagline">Your Journey, Guided</span>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="pages/explore.html" class="nav-link">Explore</a>
+        <a href="pages/trip.html" class="nav-link">Plan Trip</a>
+        <a href="pages/explore.html?section=best-time" class="nav-link">Best Time</a>
+        <a href="pages/profile.html" class="nav-link">My Plan</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="nav-voice-btn" data-action="open-voice" aria-label="Activate Voice Assistant">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="23"></line>
+            <line x1="8" y1="23" x2="16" y2="23"></line>
+          </svg>
+          <span>Voice Guide</span>
+        </button>
+
+        <a href="pages/profile.html" class="nav-profile-btn" aria-label="Traveler Profile">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Arvind Raghavan" class="nav-avatar">
+          <span style="font-size: var(--font-size-sm); font-weight: 500; display: none; @media(min-width: 900px){ display: inline; }">Arvind</span>
+        </a>
+
+        <button class="menu-toggle-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero-section" style="padding: var(--space-16) 0 var(--space-12); position: relative;">
+      <div class="container text-center">
+        <span class="eyebrow">A CULTURALLY GUIDED TRAVEL EXPERIENCE</span>
+        <h1 class="display-title font-serif" style="margin-top: var(--space-2); margin-bottom: var(--space-4); color: var(--color-primary-dark);">
+          Where will your journey take you?
+        </h1>
+        <p class="lead-text" style="max-width: 680px; margin: 0 auto var(--space-8);">
+          DHRUVA guides you through the living heritage, sacred sanctums, and timeless architecture of India with pace, depth, and cultural clarity.
+        </p>
+
+        <!-- Conversational Search Bar -->
+        <div class="hero-search-wrapper" style="max-width: 720px; margin: 0 auto; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-3); display: flex; align-items: center; gap: var(--space-3); box-shadow: var(--shadow-card);">
+          <div style="padding-left: var(--space-3); color: var(--color-accent-dark);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <input type="text" id="hero-dest-search" placeholder="Search destination (e.g., Varanasi, Hampi, Jaipur, Madurai...)" 
+                 style="flex: 1; border: none; background: transparent; font-size: var(--font-size-base); outline: none; color: var(--color-text);">
+          
+          <button type="button" class="btn btn-outline btn-sm btn-icon-only" data-action="open-voice" title="Ask with Voice" aria-label="Ask with Voice">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            </svg>
+          </button>
+          
+          <a href="pages/trip.html" class="btn btn-primary hero-search-btn">
+            Plan My Trip
+          </a>
+        </div>
+
+        <!-- Quick Destination Tags -->
+        <div style="margin-top: var(--space-4); display: flex; align-items: center; justify-content: center; gap: var(--space-2); flex-wrap: wrap;">
+          <span style="font-size: var(--font-size-xs); color: var(--color-text-muted);">Popular Journeys:</span>
+          <a href="pages/trip.html?dest=varanasi" class="badge badge-outline">Varanasi</a>
+          <a href="pages/trip.html?dest=hampi" class="badge badge-outline">Hampi</a>
+          <a href="pages/trip.html?dest=jaipur" class="badge badge-outline">Jaipur</a>
+          <a href="pages/trip.html?dest=madurai" class="badge badge-outline">Madurai</a>
+          <a href="pages/trip.html?dest=kolkata" class="badge badge-outline">Kolkata</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Active Trip Resume Card (if present) -->
+    <section id="active-trip-resume-section" class="container" style="margin-bottom: var(--space-12); display: none;">
+      <div style="background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-soft) 100%); border: 1px solid var(--color-border); border-left: 5px solid var(--color-primary); border-radius: var(--radius-lg); padding: var(--space-6); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <span class="badge badge-primary">Current Trip in Planning</span>
+          <h3 id="active-trip-title" class="font-serif" style="margin-top: var(--space-2); font-size: 1.35rem;">Sacred Kashi: Spiritual Immersion</h3>
+          <p id="active-trip-dates" class="text-secondary" style="font-size: var(--font-size-sm); margin-top: 2px;">3 Days Itinerary • Personalized for you</p>
+        </div>
+        <a id="active-trip-link" href="pages/itinerary.html" class="btn btn-primary btn-sm">
+          Resume Itinerary →
+        </a>
+      </div>
+    </section>
+
+    <!-- Featured Cultural Destinations -->
+    <section class="container-wide" style="margin-bottom: var(--space-16);">
+      <div class="section-header" style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <span class="eyebrow">CURATED REGIONAL DESTINATIONS</span>
+          <h2 class="section-title font-serif">Timeless Cultural Capitals</h2>
+          <p class="text-secondary">Discover heritage destinations across North, South, East, and West India.</p>
+        </div>
+        <a href="pages/explore.html" class="btn btn-secondary btn-sm">
+          View All Destinations (8+) →
+        </a>
+      </div>
+
+      <!-- Destination Cards Grid -->
+      <div id="home-destinations-grid" class="grid-3">
+        <!-- Rendered dynamically by JS -->
+        <div style="text-align: center; padding: var(--space-10); grid-column: 1 / -1;" class="text-muted">
+          Loading cultural destinations...
+        </div>
+      </div>
+    </section>
+
+    <!-- Cultural Divider -->
+    <div class="container cultural-divider">
+      <svg class="cultural-divider-star" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5Z"/>
+      </svg>
+    </div>
+
+    <!-- Cultural Pathways / Interest Categories -->
+    <section class="container" style="margin-bottom: var(--space-16);">
+      <div class="section-header text-center">
+        <span class="eyebrow">EXPLORE BY INTEREST</span>
+        <h2 class="section-title font-serif">Plan Around What Moves You</h2>
+        <p class="section-subtitle">Whether drawn to ancient stone sculpting, spiritual ceremonies, or master textiles, find journeys curated to your passion.</p>
+      </div>
+
+      <div class="grid-4">
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center; transition: transform var(--transition-fast);" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+          <div style="width: 52px; height: 52px; background: var(--color-primary-soft); color: var(--color-primary); border-radius: var(--radius-circle); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: 1.5rem;">
+            🏛️
+          </div>
+          <h3 class="font-serif" style="font-size: 1.25rem; margin-bottom: var(--space-2);">Sacred Temples</h3>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: 1.5;">Vedic shrines, Dravidian gopurams, and evening aarti rituals.</p>
+          <a href="pages/explore.html?category=Spiritual" class="btn btn-outline btn-sm" style="margin-top: var(--space-4);">Explore Shrines</a>
+        </div>
+
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center; transition: transform var(--transition-fast);" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+          <div style="width: 52px; height: 52px; background: var(--color-accent-soft); color: var(--color-accent-dark); border-radius: var(--radius-circle); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: 1.5rem;">
+            🏰
+          </div>
+          <h3 class="font-serif" style="font-size: 1.25rem; margin-bottom: var(--space-2);">Royal Architecture</h3>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: 1.5;">Hilltop forts, mirror palaces, stepped tanks, and havelis.</p>
+          <a href="pages/explore.html?category=Architecture" class="btn btn-outline btn-sm" style="margin-top: var(--space-4);">Explore Forts</a>
+        </div>
+
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center; transition: transform var(--transition-fast);" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+          <div style="width: 52px; height: 52px; background: var(--color-primary-soft); color: var(--color-primary); border-radius: var(--radius-circle); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: 1.5rem;">
+            🧵
+          </div>
+          <h3 class="font-serif" style="font-size: 1.25rem; margin-bottom: var(--space-2);">Living Crafts</h3>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: 1.5;">Banarasi brocade, Sanganeri block print, and clay idol makers.</p>
+          <a href="pages/explore.html?category=Local Culture" class="btn btn-outline btn-sm" style="margin-top: var(--space-4);">Meet Artisans</a>
+        </div>
+
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center; transition: transform var(--transition-fast);" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+          <div style="width: 52px; height: 52px; background: var(--color-accent-soft); color: var(--color-accent-dark); border-radius: var(--radius-circle); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: 1.5rem;">
+            🍲
+          </div>
+          <h3 class="font-serif" style="font-size: 1.25rem; margin-bottom: var(--space-2);">Culinary Heritage</h3>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: 1.5;">Sattvic thalis, spice markets, and century-old sweet shops.</p>
+          <a href="pages/explore.html?category=Food" class="btn btn-outline btn-sm" style="margin-top: var(--space-4);">Taste Traditions</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Best Time Guidance Banner -->
+    <section class="container-wide" style="margin-bottom: var(--space-16);">
+      <div style="background-color: var(--color-primary-dark); color: var(--color-text-inverse); border-radius: var(--radius-xl); padding: var(--space-10); display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: center; position: relative; overflow: hidden;">
+        <div style="position: relative; z-index: 2;">
+          <span class="eyebrow" style="color: var(--color-accent);">SEASONAL TRAVEL WISDOM</span>
+          <h2 class="font-serif" style="font-size: 2.25rem; color: #FFFFFF; margin-top: var(--space-2); margin-bottom: var(--space-4);">
+            Experience India at its Most Sublime
+          </h2>
+          <p style="color: #DDE7DC; line-height: 1.6; margin-bottom: var(--space-6);">
+            Travel planning made mindful: Learn the ideal visiting windows, festival timings, and peaceful morning hours for monuments and sacred ghats.
+          </p>
+          <a href="pages/explore.html?section=best-time" class="btn btn-accent">
+            Discover Best Time Calendar
+          </a>
+        </div>
+        <div style="background: rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); border: 1px solid rgba(255, 255, 255, 0.15);">
+          <h4 style="color: var(--color-accent); margin-bottom: var(--space-3); font-size: 1.1rem;">Upcoming Ideal Seasons:</h4>
+          <ul style="display: flex; flex-direction: column; gap: var(--space-3); font-size: var(--font-size-sm);">
+            <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;">
+              <span>Varanasi — Dev Deepawali</span>
+              <strong>November (Pleasant)</strong>
+            </li>
+            <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;">
+              <span>Jaipur — Royal Forts & Literature Fest</span>
+              <strong>Oct – Mar (Crisp)</strong>
+            </li>
+            <li style="display: flex; justify-content: space-between;">
+              <span>Hampi — Boulder Trails & Utsav</span>
+              <strong>Nov – Feb (Breezy)</strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container-wide">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <svg class="brand-star-icon" viewBox="0 0 32 32">
+              <path d="M16 2 L19 12 L29 12 L21 18 L24 28 L16 22 L8 28 L11 18 L3 12 L13 12 Z" />
+            </svg>
+            <span class="brand-name">DHRUVA</span>
+          </div>
+          <p class="footer-mission">
+            Inspired by the guiding star, DHRUVA helps travelers discover and plan meaningful, culturally grounded journeys across India with clarity and ease.
+          </p>
+        </div>
+
+        <div class="footer-column">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="pages/explore.html">All Destinations</a></li>
+            <li><a href="pages/explore.html?region=North+India">North India</a></li>
+            <li><a href="pages/explore.html?region=South+India">South India</a></li>
+            <li><a href="pages/explore.html?region=East+India">East India</a></li>
+            <li><a href="pages/explore.html?region=West+India">West India</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Planning</h4>
+          <ul>
+            <li><a href="pages/trip.html">Guided Trip Planner</a></li>
+            <li><a href="pages/explore.html?section=best-time">Best Time Guide</a></li>
+            <li><a href="pages/profile.html">My Saved Itineraries</a></li>
+            <li><a href="pages/profile.html">Accessibility Options</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Accessibility</h4>
+          <ul>
+            <li><button data-action="toggle-font-scale" style="font-size: var(--font-size-sm); color: var(--color-text-secondary); text-align: left;">Toggle Larger Text</button></li>
+            <li><a href="pages/profile.html#preferences">Senior Travel Pacing</a></li>
+            <li><a href="pages/profile.html#preferences">Voice Interaction</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 DHRUVA. Your Journey, Guided. Pure Frontend Architecture.</p>
+        <div class="footer-legal-links">
+          <a href="#">Cultural Ethics</a>
+          <a href="#">Privacy & Storage</a>
+          <a href="#">Design System</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Voice Assistant Trigger -->
+  <button class="floating-voice-btn" data-action="open-voice" aria-label="Open Voice Assistant">
+    <div class="voice-pulse-ring"></div>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+      <line x1="12" y1="19" x2="12" y2="23"></line>
+      <line x1="8" y1="23" x2="16" y2="23"></line>
+    </svg>
+  </button>
+
+  <!-- Voice Assistant Simulation Modal -->
+  <div id="voice-assistant-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="voice-modal-title">
+    <div class="modal-dialog" style="max-width: 500px; text-align: center;">
+      <div class="modal-header" style="justify-content: center; border-bottom: none; padding-bottom: 0;">
+        <h3 id="voice-modal-title" class="font-serif" style="font-size: 1.5rem; color: var(--color-primary-dark);">
+          DHRUVA Voice Guide
+        </h3>
+        <button class="modal-close-btn" style="position: absolute; right: var(--space-4); top: var(--space-4);" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="voice-status-text lead-text" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+          Listening... Speak your travel destination or cultural interest
+        </p>
+        
+        <!-- Animated Voice Waveform Simulation -->
+        <div class="voice-waveform">
+          <div class="waveform-bar"></div>
+          <div class="waveform-bar"></div>
+          <div class="waveform-bar"></div>
+          <div class="waveform-bar"></div>
+          <div class="waveform-bar"></div>
+        </div>
+
+        <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: var(--space-4);">
+          Or tap a sample query:
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+          <button class="voice-prompt-chip btn btn-secondary btn-sm" data-prompt-text="Plan a 3-day spiritual trip to Varanasi">
+            "Plan a 3-day spiritual trip to Varanasi"
+          </button>
+          <button class="voice-prompt-chip btn btn-secondary btn-sm" data-prompt-text="Explore UNESCO heritage ruins of Hampi">
+            "Explore UNESCO heritage ruins of Hampi"
+          </button>
+          <button class="voice-prompt-chip btn btn-secondary btn-sm" data-prompt-text="Discover royal forts and markets of Jaipur">
+            "Discover royal forts and markets of Jaipur"
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content: center;">
+        <span style="font-size: var(--font-size-xs); color: var(--color-text-muted);">
+          Microphone interaction ready for future backend voice halo integration.
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/navigation.js"></script>
+  <script>
+    // Home Page Initializer
+    document.addEventListener('DOMContentLoaded', async () => {
+      const destinations = await DhruvaApp.fetchMockData('destinations.json');
+      const grid = document.getElementById('home-destinations-grid');
+      const state = DhruvaApp.getState();
+
+      if (grid && destinations.length > 0) {
+        // Display top 6 featured destinations
+        grid.innerHTML = destinations.slice(0, 6).map(dest => {
+          const isSaved = state.user.savedDestinations?.includes(dest.id);
+          return DhruvaComponents.renderDestinationCard(dest, isSaved, true);
+        }).join('');
+      }
+
+      // Check for active plan resume
+      if (state.currentPlan) {
+        const resumeSection = document.getElementById('active-trip-resume-section');
+        const tripTitle = document.getElementById('active-trip-title');
+        const tripDates = document.getElementById('active-trip-dates');
+        const tripLink = document.getElementById('active-trip-link');
+
+        if (resumeSection && tripTitle) {
+          resumeSection.style.display = 'block';
+          tripTitle.textContent = state.currentPlan.title;
+          tripDates.textContent = `${state.currentPlan.durationDays} Days in ${state.currentPlan.destinationName} • Pacing: ${state.currentPlan.pace}`;
+          tripLink.href = `pages/itinerary.html?planId=${state.currentPlan.id}&dest=${state.currentPlan.destinationId}`;
+        }
+      }
+
+      // Hero Search input redirect
+      const searchInput = document.getElementById('hero-dest-search');
+      if (searchInput) {
+        searchInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            const query = searchInput.value.trim().toLowerCase();
+            window.location.href = `pages/explore.html?q=${encodeURIComponent(query)}`;
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

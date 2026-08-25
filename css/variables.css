@@ -1,0 +1,139 @@
+/* ==========================================================================
+   DHRUVA Design System - Design Tokens & Global Variables
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* --- Brand & Color Tokens --- */
+  --color-bg: #F7F2E8;
+  --color-surface: #FFFDF8;
+  --color-surface-soft: #F1EBDD;
+  --color-surface-elevated: #FFFFFF;
+
+  --color-primary: #234A35;
+  --color-primary-dark: #173525;
+  --color-primary-soft: #DDE7DC;
+  --color-primary-muted: #4B6F5B;
+  --color-primary-glow: rgba(35, 74, 53, 0.15);
+
+  --color-text: #20231F;
+  --color-text-secondary: #585A52;
+  --color-text-muted: #848278;
+  --color-text-inverse: #FFFDF8;
+
+  --color-border: #DED8C9;
+  --color-border-light: #ECE7DC;
+  --color-border-focus: #234A35;
+
+  --color-accent: #B99A5B;
+  --color-accent-soft: #EEE2C8;
+  --color-accent-dark: #8F7239;
+  --color-accent-glow: rgba(185, 154, 91, 0.2);
+
+  --color-success: #47714D;
+  --color-warning: #A97B32;
+  --color-error: #A95245;
+  --color-info: #3D6B82;
+
+  /* --- Typography Tokens --- */
+  --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-md: 1.125rem;   /* 18px */
+  --font-size-lg: 1.25rem;    /* 20px */
+  --font-size-xl: 1.5rem;     /* 24px */
+  --font-size-2xl: 2rem;      /* 32px */
+  --font-size-3xl: 2.5rem;    /* 40px */
+  --font-size-display: 3.25rem; /* 52px */
+
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.15;
+  --line-height-heading: 1.28;
+  --line-height-body: 1.6;
+  --line-height-loose: 1.75;
+
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.04em;
+  --letter-spacing-widest: 0.08em;
+
+  /* --- Spacing System --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* --- Radii Tokens --- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
+
+  /* --- Shadows & Elevation --- */
+  --shadow-subtle: 0 2px 8px rgba(32, 35, 31, 0.04);
+  --shadow-card: 0 4px 18px rgba(32, 35, 31, 0.06);
+  --shadow-hover: 0 10px 28px rgba(35, 74, 53, 0.10);
+  --shadow-modal: 0 24px 50px rgba(23, 53, 37, 0.18);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* --- Layout & Max-Widths --- */
+  --container-narrow: 760px;
+  --container-normal: 1120px;
+  --container-wide: 1280px;
+  --header-height: 80px;
+
+  /* --- Z-Index Layering --- */
+  --z-base: 1;
+  --z-header: 100;
+  --z-sticky: 150;
+  --z-floating: 200;
+  --z-backdrop: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+}
+
+/* Accessibility: User Font Scale Preference Support */
+body.text-scale-large {
+  --font-size-base: 1.125rem;
+  --font-size-md: 1.25rem;
+  --font-size-lg: 1.375rem;
+  --font-size-xl: 1.75rem;
+  --font-size-2xl: 2.25rem;
+  --font-size-3xl: 2.75rem;
+  --font-size-display: 3.5rem;
+}
+
+/* High Contrast Mode */
+body.high-contrast {
+  --color-bg: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-surface-soft: #F0EDE6;
+  --color-text: #0A0D0A;
+  --color-text-secondary: #2C2F2B;
+  --color-border: #8E897A;
+  --color-primary: #122A1E;
+}
