@@ -1,0 +1,333 @@
+/* ==========================================================================
+   DHRUVA - ChatGPT-Style Interactive Voice Orb Assistant Stylesheet
+   ========================================================================== */
+
+/* Fullscreen / Elevated Voice Overlay */
+.voice-orb-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 40%, rgba(23, 53, 37, 0.96) 0%, rgba(13, 29, 20, 0.98) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: var(--z-modal, 9999);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-8) var(--space-6);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.35s ease;
+  color: #FFFDF8;
+}
+
+.voice-orb-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Header bar inside Voice Overlay */
+.voice-orb-header {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.voice-orb-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.voice-orb-brand-star {
+  width: 22px;
+  height: 22px;
+  color: var(--color-accent, #B99A5B);
+  fill: currentColor;
+  animation: star-spin 12s linear infinite;
+}
+
+@keyframes star-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.voice-orb-title {
+  font-family: var(--font-serif, serif);
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
+  color: #FFFDF8;
+  font-weight: 600;
+}
+
+.voice-orb-close-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #FFFDF8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.voice-orb-close-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.06);
+}
+
+/* Central Orb Stage */
+.voice-orb-stage {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto 0;
+}
+
+.voice-orb-canvas-wrapper {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.voice-orb-canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 24px rgba(185, 154, 91, 0.18)) drop-shadow(0 0 48px rgba(35, 74, 53, 0.22));
+  transition: filter 0.5s ease;
+}
+
+/* Soft ambient glow backdrop behind the orb */
+.voice-orb-glow-backdrop {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(185, 154, 91, 0.15) 0%, rgba(35, 74, 53, 0.10) 55%, transparent 75%);
+  filter: blur(48px);
+  pointer-events: none;
+  animation: orb-breath 5s ease-in-out infinite alternate;
+}
+
+@keyframes orb-breath {
+  0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.45; }
+  100% { transform: translate(-50%, -50%) scale(1.12); opacity: 0.75; }
+}
+
+/* Status & Live Transcription Display */
+.voice-orb-status-box {
+  margin-top: var(--space-5);
+  text-align: center;
+  max-width: 480px;
+  padding: 0 var(--space-4);
+  z-index: 10;
+}
+
+.voice-orb-state-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.8125rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #EEE2C8;
+  margin-bottom: var(--space-2);
+  font-weight: 600;
+}
+
+.voice-orb-pitch-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: rgba(185, 154, 91, 0.2);
+  border: 1px solid rgba(185, 154, 91, 0.35);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #FFFDF8;
+  margin-bottom: var(--space-3);
+  letter-spacing: 0.04em;
+  transition: all 0.15s ease;
+}
+
+.voice-orb-pitch-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #B99A5B;
+  box-shadow: 0 0 8px #B99A5B;
+}
+
+.voice-orb-state-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #47714D;
+}
+
+.voice-orb-overlay.listening .voice-orb-state-dot {
+  background-color: #B99A5B;
+  box-shadow: 0 0 10px #B99A5B;
+  animation: dot-pulse 1s infinite alternate;
+}
+
+.voice-orb-overlay.speaking .voice-orb-state-dot {
+  background-color: #47714D;
+  box-shadow: 0 0 10px #47714D;
+  animation: dot-pulse 0.8s infinite alternate;
+}
+
+@keyframes dot-pulse {
+  0% { opacity: 0.4; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.3); }
+}
+
+.voice-orb-transcript {
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #FFFDF8;
+  min-height: 54px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.voice-orb-response {
+  font-family: var(--font-serif, serif);
+  font-size: 1.25rem;
+  color: #EEE2C8;
+  margin-top: var(--space-2);
+  line-height: 1.4;
+  min-height: 36px;
+}
+
+/* Interactive Suggestions */
+.voice-orb-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  max-width: 540px;
+  margin-top: var(--space-3);
+  z-index: 10;
+}
+
+.voice-orb-suggestion-pill {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #DDE7DC;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.voice-orb-suggestion-pill:hover {
+  background: rgba(185, 154, 91, 0.25);
+  border-color: #B99A5B;
+  color: #FFFDF8;
+  transform: translateY(-2px);
+}
+
+/* Control Bar at Bottom */
+.voice-orb-controls {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  z-index: 10;
+  padding-bottom: var(--space-4);
+}
+
+.voice-orb-action-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #FFFDF8;
+}
+
+.voice-orb-action-btn.btn-mic {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, #B99A5B 0%, #8F7239 100%);
+  box-shadow: 0 0 25px rgba(185, 154, 91, 0.4);
+}
+
+.voice-orb-action-btn.btn-mic:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 35px rgba(185, 154, 91, 0.6);
+}
+
+.voice-orb-action-btn.btn-mic.muted {
+  background: #A95245;
+  box-shadow: 0 0 20px rgba(169, 82, 69, 0.4);
+}
+
+.voice-orb-action-btn.btn-secondary-action {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.voice-orb-action-btn.btn-secondary-action:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.06);
+}
+
+/* Mic Permission Banner */
+.voice-orb-perm-warning {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(169, 82, 69, 0.9);
+  color: #FFF;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  z-index: 20;
+}
+
+.voice-orb-perm-warning.show {
+  display: flex;
+}

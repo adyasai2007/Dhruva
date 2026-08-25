@@ -135,61 +135,9 @@ const DhruvaApp = (() => {
     }
   };
 
-  // Voice Assistant Modal Logic
-  const initVoiceModal = () => {
-    const voiceBtns = document.querySelectorAll('[data-action="open-voice"]');
-    const modal = document.getElementById('voice-assistant-modal');
-    if (!modal) return;
-
-    const closeBtn = modal.querySelector('.modal-close-btn');
-    const promptChips = modal.querySelectorAll('.voice-prompt-chip');
-    const statusText = modal.querySelector('.voice-status-text');
-
-    voiceBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        modal.classList.add('active');
-      });
-    });
-
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-    }
-
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) modal.classList.remove('active');
-    });
-
-    promptChips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        const text = chip.dataset.promptText || chip.textContent.trim();
-        if (statusText) {
-          statusText.textContent = `Understanding: "${text}"...`;
-          setTimeout(() => {
-            modal.classList.remove('active');
-            if (text.toLowerCase().includes('varanasi')) {
-              window.location.href = window.location.pathname.includes('/pages/') 
-                ? 'trip.html?dest=varanasi' 
-                : 'pages/trip.html?dest=varanasi';
-            } else if (text.toLowerCase().includes('hampi')) {
-              window.location.href = window.location.pathname.includes('/pages/') 
-                ? 'trip.html?dest=hampi' 
-                : 'pages/trip.html?dest=hampi';
-            } else {
-              window.location.href = window.location.pathname.includes('/pages/') 
-                ? 'explore.html' 
-                : 'pages/explore.html';
-            }
-          }, 1200);
-        }
-      });
-    });
-  };
-
   // Global App Initialization
   const init = () => {
     applyAccessibilitySettings();
-    initVoiceModal();
   };
 
   return {
