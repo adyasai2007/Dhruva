@@ -120,15 +120,55 @@ const DhruvaApp = (() => {
     showToast(`Journey plan for ${planData.destinationName} saved!`, '✓');
   };
 
-  // Apply saved accessibility preferences
+  // Theme Management (Light / Dark Mode)
+  const initTheme = () => {
+    const state = getState();
+    const storedTheme = localStorage.getItem('dhruva_theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    const activeTheme = storedTheme || (state.settings?.darkMode ? 'dark' : (prefersDark ? 'dark' : 'light'));
+    
+    if (activeTheme === 'dark') {
+      document.documentElement.classList.add('dark-theme');
+      if (document.body) document.body.classList.add('dark-theme');
+    } else {
+      document.documentElement.classList.remove('dark-theme');
+      if (document.body) document.body.classList.remove('dark-theme');
+    }
+  };
+
+  const toggleTheme = () => {
+    const isDark = document.documentElement.classList.contains('dark-theme') || (document.body && document.body.classList.contains('dark-theme'));
+    const newTheme = isDark ? 'light' : 'dark';
+
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark-theme');
+      if (document.body) document.body.classList.add('dark-theme');
+    } else {
+      document.documentElement.classList.remove('dark-theme');
+      if (document.body) document.body.classList.remove('dark-theme');
+    }
+
+    localStorage.setItem('dhruva_theme', newTheme);
+    const state = getState();
+    if (!state.settings) state.settings = {};
+    state.settings.darkMode = (newTheme === 'dark');
+    saveState(state);
+
+    showToast(newTheme === 'dark' ? 'Dark Mode (Sacred Night) Enabled' : 'Light Mode (Warm Parchment) Restored', newTheme === 'dark' ? '🌙' : '☀️');
+    return newTheme === 'dark';
+  };
+
+  // Apply Accessibility Settings
   const applyAccessibilitySettings = () => {
     const state = getState();
-    if (state.settings?.largeText) {
+    if (!document.body) return;
+    if (state.settings && state.settings.largeText) {
       document.body.classList.add('text-scale-large');
     } else {
       document.body.classList.remove('text-scale-large');
     }
-    if (state.settings?.highContrast) {
+    if (state.settings && state.settings.highContrast) {
       document.body.classList.add('high-contrast');
     } else {
       document.body.classList.remove('high-contrast');
@@ -137,11 +177,14 @@ const DhruvaApp = (() => {
 
   // Global App Initialization
   const init = () => {
+    initTheme();
     applyAccessibilitySettings();
   };
 
   return {
     init,
+    initTheme,
+    toggleTheme,
     getState,
     saveState,
     fetchMockData,
@@ -152,4 +195,6 @@ const DhruvaApp = (() => {
   };
 })();
 
+// Immediate theme execution to prevent FOUC
+DhruvaApp.initTheme();
 document.addEventListener('DOMContentLoaded', DhruvaApp.init);

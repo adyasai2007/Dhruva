@@ -122,7 +122,7 @@ const DhruvaVoiceOrb = (() => {
       <div class="voice-orb-stage">
         <div class="voice-orb-canvas-wrapper">
           <div class="voice-orb-glow-backdrop" id="voice-glow-backdrop"></div>
-          <canvas id="voice-orb-canvas" class="voice-orb-canvas" width="300" height="300"></canvas>
+          <canvas id="voice-orb-canvas" class="voice-orb-canvas" width="200" height="200"></canvas>
         </div>
 
         <div class="voice-orb-status-box">
@@ -153,11 +153,11 @@ const DhruvaVoiceOrb = (() => {
       <!-- Bottom Voice Controls -->
       <div class="voice-orb-controls">
         <button class="voice-orb-action-btn btn-secondary-action" id="voice-refresh-btn" title="Clear conversation" aria-label="Clear conversation">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
         </button>
 
         <button class="voice-orb-action-btn btn-mic" id="voice-mic-btn" title="Toggle microphone" aria-label="Toggle microphone">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
             <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
             <line x1="12" y1="19" x2="12" y2="23"></line>
@@ -166,7 +166,7 @@ const DhruvaVoiceOrb = (() => {
         </button>
 
         <button class="voice-orb-action-btn btn-secondary-action" id="voice-end-btn" title="End Session" aria-label="End Session">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><rect x="9" y="9" width="6" height="6"></rect></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><rect x="9" y="9" width="6" height="6"></rect></svg>
         </button>
       </div>
     `;
@@ -212,7 +212,6 @@ const DhruvaVoiceOrb = (() => {
     if (!overlayEl) injectVoiceOverlay();
     isOpen = true;
     overlayEl.classList.add('active');
-    document.body.style.overflow = 'hidden';
 
     // Start Orb rendering loop
     startOrbRenderLoop();
@@ -226,7 +225,6 @@ const DhruvaVoiceOrb = (() => {
   const close = () => {
     isOpen = false;
     if (overlayEl) overlayEl.classList.remove('active');
-    document.body.style.overflow = '';
     
     stopRecognition();
     stopMicrophone();
@@ -571,8 +569,8 @@ const DhruvaVoiceOrb = (() => {
       const centerX = width / 2;
       const centerY = height / 2;
 
-      // Base radius with pleasant breathing scale
-      const baseRadius = 66 + smoothedVolume * 32;
+      // Base radius with pleasant breathing scale for compact corner canvas
+      const baseRadius = 45 + smoothedVolume * 20;
 
       ctx.clearRect(0, 0, width, height);
       ctx.save();

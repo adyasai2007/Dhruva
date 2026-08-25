@@ -124,6 +124,11 @@
   color: var(--color-info);
 }
 
+body.dark-theme .badge-season {
+  background-color: #172D36;
+  color: #79B8D6;
+}
+
 /* --- Destination Cards --- */
 .card-destination {
   background-color: var(--color-surface);
@@ -198,6 +203,18 @@
 
 .card-destination-save-btn.saved {
   color: var(--color-error);
+}
+
+body.dark-theme .card-destination-region,
+body.dark-theme .card-destination-save-btn,
+body.dark-theme .card-place-category {
+  background-color: rgba(22, 33, 26, 0.90);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+body.dark-theme .card-destination-save-btn:hover {
+  background-color: var(--color-surface-elevated);
 }
 
 .card-destination-body {
@@ -590,6 +607,12 @@
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   margin-top: var(--space-3);
+}
+
+body.dark-theme .timeline-transition-pill {
+  background-color: rgba(32, 47, 37, 0.6);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border-light);
 }
 
 /* --- Modals & Overlays --- */

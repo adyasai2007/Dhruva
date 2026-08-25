@@ -9,6 +9,7 @@ const DhruvaNavigation = (() => {
     setupMobileMenu();
     setupKeyboardListeners();
     setupAccessibilityToggles();
+    setupThemeToggles();
   };
 
   // Mark current nav link as active
@@ -84,7 +85,7 @@ const DhruvaNavigation = (() => {
     });
   };
 
-  // Setup Accessibility Toggles if present
+  // Setup Accessibility Toggles
   const setupAccessibilityToggles = () => {
     const fontToggle = document.querySelector('[data-action="toggle-font-scale"]');
     if (fontToggle) {
@@ -96,6 +97,17 @@ const DhruvaNavigation = (() => {
         DhruvaApp.showToast(state.settings.largeText ? 'Large Text Mode Enabled' : 'Standard Text Mode Enabled');
       });
     }
+  };
+
+  // Setup Theme Toggles (Delegated listener for maximum reliability)
+  const setupThemeToggles = () => {
+    document.addEventListener('click', (e) => {
+      const themeBtn = e.target.closest('[data-action="toggle-theme"]');
+      if (themeBtn) {
+        e.preventDefault();
+        DhruvaApp.toggleTheme();
+      }
+    });
   };
 
   return { init };

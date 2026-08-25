@@ -116,6 +116,42 @@
   --z-toast: 500;
 }
 
+/* --- DHRUVA Dark Theme (Sacred Grove & Celestial Night) --- */
+:root.dark-theme,
+html.dark-theme,
+body.dark-theme,
+[data-theme="dark"] {
+  --color-bg: #101713;
+  --color-surface: #16211A;
+  --color-surface-soft: #1D2A22;
+  --color-surface-elevated: #24342A;
+
+  --color-primary: #5BA87E;
+  --color-primary-dark: #9CD1B2;
+  --color-primary-soft: #1E3326;
+  --color-primary-muted: #659C7D;
+  --color-primary-glow: rgba(82, 139, 106, 0.25);
+
+  --color-text: #F7F3EB;
+  --color-text-secondary: #C4C0B6;
+  --color-text-muted: #8E8A80;
+  --color-text-inverse: #101713;
+
+  --color-border: #2B3D31;
+  --color-border-light: #202F25;
+  --color-border-focus: #528B6A;
+
+  --color-accent: #D6B579;
+  --color-accent-soft: #2F2818;
+  --color-accent-dark: #EAD09D;
+  --color-accent-glow: rgba(214, 181, 121, 0.25);
+
+  --shadow-subtle: 0 2px 10px rgba(0, 0, 0, 0.28);
+  --shadow-card: 0 6px 22px rgba(0, 0, 0, 0.38);
+  --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.50);
+  --shadow-modal: 0 24px 60px rgba(0, 0, 0, 0.65);
+}
+
 /* Accessibility: User Font Scale Preference Support */
 body.text-scale-large {
   --font-size-base: 1.125rem;
@@ -136,4 +172,14 @@ body.high-contrast {
   --color-text-secondary: #2C2F2B;
   --color-border: #8E897A;
   --color-primary: #122A1E;
+}
+
+body.dark-theme.high-contrast {
+  --color-bg: #0A0F0C;
+  --color-surface: #101713;
+  --color-surface-soft: #17221B;
+  --color-text: #FFFFFF;
+  --color-text-secondary: #E0DDD5;
+  --color-border: #506657;
+  --color-primary: #6EAB88;
 }
