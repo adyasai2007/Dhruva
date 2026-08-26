@@ -1,0 +1,52 @@
+{
+  "currentUser": {
+    "id": "user-dhruva-01",
+    "name": "Dr. Arvind Raghavan",
+    "age": 52,
+    "phone": "+91 98450 12345",
+    "email": "arvind.raghavan@heritage-travel.in",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+    "location": "Bengaluru, India",
+    "travelPersona": "Cultural Scholar & Heritage Enthusiast",
+    "preferredPace": "Comfortable & Mindful",
+    "interests": [
+      "Heritage",
+      "Architecture",
+      "Spiritual",
+      "Local Culture",
+      "History"
+    ],
+    "accessibility": {
+      "largeText": false,
+      "highContrast": false,
+      "restrainedMotion": true
+    },
+    "savedDestinations": ["varanasi", "hampi", "madurai"],
+    "savedPlaces": ["dashashwamedh-ghat", "vittala-temple-hampi", "meenakshi-amman-temple"],
+    "activeTrips": [
+      {
+        "id": "trip-active-01",
+        "destinationId": "varanasi",
+        "title": "Sacred Kashi: Spiritual Immersion & Living Heritage",
+        "startDate": "2026-11-12",
+        "endDate": "2026-11-15",
+        "status": "Upcoming",
+        "days": 3,
+        "itineraryId": "itin-varanasi-3day",
+        "notes": "Booked morning sunrise boat at Assi Ghat for Day 1."
+      }
+    ],
+    "pastTrips": [
+      {
+        "id": "trip-past-01",
+        "destinationId": "jaipur",
+        "title": "Royal Rajasthan: Forts, Palaces & Master Crafts",
+        "startDate": "2026-01-18",
+        "endDate": "2026-01-21",
+        "status": "Completed",
+        "days": 3,
+        "itineraryId": "itin-jaipur-3day"
+      }
+    ]
+  }
+}

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Destinations & Cultural Places — DHRUVA</title>
+  <meta name="description" content="Discover Indian cultural destinations, ancient temples, royal architecture, living craft quarters, and best seasonal times to visit.">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/voice-orb.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Global Header Navigation -->
+  <header class="site-header" role="banner">
+    <div class="container-wide nav-wrapper">
+      <a href="../index.html" class="brand-logo" aria-label="DHRUVA Home">
+        <svg class="brand-star-icon" viewBox="0 0 32 32">
+          <path d="M16 2 L19 12 L29 12 L21 18 L24 28 L16 22 L8 28 L11 18 L3 12 L13 12 Z" />
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">DHRUVA</span>
+          <span class="brand-tagline">Your Journey, Guided</span>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link active">Explore</a>
+        <a href="trip.html" class="nav-link">Plan Trip</a>
+        <a href="#best-time-section" class="nav-link">Best Time</a>
+        <a href="profile.html" class="nav-link">My Plan</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" data-action="toggle-theme" aria-label="Toggle Dark / Light Mode" title="Toggle Dark / Light Mode">
+          <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <a href="profile.html" class="nav-profile-btn" aria-label="Traveler Profile">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Arvind Raghavan" class="nav-avatar">
+          <span class="nav-user-name" style="font-size: var(--font-size-sm); font-weight: 500;">Arvind</span>
+        </a>
+
+        <button class="menu-toggle-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Explore Header Banner -->
+    <section style="padding: var(--space-12) 0 var(--space-8); background-color: var(--color-surface); border-bottom: 1px solid var(--color-border-light);">
+      <div class="container-wide">
+        <span class="eyebrow">CULTURAL DIRECTORY & DISCOVERY</span>
+        <h1 class="page-title font-serif" style="margin-top: var(--space-2); margin-bottom: var(--space-3); color: var(--color-primary-dark);">
+          Discover India's Heritage Destinations
+        </h1>
+        <p class="lead-text" style="max-width: 760px; margin-bottom: var(--space-8);">
+          Filter by region, cultural lineage, and seasonal climate to explore sacred temple sanctums, UNESCO monuments, and living artisan communities.
+        </p>
+
+        <!-- Search & Filter Controls -->
+        <div style="background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4);">
+          <div style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 260px; position: relative;">
+              <input type="text" id="explore-search-input" class="form-input" placeholder="Search by city, monument, or craft..." style="padding-left: 40px;">
+              <div style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Region Selector Buttons -->
+            <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+              <button class="filter-region-btn chip-selectable active" data-region="all">All Regions</button>
+              <button class="filter-region-btn chip-selectable" data-region="North India">North</button>
+              <button class="filter-region-btn chip-selectable" data-region="South India">South</button>
+              <button class="filter-region-btn chip-selectable" data-region="East India">East</button>
+              <button class="filter-region-btn chip-selectable" data-region="West India">West</button>
+            </div>
+          </div>
+
+          <!-- Interest Category Filter Chips -->
+          <div style="display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;">
+            <span style="font-size: var(--font-size-xs); font-weight: 600; text-transform: uppercase; color: var(--color-text-muted);">Categories:</span>
+            <button class="filter-cat-btn badge badge-primary active" data-category="all">All Categories</button>
+            <button class="filter-cat-btn badge badge-outline" data-category="Heritage">Heritage</button>
+            <button class="filter-cat-btn badge badge-outline" data-category="Spiritual">Spiritual & Shrines</button>
+            <button class="filter-cat-btn badge badge-outline" data-category="Architecture">Architecture</button>
+            <button class="filter-cat-btn badge badge-outline" data-category="Local Culture">Local Crafts</button>
+            <button class="filter-cat-btn badge badge-outline" data-category="Food">Culinary</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Destinations Section -->
+    <section class="container-wide" style="padding: var(--space-12) 0;">
+      <div class="section-header" style="display: flex; justify-content: space-between; align-items: baseline;">
+        <div>
+          <span class="eyebrow">DESTINATIONS</span>
+          <h2 class="section-title font-serif">Cultural Cities & Regions</h2>
+        </div>
+        <span id="destinations-count" class="text-muted" style="font-size: var(--font-size-sm);">Showing 8 destinations</span>
+      </div>
+
+      <div id="explore-destinations-grid" class="grid-3">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- Cultural Divider -->
+    <div class="container cultural-divider">
+      <svg class="cultural-divider-star" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5Z"/>
+      </svg>
+    </div>
+
+    <!-- Specific Heritage Places Section -->
+    <section class="container-wide" style="padding: var(--space-8) 0 var(--space-12);">
+      <div class="section-header">
+        <span class="eyebrow">MONUMENTS, GHATS & CRAFT QUARTERS</span>
+        <h2 class="section-title font-serif">Notable Cultural Places</h2>
+        <p class="text-secondary">Click on any place to learn its history, opening timings, and etiquette guidance.</p>
+      </div>
+
+      <div id="explore-places-grid" class="grid-3">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- Best Time & Festivals Guide Section -->
+    <section id="best-time-section" style="background-color: var(--color-surface); border-top: 1px solid var(--color-border); padding: var(--space-16) 0;">
+      <div class="container-wide">
+        <div class="section-header text-center">
+          <span class="eyebrow">BEST TIME TO VISIT</span>
+          <h2 class="section-title font-serif">Cultural Calendars & Festivals</h2>
+          <p class="section-subtitle">Plan around significant cultural moments, favorable seasonal weather, and peaceful crowd windows.</p>
+        </div>
+
+        <!-- Seasons Overview Cards -->
+        <div class="grid-3" style="margin-bottom: var(--space-12);">
+          <div style="background: var(--color-surface-soft); border: 1px solid var(--color-border-light); border-radius: var(--radius-lg); padding: var(--space-6);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-2);">
+              <h3 class="font-serif" style="font-size: 1.3rem;">Winter (Oct – Mar)</h3>
+              <span class="badge badge-season">Peak Comfort</span>
+            </div>
+            <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: 1.5; margin-bottom: var(--space-4);">
+              Ideal for North India (Varanasi, Jaipur, Amritsar) and Karnataka boulder trails in Hampi. Crisp mornings, clear sunshine, and pleasant walking weather.
+            </p>
+            <span style="font-size: var(--font-size-xs); font-weight: 600; color: var(--color-primary);">Top Events: Dev Deepawali, Jaipur Lit Fest</span>
+          </div>
+
+          <div style="background: var(--color-surface-soft); border: 1px solid var(--color-border-light); border-radius: var(--radius-lg); padding: var(--space-6);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-2);">
+              <h3 class="font-serif" style="font-size: 1.3rem;">Post-Monsoon (Aug – Oct)</h3>
+              <span class="badge badge-accent">Vibrant Culture</span>
+            </div>
+            <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: 1.5; margin-bottom: var(--space-4);">
+              Lush green landscapes across Udaipur's lakes and Kerala backwaters. Extraordinary festival atmosphere during autumn Durga Puja in Kolkata.
+            </p>
+            <span style="font-size: var(--font-size-xs); font-weight: 600; color: var(--color-primary);">Top Events: Kolkata Durga Puja, Navratri</span>
+          </div>
+
+          <div style="background: var(--color-surface-soft); border: 1px solid var(--color-border-light); border-radius: var(--radius-lg); padding: var(--space-6);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-2);">
+              <h3 class="font-serif" style="font-size: 1.3rem;">Spring (Feb – Apr)</h3>
+              <span class="badge badge-primary">Mild & Floral</span>
+            </div>
+            <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: 1.5; margin-bottom: var(--space-4);">
+              Ideal for temple cities of Tamil Nadu (Madurai Chithirai festival) and sacred celebrations before peak summer heat sets in.
+            </p>
+            <span style="font-size: var(--font-size-xs); font-weight: 600; color: var(--color-primary);">Top Events: Chithirai Festival, Maha Shivratri</span>
+          </div>
+        </div>
+
+        <!-- Festival Showcase Grid -->
+        <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: var(--space-6);">Featured Living Festivals:</h3>
+        <div id="explore-events-grid" class="grid-3">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container-wide">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <svg class="brand-star-icon" viewBox="0 0 32 32">
+              <path d="M16 2 L19 12 L29 12 L21 18 L24 28 L16 22 L8 28 L11 18 L3 12 L13 12 Z" />
+            </svg>
+            <span class="brand-name">DHRUVA</span>
+          </div>
+          <p class="footer-mission">
+            Culturally focused travel guidance crafted for mindful explorers, senior travelers, and heritage enthusiasts.
+          </p>
+        </div>
+
+        <div class="footer-column">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="explore.html">All Destinations</a></li>
+            <li><a href="explore.html?region=North+India">North India</a></li>
+            <li><a href="explore.html?region=South+India">South India</a></li>
+            <li><a href="explore.html?region=East+India">East India</a></li>
+            <li><a href="explore.html?region=West+India">West India</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Planning</h4>
+          <ul>
+            <li><a href="trip.html">Guided Trip Planner</a></li>
+            <li><a href="#best-time-section">Best Time Guide</a></li>
+            <li><a href="profile.html">My Saved Itineraries</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Accessibility</h4>
+          <ul>
+            <li><button data-action="toggle-font-scale" style="font-size: var(--font-size-sm); color: var(--color-text-secondary); text-align: left;">Toggle Larger Text</button></li>
+            <li><a href="profile.html#preferences">Restrained Animation</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 DHRUVA. Your Journey, Guided.</p>
+        <div class="footer-legal-links">
+          <a href="#">Cultural Ethics</a>
+          <a href="#">Privacy & Storage</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Voice Assistant Trigger -->
+  <button class="floating-voice-btn" data-action="open-voice" aria-label="Open Voice Assistant">
+    <div class="voice-pulse-ring"></div>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+      <line x1="12" y1="19" x2="12" y2="23"></line>
+      <line x1="8" y1="23" x2="16" y2="23"></line>
+    </svg>
+  </button>
+
+
+
+  <!-- Scripts -->
+  <script src="../js/app.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script src="../js/voice-orb.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      let allDestinations = await DhruvaApp.fetchMockData('destinations.json');
+      let allPlaces = await DhruvaApp.fetchMockData('places.json');
+      let allEvents = await DhruvaApp.fetchMockData('events.json');
+      window._cachedPlaces = allPlaces;
+
+      const destGrid = document.getElementById('explore-destinations-grid');
+      const placesGrid = document.getElementById('explore-places-grid');
+      const eventsGrid = document.getElementById('explore-events-grid');
+      const countLabel = document.getElementById('destinations-count');
+      const searchInput = document.getElementById('explore-search-input');
+      const state = DhruvaApp.getState();
+
+      let activeRegion = 'all';
+      let activeCategory = 'all';
+      let searchQuery = '';
+
+      // Check URL parameters for pre-filtering
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('region')) {
+        activeRegion = urlParams.get('region');
+        document.querySelectorAll('.filter-region-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.region === activeRegion);
+        });
+      }
+      if (urlParams.get('category')) {
+        activeCategory = urlParams.get('category');
+        document.querySelectorAll('.filter-cat-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.category === activeCategory);
+          btn.classList.toggle('badge-primary', btn.dataset.category === activeCategory);
+          btn.classList.toggle('badge-outline', btn.dataset.category !== activeCategory);
+        });
+      }
+      if (urlParams.get('q')) {
+        searchQuery = urlParams.get('q');
+        searchInput.value = searchQuery;
+      }
+
+      // Filter and render destinations
+      const renderFilteredDestinations = () => {
+        let filtered = allDestinations.filter(d => {
+          const matchRegion = activeRegion === 'all' || d.region.toLowerCase().includes(activeRegion.toLowerCase());
+          const matchCat = activeCategory === 'all' || (d.categories && d.categories.some(c => c.toLowerCase() === activeCategory.toLowerCase()));
+          const matchQuery = !searchQuery || d.name.toLowerCase().includes(searchQuery) || d.tagline.toLowerCase().includes(searchQuery) || d.description.toLowerCase().includes(searchQuery);
+          return matchRegion && matchCat && matchQuery;
+        });
+
+        countLabel.textContent = `Showing ${filtered.length} destination${filtered.length === 1 ? '' : 's'}`;
+
+        if (filtered.length === 0) {
+          destGrid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-12); background: var(--color-surface); border-radius: var(--radius-lg);">
+              <h3 class="font-serif" style="color: var(--color-text-muted); margin-bottom: var(--space-2);">No destinations match your filters</h3>
+              <p class="text-secondary" style="font-size: var(--font-size-sm);">Try selecting 'All Regions' or clearing the search query.</p>
+            </div>
+          `;
+        } else {
+          destGrid.innerHTML = filtered.map(d => {
+            const isSaved = state.user.savedDestinations?.includes(d.id);
+            return DhruvaComponents.renderDestinationCard(d, isSaved, false);
+          }).join('');
+        }
+      };
+
+      // Render places
+      const renderFilteredPlaces = () => {
+        let filteredPlaces = allPlaces.filter(p => {
+          const matchCat = activeCategory === 'all' || p.category.toLowerCase() === activeCategory.toLowerCase();
+          const matchQuery = !searchQuery || p.name.toLowerCase().includes(searchQuery) || p.shortDescription.toLowerCase().includes(searchQuery);
+          return matchCat && matchQuery;
+        });
+
+        if (placesGrid) {
+          placesGrid.innerHTML = filteredPlaces.slice(0, 9).map(place => DhruvaComponents.renderPlaceCard(place)).join('');
+        }
+      };
+
+      // Render events
+      if (eventsGrid && allEvents.length > 0) {
+        eventsGrid.innerHTML = allEvents.map(e => DhruvaComponents.renderEventCard(e)).join('');
+      }
+
+      // Event listeners for filters
+      document.querySelectorAll('.filter-region-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-region-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeRegion = btn.dataset.region;
+          renderFilteredDestinations();
+        });
+      });
+
+      document.querySelectorAll('.filter-cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-cat-btn').forEach(b => {
+            b.classList.remove('active', 'badge-primary');
+            b.classList.add('badge-outline');
+          });
+          btn.classList.add('active', 'badge-primary');
+          btn.classList.remove('badge-outline');
+          activeCategory = btn.dataset.category;
+          renderFilteredDestinations();
+          renderFilteredPlaces();
+        });
+      });
+
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        renderFilteredDestinations();
+        renderFilteredPlaces();
+      });
+
+      renderFilteredDestinations();
+      renderFilteredPlaces();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Your Journey — DHRUVA | Guided Cultural Planner</title>
+  <meta name="description" content="Step-by-step personalized Indian travel planner matching your dates, pacing, and cultural interests to craft mindful itineraries.">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/voice-orb.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+
+  <style>
+    .planner-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: var(--space-10);
+      align-items: flex-start;
+      margin-top: var(--space-8);
+    }
+
+    .planner-card {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      box-shadow: var(--shadow-card);
+    }
+
+    .wizard-progress {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-8);
+      position: relative;
+    }
+
+    .wizard-progress::before {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: 30px;
+      right: 30px;
+      height: 2px;
+      background-color: var(--color-border);
+      z-index: 1;
+    }
+
+    .wizard-step-node {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-muted);
+    }
+
+    .wizard-step-bubble {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-circle);
+      background-color: var(--color-surface);
+      border: 2px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-secondary);
+      transition: all var(--transition-fast);
+    }
+
+    .wizard-step-node.active .wizard-step-bubble {
+      background-color: var(--color-primary);
+      border-color: var(--color-primary);
+      color: var(--color-text-inverse);
+      box-shadow: 0 0 0 4px var(--color-primary-soft);
+    }
+
+    .wizard-step-node.completed .wizard-step-bubble {
+      background-color: var(--color-accent);
+      border-color: var(--color-accent);
+      color: #FFFFFF;
+    }
+
+    .wizard-step-node.active span,
+    .wizard-step-node.completed span {
+      color: var(--color-primary-dark);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    /* Destination grid within wizard */
+    .planner-destinations-selector {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4);
+      margin-top: var(--space-4);
+    }
+
+    .planner-dest-option {
+      border: 2px solid var(--color-border-light);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      cursor: pointer;
+      background-color: var(--color-surface-soft);
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+
+    .planner-dest-option:hover {
+      border-color: var(--color-primary-soft);
+      background-color: var(--color-surface);
+    }
+
+    .planner-dest-option.selected {
+      border-color: var(--color-primary);
+      background-color: var(--color-surface);
+      box-shadow: 0 4px 14px var(--color-primary-glow);
+    }
+
+    .planner-dest-thumb {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-md);
+      object-fit: cover;
+    }
+
+    .planner-dest-info {
+      flex: 1;
+    }
+
+    .planner-dest-region {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      display: block;
+    }
+
+    .planner-dest-check {
+      color: var(--color-primary);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+    }
+
+    .planner-dest-option.selected .planner-dest-check {
+      opacity: 1;
+    }
+
+    /* Sidebar summary */
+    .planner-summary-panel {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      position: sticky;
+      top: 100px;
+    }
+
+    @media (max-width: 900px) {
+      .planner-layout {
+        grid-template-columns: 1fr;
+      }
+      .planner-destinations-selector {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Global Header Navigation -->
+  <header class="site-header" role="banner">
+    <div class="container-wide nav-wrapper">
+      <a href="../index.html" class="brand-logo" aria-label="DHRUVA Home">
+        <svg class="brand-star-icon" viewBox="0 0 32 32">
+          <path d="M16 2 L19 12 L29 12 L21 18 L24 28 L16 22 L8 28 L11 18 L3 12 L13 12 Z" />
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">DHRUVA</span>
+          <span class="brand-tagline">Your Journey, Guided</span>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link">Explore</a>
+        <a href="trip.html" class="nav-link active">Plan Trip</a>
+        <a href="explore.html?section=best-time" class="nav-link">Best Time</a>
+        <a href="profile.html" class="nav-link">My Plan</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" data-action="toggle-theme" aria-label="Toggle Dark / Light Mode" title="Toggle Dark / Light Mode">
+          <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <a href="profile.html" class="nav-profile-btn" aria-label="Traveler Profile">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Arvind Raghavan" class="nav-avatar">
+          <span class="nav-user-name" style="font-size: var(--font-size-sm); font-weight: 500;">Arvind</span>
+        </a>
+
+        <button class="menu-toggle-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="container-wide" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+    <!-- Page Intro -->
+    <div style="text-align: center; max-width: 680px; margin: 0 auto var(--space-6);">
+      <span class="eyebrow">CONVERSATIONAL TRIP PLANNER</span>
+      <h1 class="page-title font-serif" style="color: var(--color-primary-dark); margin-top: var(--space-2);">
+        Craft Your Cultural Itinerary
+      </h1>
+      <p class="lead-text" style="font-size: var(--font-size-base);">
+        Answer 4 simple questions. DHRUVA organizes opening hours, transit pacing, and cultural depth into a harmonious journey.
+      </p>
+    </div>
+
+    <!-- Multi-Step Wizard Layout -->
+    <div class="planner-layout">
+      <!-- Main Wizard Form Area -->
+      <div class="planner-card">
+        <!-- Progress Stepper Indicator -->
+        <div class="wizard-progress">
+          <div id="step-indicator-1" class="wizard-step-node active">
+            <div class="wizard-step-bubble">1</div>
+            <span>Destination</span>
+          </div>
+          <div id="step-indicator-2" class="wizard-step-node">
+            <div class="wizard-step-bubble">2</div>
+            <span>Duration</span>
+          </div>
+          <div id="step-indicator-3" class="wizard-step-node">
+            <div class="wizard-step-bubble">3</div>
+            <span>Pacing</span>
+          </div>
+          <div id="step-indicator-4" class="wizard-step-node">
+            <div class="wizard-step-bubble">4</div>
+            <span>Interests</span>
+          </div>
+        </div>
+
+        <!-- Step 1: Destination -->
+        <div id="planner-step-1">
+          <h2 class="font-serif" style="font-size: 1.625rem; margin-bottom: var(--space-2);">Where would you like to travel?</h2>
+          <p class="text-secondary" style="font-size: var(--font-size-sm); margin-bottom: var(--space-6);">
+            Choose from India’s sacred spiritual centers, royal kingdoms, or historic coastal ports.
+          </p>
+
+          <div id="planner-destinations-grid" class="planner-destinations-selector">
+            <!-- Populated dynamically by planner.js -->
+          </div>
+        </div>
+
+        <!-- Step 2: Dates & Duration -->
+        <div id="planner-step-2" style="display: none;">
+          <h2 class="font-serif" style="font-size: 1.625rem; margin-bottom: var(--space-2);">When and for how long are you traveling?</h2>
+          <p class="text-secondary" style="font-size: var(--font-size-sm); margin-bottom: var(--space-6);">
+            Select your starting date and number of days to personalize day-by-day schedules.
+          </p>
+
+          <div class="form-group">
+            <label class="form-label" for="planner-start-date">Approximate Start Date</label>
+            <input type="date" id="planner-start-date" class="form-input" style="max-width: 320px;">
+          </div>
+
+          <div class="form-group" style="margin-top: var(--space-6);">
+            <label class="form-label">How many days will you spend exploring?</label>
+            <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-2);">
+              <button type="button" class="btn btn-secondary btn-sm" data-duration-days="1">1 Day (Glimpse)</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-duration-days="2">2 Days (Weekend)</button>
+              <button type="button" class="btn btn-secondary btn-sm active" data-duration-days="3">3 Days (Classic)</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-duration-days="4">4 Days (Deep Dive)</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-duration-days="5">5+ Days (Immersive)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Pacing & Comfort -->
+        <div id="planner-step-3" style="display: none;">
+          <h2 class="font-serif" style="font-size: 1.625rem; margin-bottom: var(--space-2);">How would you like to pace your days?</h2>
+          <p class="text-secondary" style="font-size: var(--font-size-sm); margin-bottom: var(--space-6);">
+            We ensure comfortable transit breaks, mindful rest periods, and unhurried temple visits.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            <button type="button" class="planner-dest-option selected" data-pace-option="Comfortable & Mindful" style="text-align: left; width: 100%;">
+              <div style="font-size: 1.75rem; margin-right: var(--space-2);">🌿</div>
+              <div style="flex: 1;">
+                <h4 class="font-serif" style="font-size: 1.15rem;">Comfortable & Mindful (Recommended for 40-65+)</h4>
+                <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: 1.4;">
+                  1-2 key places per half-day, unhurried morning boat rides, restful midday breaks, senior-accessible routes.
+                </p>
+              </div>
+            </button>
+
+            <button type="button" class="planner-dest-option" data-pace-option="Moderate & Structured" style="text-align: left; width: 100%;">
+              <div style="font-size: 1.75rem; margin-right: var(--space-2);">⚖️</div>
+              <div style="flex: 1;">
+                <h4 class="font-serif" style="font-size: 1.15rem;">Moderate & Structured</h4>
+                <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: 1.4;">
+                  Balanced itinerary covering main archaeological landmarks, museums, and evening cultural performances.
+                </p>
+              </div>
+            </button>
+
+            <button type="button" class="planner-dest-option" data-pace-option="Full Immersion" style="text-align: left; width: 100%;">
+              <div style="font-size: 1.75rem; margin-right: var(--space-2);">🏛️</div>
+              <div style="flex: 1;">
+                <h4 class="font-serif" style="font-size: 1.15rem;">Full Immersion & Photography</h4>
+                <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: 1.4;">
+                  Dawn to dusk exploration: early sunrise photography, hidden havelis, artisan quarters, and night aartis.
+                </p>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 4: Interests -->
+        <div id="planner-step-4" style="display: none;">
+          <h2 class="font-serif" style="font-size: 1.625rem; margin-bottom: var(--space-2);">What cultural experiences inspire you?</h2>
+          <p class="text-secondary" style="font-size: var(--font-size-sm); margin-bottom: var(--space-6);">
+            Select all that apply to guide DHRUVA's recommendation engine.
+          </p>
+
+          <div class="chips-container" style="gap: var(--space-3);">
+            <div class="chip-selectable active" data-interest-name="Heritage">
+              <span class="chip-icon">🏛️</span> Heritage & History
+            </div>
+            <div class="chip-selectable active" data-interest-name="Spiritual">
+              <span class="chip-icon">🪔</span> Temples & Spiritual Shrines
+            </div>
+            <div class="chip-selectable" data-interest-name="Architecture">
+              <span class="chip-icon">🏰</span> Forts & Palatial Architecture
+            </div>
+            <div class="chip-selectable active" data-interest-name="Local Culture">
+              <span class="chip-icon">🧵</span> Handloom & Artisan Crafts
+            </div>
+            <div class="chip-selectable" data-interest-name="Food">
+              <span class="chip-icon">🍲</span> Culinary Traditions & Thalis
+            </div>
+            <div class="chip-selectable" data-interest-name="Nature">
+              <span class="chip-icon">🌊</span> Rivers, Ghats & Landscapes
+            </div>
+            <div class="chip-selectable" data-interest-name="Festivals">
+              <span class="chip-icon">🎆</span> Cultural Festivals & Music
+            </div>
+          </div>
+        </div>
+
+        <!-- Wizard Navigation Action Bar -->
+        <div style="margin-top: var(--space-10); padding-top: var(--space-6); border-top: 1px solid var(--color-border-light); display: flex; align-items: center; justify-content: space-between;">
+          <button id="planner-btn-prev" class="btn btn-secondary btn-sm" style="visibility: hidden;">
+            ← Previous Step
+          </button>
+          <button id="planner-btn-next" class="btn btn-primary">
+            Continue →
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Summary Sidebar -->
+      <aside class="planner-summary-panel" aria-label="Journey Summary">
+        <h3 class="font-serif" style="font-size: 1.25rem; color: var(--color-primary-dark); margin-bottom: var(--space-4); border-bottom: 1px solid var(--color-border-light); padding-bottom: var(--space-2);">
+          Your Journey Summary
+        </h3>
+
+        <div style="display: flex; flex-direction: column; gap: var(--space-4); font-size: var(--font-size-sm);">
+          <div>
+            <span class="text-muted" style="text-transform: uppercase; font-size: 0.6875rem; letter-spacing: 0.06em;">Destination</span>
+            <p id="summary-destination" class="font-serif" style="font-size: 1.2rem; font-weight: 600; color: var(--color-text); margin-top: 2px;">Varanasi</p>
+          </div>
+
+          <div>
+            <span class="text-muted" style="text-transform: uppercase; font-size: 0.6875rem; letter-spacing: 0.06em;">Duration</span>
+            <p id="summary-duration" style="font-weight: 600; color: var(--color-text); margin-top: 2px;">3 Days</p>
+          </div>
+
+          <div>
+            <span class="text-muted" style="text-transform: uppercase; font-size: 0.6875rem; letter-spacing: 0.06em;">Pace</span>
+            <p id="summary-pace" style="font-weight: 600; color: var(--color-text); margin-top: 2px;">Comfortable & Mindful</p>
+          </div>
+
+          <div>
+            <span class="text-muted" style="text-transform: uppercase; font-size: 0.6875rem; letter-spacing: 0.06em;">Cultural Focus</span>
+            <div id="summary-interests" style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px;">
+              <span class="badge badge-primary">Heritage</span>
+              <span class="badge badge-primary">Spiritual</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: var(--space-6); padding: var(--space-3); background: var(--color-surface-soft); border-radius: var(--radius-md); font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: 1.4;">
+          <strong>Guide Note:</strong> Plans are generated from structured cultural data with verified temple timings and transit buffers.
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Plan Generating Transition Modal -->
+  <div id="planner-generating-overlay" class="modal-overlay">
+    <div class="modal-dialog" style="max-width: 440px; text-align: center; padding: var(--space-8);">
+      <svg class="brand-star-icon" viewBox="0 0 32 32" style="width: 48px; height: 48px; margin: 0 auto var(--space-4); animation: pulse-ring 2s infinite;">
+        <path d="M16 2 L19 12 L29 12 L21 18 L24 28 L16 22 L8 28 L11 18 L3 12 L13 12 Z" />
+      </svg>
+      <h3 class="font-serif" style="font-size: 1.5rem; color: var(--color-primary-dark); margin-bottom: var(--space-2);">
+        Synthesizing Your Journey...
+      </h3>
+      <p class="lead-text" style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+        Matching morning temple aartis, unhurried transit routes, and authentic artisan havelis.
+      </p>
+      <div class="voice-waveform">
+        <div class="waveform-bar"></div>
+        <div class="waveform-bar"></div>
+        <div class="waveform-bar"></div>
+        <div class="waveform-bar"></div>
+        <div class="waveform-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container-wide">
+      <div class="footer-bottom">
+        <p>© 2026 DHRUVA. Your Journey, Guided.</p>
+        <div class="footer-legal-links">
+          <a href="../index.html">Home</a>
+          <a href="explore.html">Explore</a>
+          <a href="profile.html">My Plan</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Voice Assistant Trigger -->
+  <button class="floating-voice-btn" data-action="open-voice" aria-label="Open Voice Assistant">
+    <div class="voice-pulse-ring"></div>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+      <line x1="12" y1="19" x2="12" y2="23"></line>
+      <line x1="8" y1="23" x2="16" y2="23"></line>
+    </svg>
+  </button>
+
+
+
+  <!-- Scripts -->
+  <script src="../js/app.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script src="../js/planner.js"></script>
+  <script src="../js/voice-orb.js"></script>
+</body>
+</html>

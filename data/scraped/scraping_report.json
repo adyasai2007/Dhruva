@@ -1,0 +1,327 @@
+{
+  "target_source": "Incredible India Tourism Portal",
+  "start_url": "https://www.incredibleindia.gov.in/en/odisha/bhubaneswar, https://www.incredibleindia.gov.in/en/odisha/puri, https://www.incredibleindia.gov.in/en/odisha/cuttack",
+  "city": "Bhubaneswar, Puri, Cuttack",
+  "state": "Odisha",
+  "total_pages_discovered": 54,
+  "total_pages_crawled": 30,
+  "total_places_normalized": 30,
+  "errors_count": 1,
+  "error_details": [
+    {
+      "url": "https://www.incredibleindia.gov.in/en/odisha/cuttack/bhitarkanika-national-park",
+      "error": "Unknown network or robots failure"
+    }
+  ],
+  "start_time_utc": "2026-08-26T13:54:23Z",
+  "end_time_utc": "2026-08-26T13:55:17Z",
+  "duration_seconds": 53.49,
+  "average_completeness": 95.74,
+  "field_completeness_summary": {
+    "name": 100.0,
+    "city": 100.0,
+    "state": 100.0,
+    "category": 100.0,
+    "sub_category": 100.0,
+    "short_description": 96.7,
+    "full_description": 100.0,
+    "cultural_significance": 100.0,
+    "historical_period": 100.0,
+    "opening_hours": 100.0,
+    "entry_fee": 100.0,
+    "best_time_of_day": 100.0,
+    "recommended_duration": 100.0,
+    "accessibility_notes": 100.0,
+    "festivals": 26.7,
+    "nearest_transit": 100.0,
+    "image_urls": 100.0,
+    "source_url": 100.0
+  },
+  "completeness_per_place": [
+    {
+      "place_id": "ananta-vasudeva-temple",
+      "place_name": "Ananta Vasudeva Temple",
+      "total_fields": 18,
+      "filled_fields": 18,
+      "missing_fields": [],
+      "completeness_score": 100.0
+    },
+    {
+      "place_id": "asokastami",
+      "place_name": "Asokastami",
+      "total_fields": 18,
+      "filled_fields": 18,
+      "missing_fields": [],
+      "completeness_score": 100.0
+    },
+    {
+      "place_id": "chilika-lake",
+      "place_name": "Chilika Lake",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "dhauligiri-hills",
+      "place_name": "Dhauligiri Hills",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "hirapur",
+      "place_name": "Hirapur",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "kala-bhoomi-odisha-crafts-museum",
+      "place_name": "Kala Bhoomi Odisha Crafts Museum",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "kantilo",
+      "place_name": "Kantilo",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "khandagiri-udayagiri-caves",
+      "place_name": "Khandagiri & Udayagiri Caves",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "kuanria",
+      "place_name": "Kuanria",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "lingaraj-temple",
+      "place_name": "Lingaraj Temple",
+      "total_fields": 18,
+      "filled_fields": 18,
+      "missing_fields": [],
+      "completeness_score": 100.0
+    },
+    {
+      "place_id": "bhitarkanika-national-park",
+      "place_name": "Bhitarkanika National Park",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "alarnatha-temple",
+      "place_name": "Alarnatha Temple",
+      "total_fields": 18,
+      "filled_fields": 18,
+      "missing_fields": [],
+      "completeness_score": 100.0
+    },
+    {
+      "place_id": "atharnala-bridge",
+      "place_name": "Atharnala Bridge",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "balighai-beach",
+      "place_name": "Balighai Beach",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "balukhand-konark-sanctuary",
+      "place_name": "Balukhand-Konark Sanctuary",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "chaurasi",
+      "place_name": "Chaurasi",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "chilika-wildlife-sanctuary",
+      "place_name": "Chilika Wildlife Sanctuary",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "gundicha-temple",
+      "place_name": "Gundicha Temple",
+      "total_fields": 18,
+      "filled_fields": 18,
+      "missing_fields": [],
+      "completeness_score": 100.0
+    },
+    {
+      "place_id": "konark-temple",
+      "place_name": "Konark Temple",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "loknath-temple",
+      "place_name": "Loknath Temple",
+      "total_fields": 18,
+      "filled_fields": 18,
+      "missing_fields": [],
+      "completeness_score": 100.0
+    },
+    {
+      "place_id": "ansupa-nature-camp",
+      "place_name": "Ansupa Nature Camp",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "barabati-fort",
+      "place_name": "Barabati Fort",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "barabati-stadium",
+      "place_name": "Barabati Stadium",
+      "total_fields": 18,
+      "filled_fields": 18,
+      "missing_fields": [],
+      "completeness_score": 100.0
+    },
+    {
+      "place_id": "discover-a-symphony-of-wildlife",
+      "place_name": "Discover a symphony of wildlife",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "cuttack-chandi-temple",
+      "place_name": "Cuttack Chandi Temple",
+      "total_fields": 18,
+      "filled_fields": 18,
+      "missing_fields": [],
+      "completeness_score": 100.0
+    },
+    {
+      "place_id": "dhabaleswar-temple",
+      "place_name": "Dhabaleswar Temple",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "explore-the-rich-heritage-of-jajpur",
+      "place_name": "Explore The Rich Heritage Of Jajpur",
+      "total_fields": 18,
+      "filled_fields": 16,
+      "missing_fields": [
+        "short_description",
+        "festivals"
+      ],
+      "completeness_score": 88.89
+    },
+    {
+      "place_id": "jobra-barrage",
+      "place_name": "Jobra Barrage",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "mahanadi-barrage",
+      "place_name": "Mahanadi Barrage",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    },
+    {
+      "place_id": "netaji-birth-place-museum",
+      "place_name": "Netaji Birth Place Museum",
+      "total_fields": 18,
+      "filled_fields": 17,
+      "missing_fields": [
+        "festivals"
+      ],
+      "completeness_score": 94.44
+    }
+  ]
+}

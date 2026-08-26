@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In & Traveler Profile — DHRUVA</title>
+  <meta name="description" content="Sign in or set up your traveler profile with name, age, contact details, and cultural travel preferences on DHRUVA.">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/voice-orb.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+
+  <style>
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+    }
+
+    @media (max-width: 640px) {
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+      }
+      .auth-card {
+        padding: var(--space-6) var(--space-4);
+      }
+    }
+
+    .info-callout {
+      background-color: var(--color-surface-soft);
+      border-left: 4px solid var(--color-accent);
+      padding: var(--space-4) var(--space-5);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin-bottom: var(--space-6);
+      display: flex;
+      gap: var(--space-3);
+      align-items: flex-start;
+    }
+
+    .info-callout-icon {
+      color: var(--color-accent-dark);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header Navigation -->
+  <header class="site-header" role="banner">
+    <div class="container-wide nav-wrapper">
+      <a href="../index.html" class="brand-logo" aria-label="DHRUVA Home">
+        <svg class="brand-star-icon" viewBox="0 0 32 32">
+          <path d="M16 2 L19 12 L29 12 L21 18 L24 28 L16 22 L8 28 L11 18 L3 12 L13 12 Z" />
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">DHRUVA</span>
+          <span class="brand-tagline">Your Journey, Guided</span>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link">Explore</a>
+        <a href="trip.html" class="nav-link">Plan Trip</a>
+        <a href="explore.html?section=best-time" class="nav-link">Best Time</a>
+        <a href="profile.html" class="nav-link">My Plan</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" data-action="toggle-theme" aria-label="Toggle Dark / Light Mode" title="Toggle Dark / Light Mode">
+          <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <a href="login.html" class="nav-profile-btn" aria-label="Traveler Profile">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Traveler" class="nav-avatar">
+          <span class="nav-user-name" style="font-size: var(--font-size-sm); font-weight: 500; display: none;">Arvind</span>
+        </a>
+
+        <button class="menu-toggle-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+    <div class="container auth-wrapper">
+      
+      <!-- Card Container -->
+      <div class="auth-card">
+        
+        <!-- Header -->
+        <div class="auth-header">
+          <div style="display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: var(--radius-circle); background-color: var(--color-primary-soft); color: var(--color-primary); margin-bottom: var(--space-3);">
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="currentColor">
+              <path d="M16 2 L19 12 L29 12 L21 18 L24 28 L16 22 L8 28 L11 18 L3 12 L13 12 Z" />
+            </svg>
+          </div>
+          <span class="eyebrow" style="display: block;">DHRUVA TRAVELER IDENTITY</span>
+          <h1 class="auth-title font-serif">Sign In & Traveler Profile</h1>
+          <p class="text-secondary" style="max-width: 580px; margin: 0 auto; font-size: var(--font-size-sm);">
+            Set up your details to receive personalized journey recommendations, accessibility-aware routes, and synchronized offline itineraries.
+          </p>
+        </div>
+
+        <!-- Demo Profiles Quick-Fill Bar -->
+        <div style="margin-bottom: var(--space-6);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-2);">
+            <span style="font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
+              Quick Load Traveler Persona:
+            </span>
+            <button type="button" id="btn-clear-form" style="font-size: var(--font-size-xs); color: var(--color-accent-dark); text-decoration: underline; cursor: pointer;">
+              Reset to Blank
+            </button>
+          </div>
+          <div class="demo-profile-chips">
+            <button type="button" class="demo-chip active" data-profile="scholar">
+              <span>👤</span> Dr. Arvind Raghavan (Age 52 • Scholar)
+            </button>
+            <button type="button" class="demo-chip" data-profile="pilgrim">
+              <span>🛕</span> Meera & Suresh Iyer (Age 64 • Mindful Pace)
+            </button>
+            <button type="button" class="demo-chip" data-profile="historian">
+              <span>🎨</span> Ananya Sen (Age 42 • Arts & Architecture)
+            </button>
+          </div>
+        </div>
+
+        <!-- Onboarding / Login Form -->
+        <form id="traveler-login-form" novalidate>
+          
+          <!-- Row 1: Full Name & Age -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="traveler-name" class="form-label">
+                Full Name <span style="color: var(--color-error);">*</span>
+              </label>
+              <div class="input-with-icon">
+                <span class="input-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                </span>
+                <input type="text" id="traveler-name" name="name" class="form-input" placeholder="e.g. Dr. Arvind Raghavan" required>
+              </div>
+              <span class="form-helper">How our guides and itineraries should address you</span>
+            </div>
+
+            <div class="form-group">
+              <label for="traveler-age" class="form-label">
+                Age <span style="color: var(--color-error);">*</span>
+              </label>
+              <div class="input-with-icon">
+                <span class="input-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </span>
+                <input type="number" id="traveler-age" name="age" class="form-input" placeholder="e.g. 52" min="1" max="120" required>
+              </div>
+              <span class="form-helper">Calibrates walking pace, stair ease, and rest schedules</span>
+            </div>
+          </div>
+
+          <!-- Row 2: Contact Number & Email ID -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="traveler-phone" class="form-label">
+                Contact Details (Phone / Mobile) <span style="color: var(--color-error);">*</span>
+              </label>
+              <div class="input-with-icon">
+                <span class="input-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                </span>
+                <input type="tel" id="traveler-phone" name="phone" class="form-input" placeholder="e.g. +91 98450 12345" required>
+              </div>
+              <span class="form-helper">For offline trip summaries and emergency heritage guides</span>
+            </div>
+
+            <div class="form-group">
+              <label for="traveler-email" class="form-label">
+                Email Address <span style="color: var(--color-error);">*</span>
+              </label>
+              <div class="input-with-icon">
+                <span class="input-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                </span>
+                <input type="email" id="traveler-email" name="email" class="form-input" placeholder="e.g. arvind.raghavan@heritage-travel.in" required>
+              </div>
+              <span class="form-helper">For receiving printable PDF itineraries & saved journeys</span>
+            </div>
+          </div>
+
+          <!-- Row 3: City / Origin -->
+          <div class="form-group">
+            <label for="traveler-location" class="form-label">
+              Home City / Origin
+            </label>
+            <div class="input-with-icon">
+              <span class="input-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+              </span>
+              <input type="text" id="traveler-location" name="location" class="form-input" placeholder="e.g. Bengaluru, India">
+            </div>
+            <span class="form-helper">Assists with arrival transit recommendations</span>
+          </div>
+
+          <!-- Pacing Style -->
+          <div class="form-group" style="margin-top: var(--space-4);">
+            <label class="form-label">
+              Preferred Travel Pacing
+            </label>
+            <div class="pace-selector-grid" id="pace-options">
+              <div class="pace-option-card selected" data-pace="Comfortable & Mindful">
+                <span class="pace-title">🌿 Comfortable & Mindful</span>
+                <p class="pace-desc">Leisurely exploration with generous shade pauses, gentle stair pacing, and unrushed temple visits.</p>
+              </div>
+              <div class="pace-option-card" data-pace="Cultural Scholar & In-Depth">
+                <span class="pace-title">🏛️ Cultural Scholar</span>
+                <p class="pace-desc">In-depth historical immersion, extended time at sanctums, museum archives, and guided study.</p>
+              </div>
+              <div class="pace-option-card" data-pace="Active Heritage Explorer">
+                <span class="pace-title">🚶 Active Explorer</span>
+                <p class="pace-desc">High coverage, sunrise-to-sunset exploration across ghats, forts, trails, and artisan alleys.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cultural Interests Chips -->
+          <div class="form-group" style="margin-top: var(--space-6);">
+            <label class="form-label">
+              Cultural & Heritage Interests
+              <span class="form-helper" style="font-weight: normal;">Select all that resonate</span>
+            </label>
+            <div class="chips-container" id="interests-chips">
+              <button type="button" class="chip-selectable active" data-interest="Heritage">
+                <span class="chip-icon">🏛️</span> Heritage & Forts
+              </button>
+              <button type="button" class="chip-selectable active" data-interest="Architecture">
+                <span class="chip-icon">📐</span> Architecture & Carvings
+              </button>
+              <button type="button" class="chip-selectable active" data-interest="Spiritual">
+                <span class="chip-icon">🛕</span> Spiritual & Sanctums
+              </button>
+              <button type="button" class="chip-selectable active" data-interest="Local Culture">
+                <span class="chip-icon">🎭</span> Local Culture & Traditions
+              </button>
+              <button type="button" class="chip-selectable active" data-interest="History">
+                <span class="chip-icon">📜</span> Ancient History
+              </button>
+              <button type="button" class="chip-selectable" data-interest="Food">
+                <span class="chip-icon">🍲</span> Traditional Cuisine
+              </button>
+              <button type="button" class="chip-selectable" data-interest="Markets">
+                <span class="chip-icon">🛍️</span> Artisan Crafts & Bazaars
+              </button>
+              <button type="button" class="chip-selectable" data-interest="Nature">
+                <span class="chip-icon">🌿</span> Sacred Groves & Rivers
+              </button>
+            </div>
+          </div>
+
+          <!-- Avatar Picker -->
+          <div class="form-group" style="margin-top: var(--space-6);">
+            <label class="form-label">
+              Choose Profile Icon
+            </label>
+            <div class="avatar-selector-grid" id="avatar-grid">
+              <div class="avatar-option selected" data-avatar="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Avatar 1">
+              </div>
+              <div class="avatar-option" data-avatar="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80">
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80" alt="Avatar 2">
+              </div>
+              <div class="avatar-option" data-avatar="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Avatar 3">
+              </div>
+              <div class="avatar-option" data-avatar="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Avatar 4">
+              </div>
+            </div>
+          </div>
+
+          <!-- Privacy & Accessibility Callout -->
+          <div class="info-callout" style="margin-top: var(--space-8);">
+            <svg class="info-callout-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <div>
+              <h4 class="font-serif" style="font-size: var(--font-size-sm); color: var(--color-primary-dark);">Privacy & Pacing Guarantee</h4>
+              <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 2px;">
+                Your traveler details remain stored securely on your browser. DHRUVA uses your age and contact information exclusively to customize walking durations, rest intervals, and send your selected itineraries.
+              </p>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="display: flex; gap: var(--space-4); align-items: center; justify-content: flex-end; flex-wrap: wrap; margin-top: var(--space-6);">
+            <a href="../index.html" class="btn btn-secondary">
+              Cancel
+            </a>
+            <button type="submit" class="btn btn-primary btn-lg" id="btn-save-profile">
+              Save & View My Plan →
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container-wide">
+      <div class="footer-bottom">
+        <p>© 2026 DHRUVA. Your Journey, Guided.</p>
+        <div class="footer-legal-links">
+          <a href="../index.html">Home</a>
+          <a href="explore.html">Explore</a>
+          <a href="trip.html">Trip Planner</a>
+          <a href="profile.html">My Plan</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Voice Assistant Trigger -->
+  <button class="floating-voice-btn" data-action="open-voice" aria-label="Open Voice Assistant">
+    <div class="voice-pulse-ring"></div>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+      <line x1="12" y1="19" x2="12" y2="23"></line>
+      <line x1="8" y1="23" x2="16" y2="23"></line>
+    </svg>
+  </button>
+
+  <!-- Scripts -->
+  <script src="../js/app.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script src="../js/voice-orb.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const state = DhruvaApp.getState();
+      const currentUser = state.user || {};
+
+      // Form Elements
+      const form = document.getElementById('traveler-login-form');
+      const nameInput = document.getElementById('traveler-name');
+      const ageInput = document.getElementById('traveler-age');
+      const phoneInput = document.getElementById('traveler-phone');
+      const emailInput = document.getElementById('traveler-email');
+      const locationInput = document.getElementById('traveler-location');
+      const clearBtn = document.getElementById('btn-clear-form');
+
+      let selectedPace = currentUser.preferredPace || 'Comfortable & Mindful';
+      let selectedAvatar = currentUser.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80';
+      let selectedInterests = currentUser.interests || ['Heritage', 'Architecture', 'Spiritual', 'Local Culture', 'History'];
+
+      // Demo Persona Presets Data
+      const demoProfiles = {
+        scholar: {
+          name: 'Dr. Arvind Raghavan',
+          age: 52,
+          phone: '+91 98450 12345',
+          email: 'arvind.raghavan@heritage-travel.in',
+          location: 'Bengaluru, India',
+          pace: 'Comfortable & Mindful',
+          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+          interests: ['Heritage', 'Architecture', 'Spiritual', 'Local Culture', 'History']
+        },
+        pilgrim: {
+          name: 'Meera & Suresh Iyer',
+          age: 64,
+          phone: '+91 94440 67890',
+          email: 'meera.suresh@temple-journeys.in',
+          location: 'Chennai, Tamil Nadu',
+          pace: 'Comfortable & Mindful',
+          avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
+          interests: ['Spiritual', 'Heritage', 'Food', 'Traditional Cuisine', 'Sacred Groves']
+        },
+        historian: {
+          name: 'Ananya Sen',
+          age: 42,
+          phone: '+91 98300 54321',
+          email: 'ananya.sen@archaeology-study.org',
+          location: 'Kolkata, West Bengal',
+          pace: 'Cultural Scholar & In-Depth',
+          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+          interests: ['Architecture', 'History', 'Heritage', 'Markets', 'Local Culture']
+        }
+      };
+
+      // Populate Form with Profile Data
+      const populateForm = (data) => {
+        nameInput.value = data.name || '';
+        ageInput.value = data.age || '';
+        phoneInput.value = data.phone || '';
+        emailInput.value = data.email || '';
+        locationInput.value = data.location || '';
+        selectedPace = data.pace || data.preferredPace || 'Comfortable & Mindful';
+        selectedAvatar = data.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80';
+        selectedInterests = data.interests || ['Heritage', 'Architecture', 'Spiritual'];
+
+        // Update Pace UI
+        document.querySelectorAll('.pace-option-card').forEach(card => {
+          card.classList.toggle('selected', card.getAttribute('data-pace') === selectedPace);
+        });
+
+        // Update Avatar UI
+        document.querySelectorAll('.avatar-option').forEach(av => {
+          av.classList.toggle('selected', av.getAttribute('data-avatar') === selectedAvatar);
+        });
+
+        // Update Interests UI
+        document.querySelectorAll('#interests-chips .chip-selectable').forEach(chip => {
+          const interest = chip.getAttribute('data-interest');
+          chip.classList.toggle('active', selectedInterests.includes(interest));
+        });
+      };
+
+      // Initial Fill from Current User State
+      populateForm(currentUser);
+
+      // Handle Demo Profile Switching
+      document.querySelectorAll('.demo-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.demo-chip').forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+
+          const profileKey = btn.getAttribute('data-profile');
+          if (demoProfiles[profileKey]) {
+            populateForm(demoProfiles[profileKey]);
+            DhruvaApp.showToast(`Loaded profile for ${demoProfiles[profileKey].name}`, '👤');
+          }
+        });
+      });
+
+      // Clear Form Button
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          document.querySelectorAll('.demo-chip').forEach(c => c.classList.remove('active'));
+          populateForm({
+            name: '',
+            age: '',
+            phone: '',
+            email: '',
+            location: '',
+            pace: 'Comfortable & Mindful',
+            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+            interests: []
+          });
+          nameInput.focus();
+        });
+      }
+
+      // Handle Pacing Selection
+      document.querySelectorAll('.pace-option-card').forEach(card => {
+        card.addEventListener('click', () => {
+          document.querySelectorAll('.pace-option-card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          selectedPace = card.getAttribute('data-pace');
+        });
+      });
+
+      // Handle Avatar Selection
+      document.querySelectorAll('.avatar-option').forEach(av => {
+        av.addEventListener('click', () => {
+          document.querySelectorAll('.avatar-option').forEach(c => c.classList.remove('selected'));
+          av.classList.add('selected');
+          selectedAvatar = av.getAttribute('data-avatar');
+        });
+      });
+
+      // Handle Interest Chips Multi-Select Toggle
+      document.querySelectorAll('#interests-chips .chip-selectable').forEach(chip => {
+        chip.addEventListener('click', () => {
+          const interest = chip.getAttribute('data-interest');
+          chip.classList.toggle('active');
+          if (chip.classList.contains('active')) {
+            if (!selectedInterests.includes(interest)) selectedInterests.push(interest);
+          } else {
+            selectedInterests = selectedInterests.filter(i => i !== interest);
+          }
+        });
+      });
+
+      // Handle Form Submit
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Validation
+        const name = nameInput.value.trim();
+        const age = parseInt(ageInput.value.trim(), 10);
+        const phone = phoneInput.value.trim();
+        const email = emailInput.value.trim();
+        const location = locationInput.value.trim();
+
+        if (!name) {
+          DhruvaApp.showToast('Please enter your full name', '⚠️');
+          nameInput.focus();
+          return;
+        }
+
+        if (isNaN(age) || age < 1 || age > 120) {
+          DhruvaApp.showToast('Please enter a valid age (1 - 120)', '⚠️');
+          ageInput.focus();
+          return;
+        }
+
+        if (!phone || phone.length < 7) {
+          DhruvaApp.showToast('Please enter a valid contact/mobile number', '⚠️');
+          phoneInput.focus();
+          return;
+        }
+
+        if (!email || !email.includes('@') || !email.includes('.')) {
+          DhruvaApp.showToast('Please enter a valid email address', '⚠️');
+          emailInput.focus();
+          return;
+        }
+
+        // Prepare updated user object
+        const updatedUser = {
+          name,
+          age,
+          phone,
+          email,
+          location: location || 'India',
+          preferredPace: selectedPace,
+          avatar: selectedAvatar,
+          interests: selectedInterests.length > 0 ? selectedInterests : ['Heritage', 'Spiritual', 'Local Culture']
+        };
+
+        // Save into Dhruva App State
+        DhruvaApp.saveUser(updatedUser);
+
+        DhruvaApp.showToast(`Welcome, ${name}! Your traveler profile is active.`, '✓');
+
+        // Check if redirect query param exists, else navigate to profile.html
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectUrl = urlParams.get('redirect') || 'profile.html';
+
+        setTimeout(() => {
+          window.location.href = redirectUrl;
+        }, 800);
+      });
+    });
+  </script>
+</body>
+</html>
