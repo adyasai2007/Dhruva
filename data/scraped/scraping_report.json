@@ -13,9 +13,9 @@
       "error": "Unknown network or robots failure"
     }
   ],
-  "start_time_utc": "2026-08-26T08:17:07Z",
-  "end_time_utc": "2026-08-26T08:17:47Z",
-  "duration_seconds": 40.53,
+  "start_time_utc": "2026-08-26T13:54:23Z",
+  "end_time_utc": "2026-08-26T13:55:17Z",
+  "duration_seconds": 53.49,
   "average_completeness": 95.74,
   "field_completeness_summary": {
     "name": 100.0,

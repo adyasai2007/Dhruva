@@ -62,7 +62,7 @@ def verify():
     """)
     top_places = cursor.fetchall()
     for row in top_places:
-        print(f"   * Place: {row[1]} ({row[2]}) | Rating: {row[3]}★ | Risk: {row[4]} | Coords: ({row[5]}, {row[6]}) | Arch: {row[7]} | Hist: {row[8]} | Hours: {row[10]} - {row[11]}")
+        print(f"   * Place: {row[1]} ({row[2]}) | Rating: {row[3]}/5.0 | Risk: {row[4]} | Coords: ({row[5]}, {row[6]}) | Arch: {row[7]} | Hist: {row[8]} | Hours: {row[10]} - {row[11]}")
 
     # 5. Check Festivals
     print("\n5. Relational Query (FESTIVALS + CITIES):")
