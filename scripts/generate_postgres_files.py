@@ -53,7 +53,6 @@ def generate():
 DROP TABLE IF EXISTS OPENING_HOURS CASCADE;
 DROP TABLE IF EXISTS MIN_INTEREST CASCADE;
 DROP TABLE IF EXISTS FESTIVALS CASCADE;
-DROP TABLE IF EXISTS USERS_INPUT CASCADE;
 DROP TABLE IF EXISTS PLACES CASCADE;
 DROP TABLE IF EXISTS CITIES CASCADE;
 
@@ -129,19 +128,6 @@ CREATE TABLE FESTIVALS (
 );
 
 -- ---------------------------------------------------------------------
--- Table 6: USERS_INPUT
--- ---------------------------------------------------------------------
-CREATE TABLE USERS_INPUT (
-    id SERIAL PRIMARY KEY,
-    gps_location VARCHAR(100) NOT NULL,
-    start_date VARCHAR(50) NOT NULL,
-    start_time VARCHAR(20) NOT NULL,
-    end_time VARCHAR(20) NOT NULL,
-    age INTEGER NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- ---------------------------------------------------------------------
 -- Performance Indexes
 -- ---------------------------------------------------------------------
 CREATE INDEX idx_places_city_id ON PLACES(city_id);
@@ -200,12 +186,6 @@ CREATE INDEX idx_min_interest_place_id ON MIN_INTEREST(place_id);
     for f in festivals:
         dump_lines.append(f"INSERT INTO FESTIVALS (id, name, start_date, end_date, city_id, description) VALUES ({f['id']}, {escape_sql(f['name'])}, {escape_sql(f['start_date'])}, {escape_sql(f['end_date'])}, {f['city_id']}, {escape_sql(f.get('description', ''))});")
 
-    # USERS_INPUT
-    users = read_csv_rows("users_input.csv")
-    dump_lines.append("\n-- 6. Populate USERS_INPUT")
-    for u in users:
-        dump_lines.append(f"INSERT INTO USERS_INPUT (id, gps_location, start_date, start_time, end_time, age) VALUES ({u['id']}, {escape_sql(u['gps_location'])}, {escape_sql(u['start_date'])}, {escape_sql(u['start_time'])}, {escape_sql(u['end_time'])}, {u['age']});")
-
     # Reset PostgreSQL Serial Sequences
     dump_lines.append("\n-- =====================================================================")
     dump_lines.append("-- Reset Sequences in PostgreSQL for AUTO_INCREMENT")
@@ -215,7 +195,6 @@ CREATE INDEX idx_min_interest_place_id ON MIN_INTEREST(place_id);
     dump_lines.append("SELECT setval('opening_hours_id_seq', (SELECT COALESCE(MAX(id), 1) FROM OPENING_HOURS));")
     dump_lines.append("SELECT setval('min_interest_id_seq', (SELECT COALESCE(MAX(id), 1) FROM MIN_INTEREST));")
     dump_lines.append("SELECT setval('festivals_id_seq', (SELECT COALESCE(MAX(id), 1) FROM FESTIVALS));")
-    dump_lines.append("SELECT setval('users_input_id_seq', (SELECT COALESCE(MAX(id), 1) FROM USERS_INPUT));")
 
     full_dump_sql = "\n".join(dump_lines)
 
@@ -231,14 +210,12 @@ CREATE INDEX idx_min_interest_place_id ON MIN_INTEREST(place_id);
 \\copy OPENING_HOURS(id, opens_at, closes_at, place_id, day_of_week) FROM 'opening_hours.csv' WITH (FORMAT csv, HEADER true);
 \\copy MIN_INTEREST(id, place_id, architecture, history, spiritual, nature, culture) FROM 'min_interest.csv' WITH (FORMAT csv, HEADER true);
 \\copy FESTIVALS(id, name, start_date, end_date, city_id, description) FROM 'festivals.csv' WITH (FORMAT csv, HEADER true);
-\\copy USERS_INPUT(id, gps_location, start_date, start_time, end_time, age) FROM 'users_input.csv' WITH (FORMAT csv, HEADER true);
 
 SELECT setval('cities_id_seq', (SELECT COALESCE(MAX(id), 1) FROM CITIES));
 SELECT setval('places_id_seq', (SELECT COALESCE(MAX(id), 1) FROM PLACES));
 SELECT setval('opening_hours_id_seq', (SELECT COALESCE(MAX(id), 1) FROM OPENING_HOURS));
 SELECT setval('min_interest_id_seq', (SELECT COALESCE(MAX(id), 1) FROM MIN_INTEREST));
 SELECT setval('festivals_id_seq', (SELECT COALESCE(MAX(id), 1) FROM FESTIVALS));
-SELECT setval('users_input_id_seq', (SELECT COALESCE(MAX(id), 1) FROM USERS_INPUT));
 """
 
     # 4. Write to backend/database

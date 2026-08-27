@@ -1,9 +1,18 @@
 """
 DHRUVA Scraped Data Normalization and Relational Data Pipeline
-Extracts, cleans, and normalizes scraped dataset into relational CSVs (data/processed/)
+Extracts, cleans, and normalizes scraped dataset into relational CSVs (data/processed/ and database/csv/)
 and generates PostgreSQL schemas and data dumps (database/).
-Filters out row 1 (ananta-vasudeva-temple) and fixes broken primary image URLs.
-Zero SQLite dependencies.
+
+Data Integrity & QA Rules Applied:
+1. Excludes row 1 ('ananta-vasudeva-temple').
+2. Excludes 'asokastami' from PLACES (it is a festival, already modeled in FESTIVALS table as 'Ashokashtami & Rukuna Ratha Yatra').
+3. Sanitizes marketing ad-copy titles to authentic entity names:
+   - 'discover-a-symphony-of-wildlife' -> 'Chandaka Elephant Sanctuary'
+   - 'explore-the-rich-heritage-of-jajpur' -> 'Jajpur Heritage Sites'
+4. Corrects category/sub_category mismatches (e.g. Balighai Beach, Barabati Stadium).
+5. Synchronizes numeric duration with descriptive duration_label.
+6. Replaces broken/placeholder image URLs with validated Scene7 CDN assets.
+7. Generates and synchronizes all PostgreSQL relational files.
 """
 
 import json
@@ -15,50 +24,191 @@ import sys
 # --- 1. Coordinate & Metadata Mapping for Odisha Heritage Sites ---
 PLACE_GEO_MAP = {
     # Bhubaneswar Places (City ID: 1)
-    "asokastami": {"lat": 20.2405, "long": 85.8340, "pop": 4.5, "risk": "Low", "dur": 2.0, "arch": 4.2, "hist": 4.8, "spir": 4.9, "nat": 2.0, "cult": 5.0},
-    "chilika-lake": {"lat": 19.6800, "long": 85.3200, "pop": 4.8, "risk": "Moderate", "dur": 3.5, "arch": 2.0, "hist": 3.5, "spir": 3.0, "nat": 5.0, "cult": 4.0},
-    "dhauligiri-hills": {"lat": 20.1925, "long": 85.8394, "pop": 4.7, "risk": "Low", "dur": 2.5, "arch": 4.8, "hist": 5.0, "spir": 4.7, "nat": 4.5, "cult": 4.8},
-    "hirapur": {"lat": 20.2285, "long": 85.8760, "pop": 4.6, "risk": "Low", "dur": 2.0, "arch": 4.9, "hist": 4.9, "spir": 4.8, "nat": 3.0, "cult": 4.7},
-    "kala-bhoomi-odisha-crafts-museum": {"lat": 20.2467, "long": 85.7958, "pop": 4.7, "risk": "Low", "dur": 2.5, "arch": 4.3, "hist": 4.5, "spir": 2.5, "nat": 3.5, "cult": 5.0},
-    "kantilo": {"lat": 20.3622, "long": 85.1914, "pop": 4.4, "risk": "Low", "dur": 3.0, "arch": 4.5, "hist": 4.6, "spir": 4.8, "nat": 4.2, "cult": 4.5},
-    "khandagiri-udayagiri-caves": {"lat": 20.2631, "long": 85.7861, "pop": 4.8, "risk": "Moderate", "dur": 2.5, "arch": 5.0, "hist": 5.0, "spir": 4.0, "nat": 3.8, "cult": 4.7},
-    "kuanria": {"lat": 20.3540, "long": 84.8100, "pop": 4.2, "risk": "Low", "dur": 3.0, "arch": 2.5, "hist": 3.0, "spir": 2.0, "nat": 4.8, "cult": 3.5},
-    "lingaraj-temple": {"lat": 20.2382, "long": 85.8338, "pop": 4.9, "risk": "Low", "dur": 2.0, "arch": 5.0, "hist": 5.0, "spir": 5.0, "nat": 2.5, "cult": 5.0},
+    "chilika-lake": {
+        "name": "Chilika Lake",
+        "lat": 19.6800, "long": 85.3200, "pop": 4.8, "risk": "Moderate", "dur": 3.5, "dur_label": "3 to 4 Hours",
+        "category": "Nature & Scenic Sanctum", "sub_category": "Wildlife Sanctum & Eco-Heritage",
+        "arch": 2.0, "hist": 3.5, "spir": 3.0, "nat": 5.0, "cult": 4.0
+    },
+    "dhauligiri-hills": {
+        "name": "Dhauligiri Hills & Shanti Stupa",
+        "lat": 20.1925, "long": 85.8394, "pop": 4.7, "risk": "Low", "dur": 2.5, "dur_label": "2 to 3 Hours",
+        "category": "Heritage & Sacred Sanctum", "sub_category": "Buddhist Peace Pagoda & Rock Edicts",
+        "arch": 4.8, "hist": 5.0, "spir": 4.7, "nat": 4.5, "cult": 4.8
+    },
+    "hirapur": {
+        "name": "Chausathi Yogini Temple (Hirapur)",
+        "lat": 20.2285, "long": 85.8760, "pop": 4.6, "risk": "Low", "dur": 2.0, "dur_label": "1.5 to 2.5 Hours",
+        "category": "Temple & Sacred Sanctum", "sub_category": "Tantric Temple Architecture",
+        "arch": 4.9, "hist": 4.9, "spir": 4.8, "nat": 3.0, "cult": 4.7
+    },
+    "kala-bhoomi-odisha-crafts-museum": {
+        "name": "Kala Bhoomi Odisha Crafts Museum",
+        "lat": 20.2467, "long": 85.7958, "pop": 4.7, "risk": "Low", "dur": 2.5, "dur_label": "2 to 3 Hours",
+        "category": "Arts, Crafts & Museum", "sub_category": "Traditional Craft & Artisan Heritage",
+        "arch": 4.3, "hist": 4.5, "spir": 2.5, "nat": 3.5, "cult": 5.0
+    },
+    "kantilo": {
+        "name": "Kantilo Nilamadhaba Temple",
+        "lat": 20.3622, "long": 85.1914, "pop": 4.4, "risk": "Low", "dur": 3.0, "dur_label": "2.5 to 3.5 Hours",
+        "category": "Temple & Sacred Sanctum", "sub_category": "Ancient Vaishnava Sanctum",
+        "arch": 4.5, "hist": 4.6, "spir": 4.8, "nat": 4.2, "cult": 4.5
+    },
+    "khandagiri-udayagiri-caves": {
+        "name": "Khandagiri & Udayagiri Caves",
+        "lat": 20.2631, "long": 85.7861, "pop": 4.8, "risk": "Moderate", "dur": 2.5, "dur_label": "2 to 3 Hours",
+        "category": "Heritage & Archaeological Site", "sub_category": "Rock-cut Jain Caves & Inscriptions",
+        "arch": 5.0, "hist": 5.0, "spir": 4.0, "nat": 3.8, "cult": 4.7
+    },
+    "kuanria": {
+        "name": "Kuanria Dam & Deer Park",
+        "lat": 20.3540, "long": 84.8100, "pop": 4.2, "risk": "Low", "dur": 3.0, "dur_label": "2.5 to 3.5 Hours",
+        "category": "Nature & Scenic Sanctum", "sub_category": "Reservoir & Wildlife Eco-Park",
+        "arch": 2.5, "hist": 3.0, "spir": 2.0, "nat": 4.8, "cult": 3.5
+    },
+    "lingaraj-temple": {
+        "name": "Lingaraj Temple",
+        "lat": 20.2382, "long": 85.8338, "pop": 4.9, "risk": "Low", "dur": 2.0, "dur_label": "1.5 to 2.5 Hours",
+        "category": "Temple & Sacred Sanctum", "sub_category": "Kalinga Shiva Temple",
+        "arch": 5.0, "hist": 5.0, "spir": 5.0, "nat": 2.5, "cult": 5.0
+    },
 
     # Puri Places (City ID: 2)
-    "alarnatha-temple": {"lat": 19.7420, "long": 85.6790, "pop": 4.6, "risk": "Low", "dur": 2.0, "arch": 4.6, "hist": 4.8, "spir": 4.9, "nat": 2.5, "cult": 4.8},
-    "atharnala-bridge": {"lat": 19.8247, "long": 85.8273, "pop": 4.4, "risk": "Low", "dur": 1.5, "arch": 4.8, "hist": 4.9, "spir": 3.5, "nat": 3.0, "cult": 4.2},
-    "balighai-beach": {"lat": 19.8510, "long": 85.9120, "pop": 4.5, "risk": "Moderate", "dur": 2.0, "arch": 2.0, "hist": 2.5, "spir": 3.0, "nat": 5.0, "cult": 3.5},
-    "balukhand-konark-sanctuary": {"lat": 19.8650, "long": 86.0420, "pop": 4.5, "risk": "Low", "dur": 3.0, "arch": 1.5, "hist": 2.5, "spir": 2.0, "nat": 5.0, "cult": 3.0},
-    "chaurasi": {"lat": 20.0240, "long": 86.1150, "pop": 4.4, "risk": "Low", "dur": 2.0, "arch": 4.8, "hist": 4.7, "spir": 4.6, "nat": 3.0, "cult": 4.5},
-    "chilika-wildlife-sanctuary": {"lat": 19.7000, "long": 85.4500, "pop": 4.7, "risk": "Moderate", "dur": 3.0, "arch": 1.5, "hist": 3.0, "spir": 2.5, "nat": 5.0, "cult": 3.5},
-    "gundicha-temple": {"lat": 19.8258, "long": 85.8398, "pop": 4.8, "risk": "Low", "dur": 2.0, "arch": 4.9, "hist": 5.0, "spir": 5.0, "nat": 3.0, "cult": 5.0},
-    "konark-temple": {"lat": 19.8876, "long": 86.0945, "pop": 5.0, "risk": "Low", "dur": 2.5, "arch": 5.0, "hist": 5.0, "spir": 4.8, "nat": 3.5, "cult": 5.0},
-    "loknath-temple": {"lat": 19.7990, "long": 85.8080, "pop": 4.6, "risk": "Low", "dur": 2.0, "arch": 4.7, "hist": 4.8, "spir": 4.9, "nat": 3.0, "cult": 4.8},
+    "alarnatha-temple": {
+        "name": "Alarnatha Temple (Brahmagiri)",
+        "lat": 19.7420, "long": 85.6790, "pop": 4.6, "risk": "Low", "dur": 2.0, "dur_label": "1.5 to 2.5 Hours",
+        "category": "Temple & Sacred Sanctum", "sub_category": "Vaishnava Pilgrimage Shrine",
+        "arch": 4.6, "hist": 4.8, "spir": 4.9, "nat": 2.5, "cult": 4.8
+    },
+    "atharnala-bridge": {
+        "name": "Atharnala Historic Bridge",
+        "lat": 19.8247, "long": 85.8273, "pop": 4.4, "risk": "Low", "dur": 1.5, "dur_label": "1 to 1.5 Hours",
+        "category": "Heritage & Archaeological Site", "sub_category": "Ancient Kalinga Engineering Monument",
+        "arch": 4.8, "hist": 4.9, "spir": 3.5, "nat": 3.0, "cult": 4.2
+    },
+    "balighai-beach": {
+        "name": "Balighai Beach",
+        "lat": 19.8510, "long": 85.9120, "pop": 4.5, "risk": "Moderate", "dur": 2.0, "dur_label": "1.5 to 2.5 Hours",
+        "category": "Nature & Scenic Sanctum", "sub_category": "Beach & Coastal Heritage",
+        "arch": 2.0, "hist": 2.5, "spir": 3.0, "nat": 5.0, "cult": 3.5
+    },
+    "balukhand-konark-sanctuary": {
+        "name": "Balukhand-Konark Wildlife Sanctuary",
+        "lat": 19.8650, "long": 86.0420, "pop": 4.5, "risk": "Low", "dur": 3.0, "dur_label": "2.5 to 3.5 Hours",
+        "category": "Nature & Scenic Sanctum", "sub_category": "Coastal Forest & Blackbuck Sanctuary",
+        "arch": 1.5, "hist": 2.5, "spir": 2.0, "nat": 5.0, "cult": 3.0
+    },
+    "chaurasi": {
+        "name": "Chaurasi Varahi Temple",
+        "lat": 20.0240, "long": 86.1150, "pop": 4.4, "risk": "Low", "dur": 2.0, "dur_label": "1.5 to 2.5 Hours",
+        "category": "Temple & Sacred Sanctum", "sub_category": "Ancient Matrika Shrine",
+        "arch": 4.8, "hist": 4.7, "spir": 4.6, "nat": 3.0, "cult": 4.5
+    },
+    "chilika-wildlife-sanctuary": {
+        "name": "Chilika Wildlife Sanctuary (Nalabana)",
+        "lat": 19.7000, "long": 85.4500, "pop": 4.7, "risk": "Moderate", "dur": 3.0, "dur_label": "2.5 to 3.5 Hours",
+        "category": "Nature & Scenic Sanctum", "sub_category": "Wetland Bird Sanctuary",
+        "arch": 1.5, "hist": 3.0, "spir": 2.5, "nat": 5.0, "cult": 3.5
+    },
+    "gundicha-temple": {
+        "name": "Gundicha Temple",
+        "lat": 19.8258, "long": 85.8398, "pop": 4.8, "risk": "Low", "dur": 2.0, "dur_label": "1.5 to 2.5 Hours",
+        "category": "Temple & Sacred Sanctum", "sub_category": "Rath Yatra Garden Palace Temple",
+        "arch": 4.9, "hist": 5.0, "spir": 5.0, "nat": 3.0, "cult": 5.0
+    },
+    "konark-temple": {
+        "name": "Konark Sun Temple",
+        "lat": 19.8876, "long": 86.0945, "pop": 5.0, "risk": "Low", "dur": 2.5, "dur_label": "2 to 2.5 Hours",
+        "category": "Heritage & Sacred Sanctum", "sub_category": "UNESCO World Heritage Sun Temple",
+        "arch": 5.0, "hist": 5.0, "spir": 4.8, "nat": 3.5, "cult": 5.0
+    },
+    "loknath-temple": {
+        "name": "Loknath Temple",
+        "lat": 19.7990, "long": 85.8080, "pop": 4.6, "risk": "Low", "dur": 2.0, "dur_label": "1.5 to 2.5 Hours",
+        "category": "Temple & Sacred Sanctum", "sub_category": "Submerged Shiva Lingam Shrine",
+        "arch": 4.7, "hist": 4.8, "spir": 4.9, "nat": 3.0, "cult": 4.8
+    },
 
     # Cuttack Places (City ID: 3)
-    "bhitarkanika-national-park": {"lat": 20.7167, "long": 86.8667, "pop": 4.8, "risk": "Moderate", "dur": 4.0, "arch": 1.5, "hist": 3.0, "spir": 2.0, "nat": 5.0, "cult": 3.5},
-    "ansupa-nature-camp": {"lat": 20.4630, "long": 85.6020, "pop": 4.5, "risk": "Low", "dur": 3.0, "arch": 2.0, "hist": 3.0, "spir": 2.0, "nat": 5.0, "cult": 3.5},
-    "barabati-fort": {"lat": 20.4850, "long": 85.8670, "pop": 4.7, "risk": "Low", "dur": 2.0, "arch": 4.8, "hist": 5.0, "spir": 3.0, "nat": 3.5, "cult": 4.7},
-    "barabati-stadium": {"lat": 20.4820, "long": 85.8690, "pop": 4.4, "risk": "Low", "dur": 2.0, "arch": 3.5, "hist": 4.0, "spir": 2.0, "nat": 3.0, "cult": 4.6},
-    "discover-a-symphony-of-wildlife": {"lat": 20.5200, "long": 85.8200, "pop": 4.3, "risk": "Low", "dur": 2.5, "arch": 2.0, "hist": 2.5, "spir": 2.0, "nat": 4.8, "cult": 3.5},
-    "cuttack-chandi-temple": {"lat": 20.4670, "long": 85.8630, "pop": 4.8, "risk": "Low", "dur": 1.5, "arch": 4.7, "hist": 4.8, "spir": 5.0, "nat": 2.0, "cult": 4.9},
-    "dhabaleswar-temple": {"lat": 20.5050, "long": 85.8300, "pop": 4.6, "risk": "Low", "dur": 2.0, "arch": 4.6, "hist": 4.7, "spir": 4.9, "nat": 4.5, "cult": 4.7},
-    "explore-the-rich-heritage-of-jajpur": {"lat": 20.8500, "long": 86.3300, "pop": 4.5, "risk": "Low", "dur": 3.5, "arch": 4.8, "hist": 4.9, "spir": 4.5, "nat": 3.5, "cult": 4.8},
-    "jobra-barrage": {"lat": 20.4730, "long": 85.8980, "pop": 4.5, "risk": "Low", "dur": 1.5, "arch": 4.0, "hist": 4.2, "spir": 2.5, "nat": 4.5, "cult": 4.0},
-    "mahanadi-barrage": {"lat": 20.4800, "long": 85.9050, "pop": 4.4, "risk": "Low", "dur": 2.0, "arch": 3.8, "hist": 4.0, "spir": 2.0, "nat": 4.6, "cult": 3.8},
-    "netaji-birth-place-museum": {"lat": 20.4610, "long": 85.8750, "pop": 4.7, "risk": "Low", "dur": 2.0, "arch": 4.2, "hist": 5.0, "spir": 2.0, "nat": 2.0, "cult": 5.0}
+    "bhitarkanika-national-park": {
+        "name": "Bhitarkanika National Park",
+        "lat": 20.7167, "long": 86.8667, "pop": 4.8, "risk": "Moderate", "dur": 4.0, "dur_label": "3.5 to 4.5 Hours",
+        "category": "Nature & Scenic Sanctum", "sub_category": "Mangrove Wetland & Crocodile Sanctuary",
+        "arch": 1.5, "hist": 3.0, "spir": 2.0, "nat": 5.0, "cult": 3.5
+    },
+    "ansupa-nature-camp": {
+        "name": "Ansupa Lake & Nature Camp",
+        "lat": 20.4630, "long": 85.6020, "pop": 4.5, "risk": "Low", "dur": 3.0, "dur_label": "2.5 to 3.5 Hours",
+        "category": "Nature & Scenic Sanctum", "sub_category": "Freshwater Lake & Eco-Tourism Camp",
+        "arch": 2.0, "hist": 3.0, "spir": 2.0, "nat": 5.0, "cult": 3.5
+    },
+    "barabati-fort": {
+        "name": "Barabati Fort",
+        "lat": 20.4850, "long": 85.8670, "pop": 4.7, "risk": "Low", "dur": 2.0, "dur_label": "1.5 to 2.5 Hours",
+        "category": "Monument & Fort", "sub_category": "14th Century Kalinga Fortification",
+        "arch": 4.8, "hist": 5.0, "spir": 3.0, "nat": 3.5, "cult": 4.7
+    },
+    "barabati-stadium": {
+        "name": "Barabati Stadium",
+        "lat": 20.4820, "long": 85.8690, "pop": 4.4, "risk": "Low", "dur": 2.0, "dur_label": "1.5 to 2 Hours",
+        "category": "Monument & Fort", "sub_category": "Sports & Recreation Heritage",
+        "arch": 3.5, "hist": 4.0, "spir": 2.0, "nat": 3.0, "cult": 4.6
+    },
+    "discover-a-symphony-of-wildlife": {
+        "name": "Chandaka Elephant Sanctuary",
+        "lat": 20.3700, "long": 85.7400, "pop": 4.5, "risk": "Low", "dur": 2.5, "dur_label": "2 to 3 Hours",
+        "category": "Nature & Scenic Sanctum", "sub_category": "Wildlife Sanctuary & Eco-Heritage",
+        "arch": 1.5, "hist": 2.5, "spir": 2.0, "nat": 5.0, "cult": 3.5,
+        "description": "A wildlife reserve near Cuttack and Bhubaneswar known for its resident elephant population and diverse flora and fauna, offering nature trails and birdwatching."
+    },
+    "cuttack-chandi-temple": {
+        "name": "Cuttack Chandi Temple",
+        "lat": 20.4670, "long": 85.8630, "pop": 4.8, "risk": "Low", "dur": 1.5, "dur_label": "1 to 1.5 Hours",
+        "category": "Temple & Sacred Sanctum", "sub_category": "Presiding Goddess Temple",
+        "arch": 4.7, "hist": 4.8, "spir": 5.0, "nat": 2.0, "cult": 4.9
+    },
+    "dhabaleswar-temple": {
+        "name": "Dhabaleswar Island Temple",
+        "lat": 20.5050, "long": 85.8300, "pop": 4.6, "risk": "Low", "dur": 2.0, "dur_label": "1.5 to 2.5 Hours",
+        "category": "Temple & Sacred Sanctum", "sub_category": "Island Shiva Temple with Suspension Bridge",
+        "arch": 4.6, "hist": 4.7, "spir": 4.9, "nat": 4.5, "cult": 4.7
+    },
+    "explore-the-rich-heritage-of-jajpur": {
+        "name": "Jajpur Heritage Sites",
+        "lat": 20.8500, "long": 86.3300, "pop": 4.5, "risk": "Low", "dur": 3.5, "dur_label": "3 to 4 Hours",
+        "category": "Heritage & Sacred Sanctum", "sub_category": "Ancient Shakti Peetha & Monuments",
+        "arch": 4.8, "hist": 4.9, "spir": 4.5, "nat": 3.5, "cult": 4.8,
+        "description": "A historic town near Cuttack known for its ancient temples and archaeological significance, including sacred sites linked to ancient Kalinga-era heritage."
+    },
+    "jobra-barrage": {
+        "name": "Jobra Barrage & Maritime Museum",
+        "lat": 20.4730, "long": 85.8980, "pop": 4.5, "risk": "Low", "dur": 1.5, "dur_label": "1 to 2 Hours",
+        "category": "Arts, Crafts & Museum", "sub_category": "Maritime Heritage Museum",
+        "arch": 4.0, "hist": 4.2, "spir": 2.5, "nat": 4.5, "cult": 4.0
+    },
+    "mahanadi-barrage": {
+        "name": "Mahanadi Barrage",
+        "lat": 20.4800, "long": 85.9050, "pop": 4.4, "risk": "Low", "dur": 2.0, "dur_label": "1.5 to 2 Hours",
+        "category": "Heritage & Archaeological Site", "sub_category": "River Engineering & Scenic Viewpoint",
+        "arch": 3.8, "hist": 4.0, "spir": 2.0, "nat": 4.6, "cult": 3.8
+    },
+    "netaji-birth-place-museum": {
+        "name": "Netaji Birth Place Museum (Janakinath Bhawan)",
+        "lat": 20.4610, "long": 85.8750, "pop": 4.7, "risk": "Low", "dur": 2.0, "dur_label": "1.5 to 2.5 Hours",
+        "category": "Arts, Crafts & Museum", "sub_category": "National Memorial & Freedom Heritage",
+        "arch": 4.2, "hist": 5.0, "spir": 2.0, "nat": 2.0, "cult": 5.0
+    }
 }
 
-# Clean fallback images for sites where incredible india placeholder was returned
+# Clean fallback Scene7 images
 IMAGE_FALLBACKS = {
-    "asokastami": "https://s7ap1.scene7.com/is/image/incredibleindia/lingaraj-temple-bhubaneshwar-odisha-1-attr-hero?qlt=82&ts=1742165306173",
     "chilika-lake": "https://s7ap1.scene7.com/is/image/incredibleindia/chilika-wildlife-sanctuary-puri-odisha-1-attr-hero?qlt=82&ts=1726663755053",
     "kala-bhoomi-odisha-crafts-museum": "https://s7ap1.scene7.com/is/image/incredibleindia/1-khandagiri-udaigiri-caves-attr-hero?qlt=82&ts=1742172787783",
     "kantilo": "https://s7ap1.scene7.com/is/image/incredibleindia/Explore-the-Rich-Heritage-of-Jajpur-City7-hero?qlt=82&ts=1726663567178",
     "kuanria": "https://s7ap1.scene7.com/is/image/incredibleindia/ansupa-lake-cuttack-odisha-1-attr-hero?qlt=82&ts=1726674675128",
     "balukhand-konark-sanctuary": "https://s7ap1.scene7.com/is/image/incredibleindia/chilika-wildlife-sanctuary-puri-odisha-2-attr-hero?qlt=82&ts=1726663783800",
-    "discover-a-symphony-of-wildlife": "https://s7ap1.scene7.com/is/image/incredibleindia/cuttack-odisha-bhitarkanika-national-park-cuttack-orissa-1-attr-hero?qlt=82&ts=1726674724638"
+    "discover-a-symphony-of-wildlife": "https://s7ap1.scene7.com/is/image/incredibleindia/cuttack-odisha-bhitarkanika-national-park-cuttack-orissa-1-attr-hero?qlt=82&ts=1726674724638",
+    "explore-the-rich-heritage-of-jajpur": "https://s7ap1.scene7.com/is/image/incredibleindia/Explore-the-Rich-Heritage-of-Jajpur-City7-hero?qlt=82&ts=1726663567178"
 }
 
 def clean_image_url(place_id: str, image_urls: list) -> str:
@@ -106,9 +256,12 @@ def process_and_export():
     with open(raw_json_path, "r", encoding="utf-8") as f:
         places_raw = json.load(f)
 
-    # 2. Filter out row 1 (ananta-vasudeva-temple)
-    filtered_places = [p for p in places_raw if p["id"] != "ananta-vasudeva-temple"]
-    print(f"Total raw places: {len(places_raw)} -> Filtered places: {len(filtered_places)}")
+    # 2. Filter out excluded records:
+    # - Row 1 'ananta-vasudeva-temple'
+    # - 'asokastami' (Festival celebration, not physical place; modeled in FESTIVALS table)
+    excluded_ids = {"ananta-vasudeva-temple", "asokastami"}
+    filtered_places = [p for p in places_raw if p["id"] not in excluded_ids]
+    print(f"Total raw places: {len(places_raw)} -> Validated physical places: {len(filtered_places)} (Excluded: {excluded_ids})")
 
     # 3. Define CITIES
     cities_data = [
@@ -128,18 +281,28 @@ def process_and_export():
     for idx, p in enumerate(filtered_places, start=1):
         place_id_slug = p["id"]
         meta = PLACE_GEO_MAP.get(place_id_slug, {
+            "name": p["name"],
             "lat": 20.2961, "long": 85.8245, "pop": 4.5, "risk": "Low",
-            "dur": 2.0, "arch": 4.0, "hist": 4.0, "spir": 4.0, "nat": 3.0, "cult": 4.5
+            "dur": 2.0, "dur_label": "1.5 to 2.5 Hours",
+            "category": p.get("category", "Heritage & Sacred Sanctum"),
+            "sub_category": p.get("sub_category", "Cultural Heritage"),
+            "arch": 4.0, "hist": 4.0, "spir": 4.0, "nat": 3.0, "cult": 4.5
         })
+
         city_id = city_name_to_id.get(p.get("city", "").lower(), 1)
         working_img = clean_image_url(place_id_slug, p.get("image_urls", []))
 
-        dur_val = meta["dur"]
-        dur_label = p.get("recommended_duration", f"{dur_val} Hours")
+        # Use curated/sanitized name, category, and duration
+        name = meta.get("name", p["name"])
+        category = meta.get("category", p.get("category", "Heritage & Sacred Sanctum"))
+        sub_category = meta.get("sub_category", p.get("sub_category", "Cultural Heritage"))
+        dur_val = meta.get("dur", 2.0)
+        dur_label = meta.get("dur_label", f"{dur_val} Hours")
+        description = meta.get("description") or p.get("short_description") or p.get("full_description", "")[:250]
 
         place_row = {
             "id": idx,
-            "name": p["name"],
+            "name": name,
             "duration": dur_val,
             "duration_label": dur_label,
             "popularity": meta["pop"],
@@ -147,9 +310,9 @@ def process_and_export():
             "long": meta["long"],
             "risk": meta["risk"],
             "city_id": city_id,
-            "category": p.get("category", "Heritage & Sacred Sanctum"),
-            "sub_category": p.get("sub_category", "Cultural Heritage"),
-            "description": p.get("short_description") or p.get("full_description", "")[:250],
+            "category": category,
+            "sub_category": sub_category,
+            "description": description,
             "image_url": working_img,
             "entry_fee": p.get("entry_fee", "Free entry")
         }
@@ -184,57 +347,51 @@ def process_and_export():
         {"id": 7, "name": "Konark Dance & Music Festival", "start_date": "2026-12-01", "end_date": "2026-12-05", "city_id": 2, "description": "Spectacular classical Indian dance performances set against the illuminated backdrop of the UNESCO World Heritage Sun Temple."}
     ]
 
-    # 6. Define Sample USERS_INPUT
-    users_input_data = [
-        {"id": 1, "gps_location": "20.2961,85.8245", "start_date": "2026-10-15", "start_time": "08:00 AM", "end_time": "08:00 PM", "age": 58},
-        {"id": 2, "gps_location": "19.8135,85.8312", "start_date": "2026-11-01", "start_time": "07:30 AM", "end_time": "07:00 PM", "age": 62},
-        {"id": 3, "gps_location": "20.4625,85.8830", "start_date": "2026-11-24", "start_time": "09:00 AM", "end_time": "09:30 PM", "age": 45}
+    # --- 6. Export CSV Files for Each Table to both data/processed/ and database/csv/ ---
+    csv_dirs = [
+        base_dir / "data" / "processed",
+        base_dir / "database" / "csv"
     ]
+    for cdir in csv_dirs:
+        cdir.mkdir(parents=True, exist_ok=True)
 
-    # --- 7. Export CSV Files for Each Table ---
-    csv_dir = base_dir / "data" / "processed"
-    csv_dir.mkdir(parents=True, exist_ok=True)
-
-    def write_csv(filename, fieldnames, rows):
-        filepath = csv_dir / filename
-        with open(filepath, "w", newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(rows)
-        print(f"Exported CSV: {filepath} ({len(rows)} rows)")
+    def write_csv_to_all(filename, fieldnames, rows):
+        for cdir in csv_dirs:
+            filepath = cdir / filename
+            with open(filepath, "w", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(rows)
+            print(f"Exported CSV: {filepath} ({len(rows)} rows)")
 
     # 1. cities.csv
-    write_csv("cities.csv", ["id", "name", "state", "lat", "long"], cities_data)
+    write_csv_to_all("cities.csv", ["id", "name", "state", "lat", "long"], cities_data)
 
     # 2. places.csv
-    write_csv("places.csv", [
+    write_csv_to_all("places.csv", [
         "id", "name", "duration", "popularity", "lat", "long", "risk",
         "city_id", "category", "sub_category", "duration_label", "image_url", "entry_fee", "description"
     ], places_rows)
 
     # 3. opening_hours.csv
     opening_hours_csv_rows = [{"id": i+1, **r} for i, r in enumerate(opening_hours_rows)]
-    write_csv("opening_hours.csv", ["id", "opens_at", "closes_at", "place_id", "day_of_week"], opening_hours_csv_rows)
+    write_csv_to_all("opening_hours.csv", ["id", "opens_at", "closes_at", "place_id", "day_of_week"], opening_hours_csv_rows)
 
     # 4. min_interest.csv
     min_interest_csv_rows = [{"id": i+1, **r} for i, r in enumerate(min_interest_rows)]
-    write_csv("min_interest.csv", ["id", "place_id", "architecture", "history", "spiritual", "nature", "culture"], min_interest_csv_rows)
+    write_csv_to_all("min_interest.csv", ["id", "place_id", "architecture", "history", "spiritual", "nature", "culture"], min_interest_csv_rows)
 
     # 5. festivals.csv
-    write_csv("festivals.csv", ["id", "name", "start_date", "end_date", "city_id", "description"], festivals_data)
-
-    # 6. users_input.csv
-    write_csv("users_input.csv", ["id", "gps_location", "start_date", "start_time", "end_time", "age"], users_input_data)
+    write_csv_to_all("festivals.csv", ["id", "name", "start_date", "end_date", "city_id", "description"], festivals_data)
 
     print("\n--- Summary of Generated Relational Entities ---")
     print(f"  * CITIES: {len(cities_data)} records")
-    print(f"  * PLACES: {len(places_rows)} records (Row 1 ananta-vasudeva-temple excluded)")
+    print(f"  * PLACES: {len(places_rows)} records (Excluded: {len(excluded_ids)} non-place/festival entries)")
     print(f"  * OPENING_HOURS: {len(opening_hours_rows)} records")
     print(f"  * MIN_INTEREST: {len(min_interest_rows)} records")
     print(f"  * FESTIVALS: {len(festivals_data)} records")
-    print(f"  * USERS_INPUT: {len(users_input_data)} records")
 
-    # --- 8. Generate PostgreSQL Database Assets ---
+    # --- 7. Generate PostgreSQL Database Assets ---
     from generate_postgres_files import generate as generate_pg
     generate_pg()
 

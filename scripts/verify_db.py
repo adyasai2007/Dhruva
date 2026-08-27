@@ -6,7 +6,12 @@ Zero SQLite dependencies.
 """
 
 import csv
+import sys
 from pathlib import Path
+
+# Ensure UTF-8 output on all consoles
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 def get_base_dirs():
     candidates = [
@@ -50,7 +55,7 @@ def verify():
 
     # 2. Check DDL Schema Contents
     schema_text = (db_dir / "postgres_schema.sql").read_text(encoding="utf-8")
-    expected_tables = ["CITIES", "PLACES", "OPENING_HOURS", "MIN_INTEREST", "FESTIVALS", "USERS_INPUT"]
+    expected_tables = ["CITIES", "PLACES", "OPENING_HOURS", "MIN_INTEREST", "FESTIVALS"]
     print(f"\n2. PostgreSQL DDL Schema Validation:")
     for t in expected_tables:
         assert f"CREATE TABLE {t}" in schema_text, f"Error: Missing CREATE TABLE {t} in postgres_schema.sql"
@@ -66,15 +71,13 @@ def verify():
     opening_hours = load_csv(csv_dir / "opening_hours.csv")
     min_interest = load_csv(csv_dir / "min_interest.csv")
     festivals = load_csv(csv_dir / "festivals.csv")
-    users_input = load_csv(csv_dir / "users_input.csv")
 
     counts = {
         "CITIES": len(cities),
         "PLACES": len(places),
         "OPENING_HOURS": len(opening_hours),
         "MIN_INTEREST": len(min_interest),
-        "FESTIVALS": len(festivals),
-        "USERS_INPUT": len(users_input)
+        "FESTIVALS": len(festivals)
     }
     for t, count in counts.items():
         print(f"   - {t:<15}: {count} records")

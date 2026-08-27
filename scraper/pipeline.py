@@ -44,12 +44,6 @@ class DhruvaEndToEndPipeline:
         {"name": "Konark Dance & Music Festival", "start_date": "2026-12-01", "end_date": "2026-12-05", "city": "Puri", "description": "Spectacular classical Indian dance performances set against the illuminated backdrop of the UNESCO World Heritage Sun Temple."}
     ]
 
-    DEFAULT_USERS_INPUT = [
-        {"id": 1, "gps_location": "20.2961,85.8245", "start_date": "2026-10-15", "start_time": "08:00 AM", "end_time": "08:00 PM", "age": 58},
-        {"id": 2, "gps_location": "19.8135,85.8312", "start_date": "2026-11-01", "start_time": "07:30 AM", "end_time": "07:00 PM", "age": 62},
-        {"id": 3, "gps_location": "20.4625,85.8830", "start_date": "2026-11-24", "start_time": "09:00 AM", "end_time": "09:30 PM", "age": 45}
-    ]
-
     def __init__(
         self,
         config: Optional[ScraperConfig] = None,
@@ -225,15 +219,11 @@ class DhruvaEndToEndPipeline:
                 "description": f["description"]
             })
 
-        # 6. USERS_INPUT table
-        users_input_rows = self.DEFAULT_USERS_INPUT
-
         print(f"   * CITIES: {len(cities_rows)} records")
         print(f"   * PLACES: {len(places_rows)} records")
         print(f"   * OPENING_HOURS: {len(opening_hours_rows)} records")
         print(f"   * MIN_INTEREST: {len(min_interest_rows)} records")
         print(f"   * FESTIVALS: {len(festivals_rows)} records")
-        print(f"   * USERS_INPUT: {len(users_input_rows)} records")
 
         # -------------------------------------------------------------
         # STAGE 6: Database Schema Execution & CSV Export
@@ -258,7 +248,6 @@ class DhruvaEndToEndPipeline:
         cursor.executemany("INSERT INTO OPENING_HOURS (opens_at, closes_at, place_id, day_of_week) VALUES (:opens_at, :closes_at, :place_id, :day_of_week)", opening_hours_rows)
         cursor.executemany("INSERT INTO MIN_INTEREST (place_id, architecture, history, spiritual, nature, culture) VALUES (:place_id, :architecture, :history, :spiritual, :nature, :culture)", min_interest_rows)
         cursor.executemany("INSERT INTO FESTIVALS VALUES (:id, :name, :start_date, :end_date, :city_id, :description)", festivals_rows)
-        cursor.executemany("INSERT INTO USERS_INPUT (id, gps_location, start_date, start_time, end_time, age) VALUES (:id, :gps_location, :start_date, :start_time, :end_time, :age)", users_input_rows)
 
         conn.commit()
         conn.close()
@@ -280,7 +269,6 @@ class DhruvaEndToEndPipeline:
         min_interest_csv = [{"id": i+1, **r} for i, r in enumerate(min_interest_rows)]
         write_relational_csv("min_interest.csv", ["id", "place_id", "architecture", "history", "spiritual", "nature", "culture"], min_interest_csv)
         write_relational_csv("festivals.csv", ["id", "name", "start_date", "end_date", "city_id", "description"], festivals_rows)
-        write_relational_csv("users_input.csv", ["id", "gps_location", "start_date", "start_time", "end_time", "age"], users_input_rows)
 
         duration = round(time.time() - start_time, 2)
         print("\n" + "=" * 70)

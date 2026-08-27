@@ -59,15 +59,3 @@ CREATE TABLE festivals (
     FOREIGN KEY (city_id)
         REFERENCES cities(id)
 );
-
--- =========================
--- USERS INPUT
--- =========================
-CREATE TABLE users_input (
-    id INTEGER PRIMARY KEY,
-    gps_location TEXT NOT NULL,
-    start_date TEXT NOT NULL,           -- Format: YYYY-MM-DD
-    start_time TEXT NOT NULL,           -- Format: HH:MM:SS
-    end_time TEXT NOT NULL,             -- Format: HH:MM:SS
-    age INTEGER NOT NULL
-);

@@ -5,7 +5,6 @@
 DROP TABLE IF EXISTS OPENING_HOURS CASCADE;
 DROP TABLE IF EXISTS MIN_INTEREST CASCADE;
 DROP TABLE IF EXISTS FESTIVALS CASCADE;
-DROP TABLE IF EXISTS USERS_INPUT CASCADE;
 DROP TABLE IF EXISTS PLACES CASCADE;
 DROP TABLE IF EXISTS CITIES CASCADE;
 
@@ -78,19 +77,6 @@ CREATE TABLE FESTIVALS (
     city_id INTEGER NOT NULL,
     description TEXT,
     CONSTRAINT fk_festivals_city FOREIGN KEY (city_id) REFERENCES CITIES(id) ON DELETE CASCADE
-);
-
--- ---------------------------------------------------------------------
--- Table 6: USERS_INPUT
--- ---------------------------------------------------------------------
-CREATE TABLE USERS_INPUT (
-    id SERIAL PRIMARY KEY,
-    gps_location VARCHAR(100) NOT NULL,
-    start_date VARCHAR(50) NOT NULL,
-    start_time VARCHAR(20) NOT NULL,
-    end_time VARCHAR(20) NOT NULL,
-    age INTEGER NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ---------------------------------------------------------------------

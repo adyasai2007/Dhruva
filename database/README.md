@@ -16,7 +16,6 @@ This directory contains the complete PostgreSQL database files, schema definitio
   - `opening_hours.csv` (Daily operating schedules)
   - `min_interest.csv` (5-dimensional interest vectors: Architecture, History, Spiritual, Nature, Culture)
   - `festivals.csv` (Regional celebrations and dates)
-  - `users_input.csv` (User trip query schema)
 
 ---
 

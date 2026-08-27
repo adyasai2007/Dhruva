@@ -83,7 +83,7 @@ Dhruva/
 - **Speech Synthesis & Recognition**: Web Speech API (SpeechRecognition + SpeechSynthesis) with fallback cultural Q&A knowledge base.
 
 ### 3. PostgreSQL Database & Seed Data (`database/`)
-- **Full Relational Schema**: 6 interconnected tables (`CITIES`, `PLACES`, `OPENING_HOURS`, `MIN_INTEREST`, `FESTIVALS`, `USERS_INPUT`) with foreign keys and performance indexes.
+- **Full Relational Schema**: 5 interconnected tables (`CITIES`, `PLACES`, `OPENING_HOURS`, `MIN_INTEREST`, `FESTIVALS`) with foreign keys and performance indexes.
 - **Ready-to-Deploy SQL Dump**: `dhruva_postgres_dump.sql` for instant one-step initialization.
 
 ---

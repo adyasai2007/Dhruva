@@ -61,7 +61,7 @@ The frontend is a vanilla web application built without external framework depen
 - `postgres_schema.sql` / `dhruva.schema`: PostgreSQL DDL schema definition.
 - `postgres_import_csv.sql`: `\copy` bulk data import script.
 - `database.sql`: Relational schema reference.
-- `csv/`: Normalized relational CSV files for `CITIES`, `PLACES`, `OPENING_HOURS`, `MIN_INTEREST`, `FESTIVALS`, and `USERS_INPUT`.
+- `csv/`: Normalized relational CSV files for `CITIES`, `PLACES`, `OPENING_HOURS`, `MIN_INTEREST`, and `FESTIVALS`.
 
 ### 3. Data Scraper & Pipeline (`scraper/`)
 - `pipeline.py`: Comprehensive crawler and extraction pipeline for Indian cultural heritage sites.

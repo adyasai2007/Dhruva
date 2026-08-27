@@ -2,6 +2,7 @@
 Spatial Geocoding and Coordinate Resolution Module for DHRUVA.
 Automatically resolves latitude and longitude coordinates for cultural landmarks,
 temples, and cities using OpenStreetMap Nominatim, Google Maps API, and persistent local caching.
+Includes Odisha spatial bounding box validation.
 """
 
 from __future__ import annotations
@@ -14,11 +15,27 @@ import requests
 
 logger = logging.getLogger("dhruva.scraper.geocoder")
 
+# Odisha Geographic Bounding Box
+ODISHA_BBOX = {
+    "min_lat": 17.5,
+    "max_lat": 23.0,
+    "min_lon": 81.0,
+    "max_lon": 87.5,
+}
+
+
+def is_within_odisha_bounds(lat: float, lon: float) -> bool:
+    """Check if given GPS coordinate pair falls within the geographic bounds of Odisha state."""
+    return (
+        ODISHA_BBOX["min_lat"] <= lat <= ODISHA_BBOX["max_lat"]
+        and ODISHA_BBOX["min_lon"] <= lon <= ODISHA_BBOX["max_lon"]
+    )
+
 
 class DhruvaGeocoder:
     """
     Automated Geocoder with persistent disk caching, multi-query fallback strategies,
-    and OpenStreetMap / Google Maps integration.
+    spatial bounding box validation, and OpenStreetMap / Google Maps integration.
     """
 
     NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
@@ -67,7 +84,7 @@ class DhruvaGeocoder:
         self.last_request_time = time.time()
 
     def geocode_osm(self, query: str) -> Optional[Tuple[float, float]]:
-        """Query OpenStreetMap Nominatim for GPS coordinates."""
+        """Query OpenStreetMap Nominatim for GPS coordinates with bounding box sanity check."""
         self._throttle()
         headers = {
             "User-Agent": self.user_agent,
@@ -86,7 +103,10 @@ class DhruvaGeocoder:
                 if results and len(results) > 0:
                     lat = float(results[0]["lat"])
                     lon = float(results[0]["lon"])
-                    return round(lat, 6), round(lon, 6)
+                    if is_within_odisha_bounds(lat, lon):
+                        return round(lat, 6), round(lon, 6)
+                    else:
+                        logger.warning(f"OSM coordinate ({lat}, {lon}) for '{query}' fell outside Odisha bounding box.")
             else:
                 logger.debug(f"Nominatim HTTP {response.status_code} for query: {query}")
         except Exception as e:
@@ -106,7 +126,9 @@ class DhruvaGeocoder:
                 data = response.json()
                 if data.get("status") == "OK" and data.get("results"):
                     loc = data["results"][0]["geometry"]["location"]
-                    return round(float(loc["lat"]), 6), round(float(loc["lng"]), 6)
+                    lat, lng = round(float(loc["lat"]), 6), round(float(loc["lng"]), 6)
+                    if is_within_odisha_bounds(lat, lng):
+                        return lat, lng
         except Exception as e:
             logger.debug(f"Google Maps geocode error for '{query}': {e}")
         return None
@@ -131,7 +153,9 @@ class DhruvaGeocoder:
         cache_key = f"{place_name.lower().strip()}|{city.lower().strip()}|{state.lower().strip()}"
         if cache_key in self.cache:
             hit = self.cache[cache_key]
-            return hit["lat"], hit["long"]
+            lat, lon = hit["lat"], hit["long"]
+            if is_within_odisha_bounds(lat, lon):
+                return lat, lon
 
         clean_name = place_name.split("(")[0].strip()
 
@@ -164,7 +188,9 @@ class DhruvaGeocoder:
         city_key = f"__city__|{city.lower().strip()}|{state.lower().strip()}"
         if city_key in self.cache:
             city_coords = self.cache[city_key]
-            return city_coords["lat"], city_coords["long"]
+            lat, lon = city_coords["lat"], city_coords["long"]
+            if is_within_odisha_bounds(lat, lon):
+                return lat, lon
 
         city_coords = self.geocode_osm(f"{city}, {state}, India")
         if city_coords:

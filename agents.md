@@ -123,7 +123,7 @@ Built as a lightweight, zero-build vanilla web application using the IIFE module
    - High-throughput production API with Pydantic validation and interactive Swagger documentation at `/docs`.
 
 ### Database Access Layer (`backend/database/db_service.py`)
-- Encapsulates queries across 6 normalized SQLite tables: `CITIES`, `PLACES`, `OPENING_HOURS`, `MIN_INTEREST`, `FESTIVALS`, `USERS_INPUT`.
+- Encapsulates queries across 5 normalized relational tables: `CITIES`, `PLACES`, `OPENING_HOURS`, `MIN_INTEREST`, `FESTIVALS`.
 - Implements Haversine distance spatial calculations for radius searches and proximity clustering.
 
 ### Algorithmic Itinerary Engine (`backend/services/itinerary_engine.py`)
@@ -146,7 +146,6 @@ Built as a lightweight, zero-build vanilla web application using the IIFE module
 | `/api/places/{id}` | `GET` | `id` (int) | Full place details with opening hours |
 | `/api/festivals` | `GET` | `city_id` (optional) | Cultural festivals and dates |
 | `/api/itinerary/plan`| `POST`| `city_name`, `num_days`, `age`, `pacing`, `interests` | Algorithmic multi-day itinerary generation |
-| `/api/users/inputs` | `GET/POST`| `gps_location`, `start_date`, `start_time`, `end_time`, `age` | Store or retrieve traveler preferences |
 
 ---
 
