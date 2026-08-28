@@ -12,6 +12,7 @@
               Accessible for Generations (40–65+)
                    Audio-Reactive Voice Orb
                  Algorithmic Itinerary Engine
+                 Real-Time Gemini Live Audio
 ```
 
 ---
@@ -24,7 +25,7 @@ The primary audience includes adults aged **40–65+**, spiritual seekers, famil
 1. **Legibility & Comfort:** Generous typography scale (`Cormorant Garamond` serifs for editorial elegance, `Plus Jakarta Sans` for UI readability), high-contrast ratios, and responsive spacing.
 2. **Mindful Pacing:** Respects physical stamina and temple rest hours; avoids overcrowded itineraries.
 3. **Cultural Context:** Provides historical background, behavioral etiquette, dress codes, and festive timing for sacred sites.
-4. **Multi-Modal Interaction:** Text, visual step-by-step wizard, and real-time audio-reactive voice guidance.
+4. **Multi-Modal Interaction:** Text, visual step-by-step wizard, and real-time audio-reactive Gemini Live voice guidance.
 
 ---
 
@@ -34,43 +35,40 @@ The repository is modularized into distinct, decoupled subsystems:
 
 ```text
 Dhruva/
+├── backend/                   # ⚡ Core Python Backend & Engine Services
+│   ├── server.py              # HTTP REST API & static asset server (Port 8000)
+│   ├── live_websocket_server.py # Bidirectional Gemini Live WebSocket audio server (Port 8001)
+│   ├── config.py              # Environment configuration
+│   ├── database/              # SQLite/Postgres repository and models
+│   ├── algorithm/             # 5D Scoring and itinerary generation
+│   ├── routing/               # Matrix routing with OpenRouteService
+│   ├── services/              # High-level business logic & Gemini Live tool orchestration
+│   └── tests/                 # Full test suite (76 tests)
+│
 ├── frontend/                  # Modular Vanilla Client (HTML5, CSS3, ES6+ IIFE)
 │   ├── index.html             # Landing & discovery search
-│   ├── pages/                 # Multi-page application views
-│   │   ├── explore.html       # Destination directory & place catalog
-│   │   ├── trip.html          # 4-step conversational trip planner wizard
-│   │   ├── itinerary.html     # Dynamic day-by-day timeline & cultural guide
-│   │   └── profile.html       # "My Plan", saved destinations & preferences
+│   ├── pages/                 # Multi-page application views (explore, trip, itinerary, profile)
 │   ├── css/                   # Tokenized stylesheets (variables, style, components, voice-orb, responsive)
 │   ├── js/                    # Client application modules (app, navigation, components, planner, voice-orb)
 │   ├── mock/                  # Static mock JSON datasets for standalone client mode
 │   └── assets/                # Static images, vectors & icons
 │
 ├── database/                  # PostgreSQL Database Dumps, Schemas & Relational CSVs
-│   ├── README.md              # Database documentation & setup instructions
 │   ├── dhruva_postgres_dump.sql # Full PostgreSQL dump (schema + all seed data)
 │   ├── postgres_schema.sql    # PostgreSQL DDL schema definition
-│   ├── postgres_import_csv.sql # PostgreSQL CSV bulk copy script
-│   ├── dhruva.schema          # PostgreSQL DDL schema
-│   ├── database.sql           # Relational schema reference
 │   └── csv/                   # Normalized relational CSV tables (CITIES, PLACES, etc.)
 │
 ├── scraper/                   # Web Scraping & Data Extraction Pipeline
 │   ├── pipeline.py            # Crawler, geocoder & normalizer pipeline
 │   ├── cli.py                 # CLI interface for scraper suites
-│   ├── models.py              # Pydantic data schemas
-│   ├── common/                # Shared utilities
-│   └── incredible_india/      # Incredible India scrapers
+│   ├── llm_processor.py       # LLM enrichment helper
+│   ├── mediawiki_client.py    # MediaWiki / Wikipedia crawler
+│   └── search_client.py       # Search & retrieval client
 │
-├── data/                      # Data Pipeline Artifacts
-│   ├── processed/             # Cleaned relational CSVs
-│   └── scraped/               # Raw payloads & reports
-│
-├── scripts/                   # Database Utilities
-│   ├── verify_db.py           # Database validation script
-│   └── generate_postgres_files.py # PostgreSQL dump generator
-│
-└── database/                  # Master Operational Database & Relational Assets (Postgres DDL & Dumps)
+└── scripts/                   # Standalone scripts & developer tools
+    ├── live_audio_stream.py   # Standalone PyAudio Gemini Live streaming test script
+    ├── run_live_assistant.py  # Local terminal assistant with tool calling
+    └── sync_frontend_mock.py  # Synchronize database rows to mock JSON
 ```
 
 ---
@@ -107,30 +105,30 @@ Built as a lightweight, zero-build vanilla web application using the IIFE module
 5. **`DhruvaVoiceOrb` (`js/voice-orb.js`):**
    - Real-time vocal fundamental frequency pitch detection (autocorrelation algorithm).
    - Dynamic audio-reactive HTML5 Canvas visualizer rendering golden-brass halo rings.
-   - Web Speech API integration (SpeechRecognition & SpeechSynthesis).
-   - Offline cultural Q&A fallback knowledge base.
+   - Bidirectional PCM audio streaming to Gemini Live via WebSocket (`ws://localhost:8001`).
+   - Real-time tool execution notifications & UI navigation handoffs.
 
 ---
 
 ## 5. Backend & Algorithmic Services (`Dhruva/backend/`)
 
-### Dual Serving Modes
+### Serving Subsystems
 1. **Integrated Server (`backend/server.py`):**
-   - Pure Python standard library (`http.server.HTTPServer`).
-   - Translates static filesystem requests directly from `Dhruva/frontend/`.
-   - Routes `/api/*` requests to relational database queries and itinerary generation.
-2. **FastAPI ASGI Server (`backend/app/main.py`):**
-   - High-throughput production API with Pydantic validation and interactive Swagger documentation at `/docs`.
+   - Thread-safe HTTP server serving static frontend assets and REST API endpoints.
+   - Endpoints for full itinerary planning, place filtering, utility breakdowns, and quick visits.
+2. **Gemini Live WebSocket Server (`backend/live_websocket_server.py`):**
+   - Low-latency bidirectional audio streaming using Google GenAI Live SDK (`gemini-3.1-flash-live-preview`).
+   - Live function calling integration with local database tools (`search_places`, `get_place_details`, `create_itinerary`, `navigate_ui`).
 
 ### Database Access Layer (`backend/database/db_service.py`)
 - Encapsulates queries across 5 normalized relational tables: `CITIES`, `PLACES`, `OPENING_HOURS`, `MIN_INTEREST`, `FESTIVALS`.
-- Implements Haversine distance spatial calculations for radius searches and proximity clustering.
+- Implements Haversine distance spatial calculations and 5D cultural cosine interest vector matching.
 
 ### Algorithmic Itinerary Engine (`backend/services/itinerary_engine.py`)
 - **Spatial Clustering:** Minimizes inter-place travel transit using coordinates.
 - **Interest Scoring Matrix:** Computes affinity vectors across Spiritual, Architecture, History, Culture, and Nature.
-- **Pacing & Fatigue Limits:** Modulates daily activity counts based on traveler age and pacing preference (*Relaxed*, *Comfortable*, *Immersive*).
-- **Sanctum Scheduling:** Validates visits against recorded opening hours and noon temple rest closures.
+- **Pacing & Fatigue Limits:** Modulates daily activity counts based on traveler age and pacing preference (*Relaxed*, *Balanced*, *Intensive*).
+- **Sanctum Scheduling:** Validates visits against recorded opening hours and midday temple rest closures.
 
 ---
 
@@ -141,25 +139,25 @@ Built as a lightweight, zero-build vanilla web application using the IIFE module
 | `/api/health` | `GET` | — | System health status, database path & record counts |
 | `/api/cities` | `GET` | — | List all destination cities with place counts |
 | `/api/cities/{id}` | `GET` | `id` (int) | Retrieve detailed city metadata |
-| `/api/places` | `GET` | `city_id`, `category`, `search`, `min_popularity`, `spiritual`, `architecture`, etc. | Dynamic multi-criteria place filtering |
+| `/api/places` | `GET` | `city_id`, `category`, `search`, `min_rating`, `spiritual`, `architecture`, etc. | Dynamic multi-criteria place filtering |
 | `/api/places/nearby`| `GET` | `lat`, `lon`, `max_distance_km`, `limit` | Proximity radius search |
 | `/api/places/{id}` | `GET` | `id` (int) | Full place details with opening hours |
 | `/api/festivals` | `GET` | `city_id` (optional) | Cultural festivals and dates |
 | `/api/itinerary/plan`| `POST`| `city_name`, `num_days`, `age`, `pacing`, `interests` | Algorithmic multi-day itinerary generation |
+| `/api/itinerary/rebalance` | `POST` | `trip_id`, `action`, `place_id`, `day_index` | Dynamic insertion/removal rebalancer |
+| `/api/itinerary/variations`| `POST` | `trip_id` | 3-shuffle alternative itinerary variation generator |
 
 ---
 
 ## 7. Development & Operational Commands
 
 ```bash
-# 1. Integrated Full-Stack Server (Recommended)
-python -m backend.server 8000
-# Accessible at http://localhost:8000/index.html
+# 1. Start HTTP Backend & REST API Server (Port 8000)
+python backend/server.py 8000
 
-# 2. Standalone Frontend Serving
-cd frontend && python -m http.server 8000
+# 2. Start Gemini Live WebSocket Audio Server (Port 8001)
+python backend/live_websocket_server.py
 
-# 3. FastAPI Production ASGI Server
-pip install -r backend/requirements.txt
-uvicorn backend.app.main:app --reload --port 8000
+# 3. Run Backend Test Suite (76 unit & integration tests)
+python -m pytest backend/tests
 ```

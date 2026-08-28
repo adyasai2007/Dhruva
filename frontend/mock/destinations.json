@@ -1,234 +1,77 @@
 [
   {
-    "id": "varanasi",
-    "name": "Varanasi",
-    "region": "North India",
-    "state": "Uttar Pradesh",
-    "tagline": "The Spiritual Heart and Oldest Living City of India",
-    "description": "Perched on the sacred banks of the Ganges, Varanasi (Kashi) is a timeless tapestry of spiritual devotion, ancient ghats, classical music, and age-old silk weaving traditions.",
-    "culturalSignificance": "One of the world's oldest continually inhabited cities, sacred to Hinduism, Jainism, and Buddhism (Sarnath nearby). Renowned for evening Ganga Aarti, ghat rituals, and Banarasi craft.",
-    "heroImage": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=80",
-    "thumbnailImage": "https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=600&q=80",
-    "categories": ["Spiritual", "Heritage", "Local Culture", "Architecture"],
-    "bestTime": {
-      "idealMonths": "October to March",
-      "season": "Winter",
-      "weatherSummary": "Pleasant and cool (12°C - 25°C), ideal for ghat walks and temple visits.",
-      "peakCrowd": "High during Dev Deepawali (Nov) and Maha Shivratri (Feb/Mar)",
-      "recommendedDuration": "3 - 4 Days"
-    },
-    "highlights": [
-      "Subah-e-Banaras morning boat ride along Dashashwamedh Ghat",
-      "Evening Ganga Aarti ceremonial prayer at Dashashwamedh",
-      "Ancient Kashi Vishwanath Temple corridor",
-      "Excursion to Dhamek Stupa at Sarnath where Lord Buddha gave his first sermon",
-      "Banarasi silk weaving lanes of Madanpura"
-    ],
-    "featured": true,
-    "rating": 4.9,
-    "placeCount": 18
-  },
-  {
-    "id": "hampi",
-    "name": "Hampi",
-    "region": "South India",
-    "state": "Karnataka",
-    "tagline": "The Granitic Open-Air Museum of the Vijayanagara Empire",
-    "description": "Set amid a surreal landscape of giant boulders and the Tungabhadra River, Hampi reveals the monumental ruins, musical pillars, and stone chariots of a glorious 14th-century empire.",
-    "culturalSignificance": "UNESCO World Heritage Site; capital of the historical Vijayanagara Empire with exquisite Dravidian architecture, sacred Virupaksha Temple, and vibrant riverside culture.",
-    "heroImage": "https://images.unsplash.com/photo-1600100397608-f010f443b71a?auto=format&fit=crop&w=1200&q=80",
-    "thumbnailImage": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=600&q=80",
-    "categories": ["Architecture", "Heritage", "History", "Nature"],
-    "bestTime": {
-      "idealMonths": "November to February",
-      "season": "Winter",
-      "weatherSummary": "Comfortable breeze with moderate sunshine (16°C - 30°C).",
-      "peakCrowd": "Hampi Utsav festival period (November / January)",
-      "recommendedDuration": "2 - 3 Days"
-    },
-    "highlights": [
-      "Iconic Stone Chariot at Vijaya Vittala Temple Complex",
-      "Sunset view over the boulder-strewn valley from Hemakuta Hill",
-      "Active worship at the 7th-century Virupaksha Temple",
-      "Coracle boat ride across the tranquil Tungabhadra River",
-      "Lotus Mahal and Royal Enclosure"
-    ],
-    "featured": true,
-    "rating": 4.8,
-    "placeCount": 24
-  },
-  {
-    "id": "jaipur",
-    "name": "Jaipur",
-    "region": "North India",
-    "state": "Rajasthan",
-    "tagline": "The Pink City of Royal Fortresses and Master Craftsmanship",
-    "description": "The capital of Rajasthan, planned according to ancient Vastu Shastra, renowned for its rose-hued terracotta facades, hilltop forts, astronomy observatories, and vibrant bazaars.",
-    "culturalSignificance": "UNESCO World Heritage city celebrated for Rajput and Mughal architectural fusion, block printing, blue pottery, and royal culinary heritage.",
-    "heroImage": "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=80",
-    "thumbnailImage": "https://images.unsplash.com/photo-1603288967323-5e921d74656f?auto=format&fit=crop&w=600&q=80",
-    "categories": ["Heritage", "Architecture", "Markets", "Food"],
-    "bestTime": {
-      "idealMonths": "October to March",
-      "season": "Winter",
-      "weatherSummary": "Crisp sunny days and cool evenings (10°C - 26°C).",
-      "peakCrowd": "Jaipur Literature Festival (Jan) and Diwali",
-      "recommendedDuration": "3 - 4 Days"
-    },
-    "highlights": [
-      "The honeycombed facade of Hawa Mahal (Palace of Winds)",
-      "Magnificent Amer Fort with Sheesh Mahal (Mirror Palace)",
-      "Jantar Mantar 18th-century stone astronomical observatory",
-      "Artisan workshops in Johari and Bapu Bazaars",
-      "Authentic Dal Baati Churma and Ghewar tastings"
-    ],
-    "featured": true,
-    "rating": 4.9,
-    "placeCount": 22
-  },
-  {
-    "id": "madurai",
-    "name": "Madurai",
-    "region": "South India",
-    "state": "Tamil Nadu",
-    "tagline": "The Ancient Temple City of Tamil Literature and Sangam Heritage",
-    "description": "One of the oldest continuously inhabited cities in peninsular India, built around the majestic towering gopurams of the sacred Meenakshi Sundareswarar Temple.",
-    "culturalSignificance": "Cradle of Tamil Sangam literature, ancient temple architecture, jasmine flower markets, and distinct South Indian culinary traditions like Jigarthanda and Chettinad flavors.",
-    "heroImage": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80",
-    "thumbnailImage": "https://images.unsplash.com/photo-1621847468516-1ed5d0df56fe?auto=format&fit=crop&w=600&q=80",
-    "categories": ["Spiritual", "Heritage", "Architecture", "Food"],
-    "bestTime": {
-      "idealMonths": "October to March",
-      "season": "Winter",
-      "weatherSummary": "Mild tropical climate with pleasant mornings (20°C - 29°C).",
-      "peakCrowd": "Chithirai Festival (April/May) and Pongal (January)",
-      "recommendedDuration": "2 - 3 Days"
-    },
-    "highlights": [
-      "The 14 sculpted Gopurams of Meenakshi Amman Temple",
-      "Night procession ceremony (Palli Arai) at the temple",
-      "Thirumalai Nayakkar Palace light & sound heritage show",
-      "Vibrant Madurai Malli jasmine flower market",
-      "Traditional street food trail tasting Bun Parotta and Jigarthanda"
-    ],
-    "featured": true,
-    "rating": 4.8,
-    "placeCount": 16
-  },
-  {
-    "id": "kolkata",
-    "name": "Kolkata",
+    "id": "bhubaneswar",
+    "cityId": 1,
+    "name": "Bhubaneswar",
+    "state": "Odisha",
+    "lat": 20.2961,
+    "long": 85.8245,
     "region": "East India",
-    "state": "West Bengal",
-    "tagline": "The City of Joy, Intellectual Heritage and Living Art",
-    "description": "India's cultural capital, renowned for colonial neoclassical architecture, historic coffee houses, literary renaissance, terracotta art, and vibrant Durga Puja celebrations.",
-    "culturalSignificance": "Center of the 19th-century Bengal Renaissance, home to Nobel laureates, Rabindranath Tagore's legacy, traditional idol-makers of Kumartuli, and rich street food culture.",
-    "heroImage": "https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=1200&q=80",
-    "thumbnailImage": "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80",
-    "categories": ["Heritage", "Local Culture", "Food", "History"],
-    "bestTime": {
-      "idealMonths": "October to February",
-      "season": "Winter",
-      "weatherSummary": "Pleasant, dry, and festive atmosphere (14°C - 26°C).",
-      "peakCrowd": "Durga Puja (September/October) - UNESCO Intangible Cultural Heritage",
-      "recommendedDuration": "3 - 5 Days"
-    },
-    "highlights": [
-      "Victoria Memorial Hall marble monument and gardens",
-      "Potters' quarter at Kumartuli witnessing traditional clay sculpting",
-      "Iconic Howrah Bridge over the Hooghly River at dawn",
-      "Indian Coffee House on College Street and historic book stalls",
-      "Kolkata street food: Kathi rolls, Mishti Doi, and Sandesh"
-    ],
-    "featured": true,
-    "rating": 4.7,
-    "placeCount": 20
-  },
-  {
-    "id": "udaipur",
-    "name": "Udaipur",
-    "region": "West India",
-    "state": "Rajasthan",
-    "tagline": "The City of Lakes and Mewar Royal Romance",
-    "description": "Surrounded by the serene Aravalli hills and shimmering lakes, Udaipur is celebrated for its majestic marble palaces, heritage havelis, and vibrant miniature painting arts.",
-    "culturalSignificance": "Capital of the historic Mewar Kingdom, untouched by direct foreign conquest, preserving authentic Rajput lifestyle, courtly music, and Pichwai folk art.",
-    "heroImage": "https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?auto=format&fit=crop&w=1200&q=80",
-    "thumbnailImage": "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=600&q=80",
-    "categories": ["Heritage", "Architecture", "Nature", "Local Culture"],
-    "bestTime": {
-      "idealMonths": "September to March",
-      "season": "Post-Monsoon & Winter",
-      "weatherSummary": "Lakes are full and weather is crisp and temperate (11°C - 28°C).",
-      "peakCrowd": "Mewar Festival and New Year holidays",
-      "recommendedDuration": "3 - 4 Days"
-    },
-    "highlights": [
-      "Expansive City Palace complex overlooking Lake Pichola",
-      "Sunset boat cruise to Jag Mandir island palace",
-      "Bagore Ki Haveli evening Dharohar folk dance performance",
-      "Saheliyon Ki Bari royal fountains and lotus pools",
-      "Artisans creating traditional Pichwai paintings"
-    ],
-    "featured": false,
-    "rating": 4.9,
-    "placeCount": 19
-  },
-  {
-    "id": "amritsar",
-    "name": "Amritsar",
-    "region": "North India",
-    "state": "Punjab",
-    "tagline": "Sacred Golden Sanctum of Harmony and Community Service",
-    "description": "Home to the sacred Harmandir Sahib (Golden Temple), Amritsar embodies the spirit of selfless service (Sewa), rich Punjabi heritage, and poignant modern history.",
-    "culturalSignificance": "Central spiritual seat of Sikhism, world's largest community kitchen (Langar feeding 100,000 daily), historic site of Jallianwala Bagh, and iconic culinary traditions.",
-    "heroImage": "https://images.unsplash.com/photo-1514222134-b57cbb8ce073?auto=format&fit=crop&w=1200&q=80",
-    "thumbnailImage": "https://images.unsplash.com/photo-1592635196078-9fdc757f27f4?auto=format&fit=crop&w=600&q=80",
-    "categories": ["Spiritual", "Heritage", "Food", "History"],
+    "tagline": "Temple City of India & Kalinga Heritage",
+    "description": "Explore iconic 11th-century sandstone shrines, Mukteshvara toranas, and ancient rock edicts across Bhubaneswar.",
+    "heroImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Lingaraj_Temple_%2C_Bhubaneswar.jpg/960px-Lingaraj_Temple_%2C_Bhubaneswar.jpg",
+    "thumbnailImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Lingaraj_Temple_%2C_Bhubaneswar.jpg/960px-Lingaraj_Temple_%2C_Bhubaneswar.jpg",
     "bestTime": {
       "idealMonths": "October to March",
-      "season": "Winter",
-      "weatherSummary": "Crisp North Indian winter with clear skies (8°C - 22°C).",
-      "peakCrowd": "Gurpurab festivals and Baisakhi (April)",
-      "recommendedDuration": "2 - 3 Days"
+      "temperature": "20\u00b0C \u2013 30\u00b0C"
     },
-    "highlights": [
-      "Golden Temple illumination and spiritual tranquility at night",
-      "Participating in community cooking at the Mega Langar",
-      "Palki Sahib bedtime ceremonial procession",
-      "Jallianwala Bagh memorial and partition museum",
-      "Legendary Amritsari Kulcha with Chole and creamy Lassi"
-    ],
-    "featured": false,
-    "rating": 4.9,
-    "placeCount": 14
+    "placeCount": 11,
+    "city_interest": {
+      "architecture": 4.58,
+      "history": 4.71,
+      "spiritual": 4.35,
+      "nature": 2.35,
+      "culture": 4.52
+    }
   },
   {
-    "id": "kochi",
-    "name": "Kochi & Fort Kochi",
-    "region": "South India",
-    "state": "Kerala",
-    "tagline": "The Queen of the Arabian Sea and Spice Coast Gateway",
-    "description": "A coastal crossroads where ancient Chinese fishing nets, Portuguese churches, Dutch palaces, and Jewish synagogues meet lush backwaters and Kathakali classical dance.",
-    "culturalSignificance": "Historic center of the global spice trade for over 600 years, hosting the prestigious Kochi-Muziris Art Biennale, Kathakali theater, and Ayurvedic heritage.",
-    "heroImage": "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=1200&q=80",
-    "thumbnailImage": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=600&q=80",
-    "categories": ["Heritage", "Local Culture", "Architecture", "Nature"],
+    "id": "puri",
+    "cityId": 2,
+    "name": "Puri",
+    "state": "Odisha",
+    "lat": 19.8135,
+    "long": 85.8312,
+    "region": "East India",
+    "tagline": "Spiritual Sanctum of Lord Jagannath & Sun Temple",
+    "description": "Experience the sacred Jagannath Dham, Konark Sun Temple chariot architecture, and living heritage crafts of Raghurajpur.",
+    "heroImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Konark_Sun_Temple_2.jpg/960px-Konark_Sun_Temple_2.jpg",
+    "thumbnailImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Konark_Sun_Temple_2.jpg/960px-Konark_Sun_Temple_2.jpg",
     "bestTime": {
       "idealMonths": "October to March",
-      "season": "Winter",
-      "weatherSummary": "Comfortable coastal breeze with low humidity (22°C - 30°C).",
-      "peakCrowd": "Cochin Carnival (Dec/Jan) and Kochi-Muziris Biennale",
-      "recommendedDuration": "3 - 4 Days"
+      "temperature": "20\u00b0C \u2013 30\u00b0C"
     },
-    "highlights": [
-      "Cantilevered Chinese Fishing Nets along Vasco da Gama Square",
-      "Jew Town and the 16th-century Paradesi Synagogue",
-      "Kathakali classical dance and facial makeup demonstration",
-      "Mattancherry Dutch Palace with Ramayana murals",
-      "Spice market walking tour and Kerala Sadhya lunch"
-    ],
-    "featured": false,
-    "rating": 4.8,
-    "placeCount": 17
+    "placeCount": 7,
+    "city_interest": {
+      "architecture": 4.63,
+      "history": 4.76,
+      "spiritual": 4.61,
+      "nature": 2.64,
+      "culture": 4.87
+    }
+  },
+  {
+    "id": "cuttack",
+    "cityId": 3,
+    "name": "Cuttack",
+    "state": "Odisha",
+    "lat": 20.4625,
+    "long": 85.883,
+    "region": "East India",
+    "tagline": "Millennium City of Silver Filigree & Barabati Legacy",
+    "description": "Discover the 14th-century Barabati Fort, maritime Bali Yatra traditions, and delicate Tarakasi silver craft quarters.",
+    "heroImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Barabati_Fort_Gate%2C_Cuttack.jpg/960px-Barabati_Fort_Gate%2C_Cuttack.jpg",
+    "thumbnailImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Barabati_Fort_Gate%2C_Cuttack.jpg/960px-Barabati_Fort_Gate%2C_Cuttack.jpg",
+    "bestTime": {
+      "idealMonths": "October to March",
+      "temperature": "20\u00b0C \u2013 30\u00b0C"
+    },
+    "placeCount": 4,
+    "city_interest": {
+      "architecture": 4.85,
+      "history": 4.9,
+      "spiritual": 4.38,
+      "nature": 2.62,
+      "culture": 4.83
+    }
   }
 ]

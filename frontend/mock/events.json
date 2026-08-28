@@ -1,57 +1,57 @@
 [
   {
-    "id": "dev-deepawali-varanasi",
-    "destinationId": "varanasi",
-    "name": "Dev Deepawali (Festival of Lights of the Gods)",
-    "category": "Spiritual Festival",
+    "id": "rath-yatra-puri",
+    "destinationId": "puri",
+    "name": "Rath Yatra (Grand Chariot Festival)",
+    "category": "Spiritual Pilgrimage",
+    "period": "June / July",
+    "description": "World-renowned annual chariot procession where Lord Jagannath, Balabhadra, and Subhadra emerge from the sanctum sanctorum to travel to Gundicha Temple in three magnificent towering chariots pulled by millions of devotees.",
+    "culturalSignificance": "The epicenter of Odia spiritual consciousness and ancient temple ritual, celebrated since the Ganga dynasty.",
+    "image": "https://s7ap1.scene7.com/is/image/incredibleindia/gundicha-temple-puri-odisha-1-attr-hero?qlt=82&ts=1726663778679",
+    "travelTips": "Book rooftop viewing gallery spots along the Grand Road (Bada Danda) months in advance."
+  },
+  {
+    "id": "konark-dance-festival",
+    "destinationId": "puri",
+    "name": "Konark Dance & Music Festival",
+    "category": "Classical Dance & Arts",
+    "period": "December 1 - 5",
+    "description": "A breathtaking 5-day cultural extravaganza against the majestic backdrop of the illuminated 13th-century Konark Sun Temple, bringing together Odissi, Bharatanatyam, Kathak, and Kuchipudi maestros.",
+    "culturalSignificance": "Celebrates classical Indian dance forms rooted in Natya Shastra, echoing the ancient sculpted dancers of Konark's Natyamandapa.",
+    "image": "https://s7ap1.scene7.com/is/image/incredibleindia/konark-temple-puri-odisha-1-attr-hero?qlt=82&ts=1726674697395",
+    "travelTips": "Evenings are chilly; carry light woolens and visit the concurrent International Sand Art Festival on Chandrabhaga Beach."
+  },
+  {
+    "id": "bali-yatra-cuttack",
+    "destinationId": "cuttack",
+    "name": "Bali Yatra (Voyage to Bali Festival)",
+    "category": "Maritime Trade & Fair",
     "period": "November (Kartik Purnima)",
-    "description": "Over one million earthen oil lamps (diyas) illuminate all 84 ghats along the crescent Ganges. Grand Maha Aarti, classical music recitals, and green firework displays celebrate the victory of Shiva over Tripurasura.",
-    "culturalSignificance": "Celebrated 15 days after Diwali; belief that gods descend from the heavens to bathe in the holy Ganga.",
-    "image": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=800&q=80",
-    "travelTips": "Book boats and riverside havelis 4 to 6 months in advance due to global traveler influx."
+    "description": "Asia's largest open-air socio-cultural trade fair spanning over 100 acres along the banks of the Mahanadi river, commemorating ancient Kalinga sadhabas (maritime traders) who sailed to Bali, Java, and Sumatra.",
+    "culturalSignificance": "Centuries-old festival of Boita Bandana (floating miniature decorative boats) celebrating maritime heritage, regional handlooms, and Cuttack's mouthwatering street culinary culture (Dahi Vada Aloo Dum).",
+    "image": "https://s7ap1.scene7.com/is/image/incredibleindia/barabati-fort-cuttack-odisha-1-attr-hero?qlt=82&ts=1726663491030",
+    "travelTips": "Visit during early evening to witness boat-floating rituals followed by traditional silver filigree craft pavilions."
   },
   {
-    "id": "durga-puja-kolkata",
-    "destinationId": "kolkata",
-    "name": "Kolkata Durga Puja Festival",
-    "category": "Cultural Heritage",
-    "period": "September / October (Sharad Navratri)",
-    "description": "UNESCO Intangible Cultural Heritage of Humanity. The entire metropolis transforms into a 24-hour open-air art installation with thousands of thematic pandals, dhak drumming, and culinary feasts.",
-    "culturalSignificance": "The largest public arts and cultural festival in South Asia celebrating the divine feminine power of Goddess Durga.",
-    "image": "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
-    "travelTips": "Join organized morning VIP pandal heritage walks or evening river immersion cruises."
-  },
-  {
-    "id": "hampi-utsav",
-    "destinationId": "hampi",
-    "name": "Hampi Utsav (Vijaya Utsava)",
-    "category": "Music & Arts Festival",
-    "period": "November / January (3 Days)",
-    "description": "A grand state festival with illuminated granite ruins, classical Carnatic and Hindustani music, classical dance troupes, puppet shows, and equestrian processions reviving the Vijayanagara glory.",
-    "culturalSignificance": "State-sponsored renaissance celebration recreating the royal splendor described by ancient Portuguese and Persian travelers.",
-    "image": "https://images.unsplash.com/photo-1600100397608-f010f443b71a?auto=format&fit=crop&w=800&q=80",
-    "travelTips": "Evenings feature majestic lighting of the Vittala Temple and Hemakuta Hill shrines."
-  },
-  {
-    "id": "jaipur-lit-fest",
-    "destinationId": "jaipur",
-    "name": "Jaipur Literature Festival (JLF)",
-    "category": "Literary & Cultural",
-    "period": "January",
-    "description": "Known as the 'greatest literary show on Earth', bringing together global Nobel laureates, historians, Indian classical musicians, and thought leaders in the heritage setting of Diggi Palace and Clarks Amer.",
-    "culturalSignificance": "International cultural dialogue, bilingual poetry recitations, and royal Rajasthani musical performances.",
-    "image": "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80",
-    "travelTips": "Register online for delegate passes to access author networking and evening heritage concerts."
-  },
-  {
-    "id": "chithirai-festival-madurai",
-    "destinationId": "madurai",
-    "name": "Chithirai Thiruvizha",
+    "id": "ashokashtami-bhubaneswar",
+    "destinationId": "bhubaneswar",
+    "name": "Ashokashtami & Rukuna Ratha Yatra",
     "category": "Spiritual Festival",
-    "period": "April / May (Tamil month of Chithirai)",
-    "description": "A month-long celebration marking the celestial coronation and wedding of Goddess Meenakshi to Lord Sundareswarar, followed by Lord Kallazhagar's entry into the Vaigai River.",
-    "culturalSignificance": "One of South India's oldest documented temple car chariot festivals, unifying Shaivite and Vaishnavite traditions.",
-    "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80",
-    "travelTips": "Witness the pulling of the massive carved wooden temple rathams (chariots) on East Masi Street."
+    "period": "April (Chaitra Shukla Ashtami)",
+    "description": "The annual five-day chariot festival of Lord Lingaraj, where the 35-foot Rukuna Ratha chariot is pulled from the ancient Lingaraj Temple to Rameshwar Temple (Mausi Maa). Known as the chariot that does not turn around ('Analeuta').",
+    "culturalSignificance": "Ancient Shaivite festival celebrating Lord Shiva's victory and blessings, celebrated in the sacred Ekamra Kshetra.",
+    "image": "https://s7ap1.scene7.com/is/image/incredibleindia/lingaraj-temple-bhubaneshwar-odisha-1-attr-hero?qlt=82&ts=1742165306173",
+    "travelTips": "Participate in morning prayers along the holy Bindu Sagar lake."
+  },
+  {
+    "id": "durga-puja-cuttack",
+    "destinationId": "cuttack",
+    "name": "Cuttack Durga Puja & Chandi Medha",
+    "category": "Cultural Heritage",
+    "period": "October (Sharad Navratri)",
+    "description": "Cuttack's Durga Puja is celebrated with magnificent 'Chandi Medha' — breathtaking backdrop tableaus made from hundreds of kilograms of pure silver filigree (Tarakasi) crafted by master artisans.",
+    "culturalSignificance": "A 500-year-old tradition initiated during the reign of Gajapati monarchs, symbolizing inter-faith harmony and artisanal excellence.",
+    "image": "https://s7ap1.scene7.com/is/image/incredibleindia/cuttack-chandi-temple-cuttack-odisha-chandi-temple1-attr-hero?qlt=82&ts=1726663557866",
+    "travelTips": "Do not miss the nocturnal immersion procession (Bhasani Utsav) with synchronized rhythm drumming."
   }
 ]

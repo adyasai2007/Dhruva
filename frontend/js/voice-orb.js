@@ -1,32 +1,35 @@
 /**
- * DHRUVA - ChatGPT-Style Interactive Voice Orb Assistant
- * With Real-Time Vocal Pitch Detection (Autocorrelation Algorithm),
- * Live Audio-Reactive Fluid Canvas Engine, Web Speech Recognition (STT),
- * and Speech Synthesis (TTS).
+ * DHRUVA — Conversational & Navigational Voice Orb Assistant
+ * Powered by Gemini Live Architecture.
+ * Features:
+ * - Real-Time Vocal Pitch Detection (Autocorrelation)
+ * - Audio-Reactive Golden Halo Canvas Visualizer
+ * - Real-time WebSocket Audio Streaming to Gemini Live API
+ * - Full Backend Tool Execution & Dynamic Frontend UI Navigation
  */
 
 const DhruvaVoiceOrb = (() => {
   let isInitialized = false;
   let isOpen = false;
   let isMuted = false;
-  let audioContext = null;
+  let audioContext = null; // for mic recording (16kHz)
+  let playAudioContext = null; // for Gemini output (24kHz)
   let analyser = null;
   let microphone = null;
+  let processor = null;
+  let ws = null;
   let timeDomainBuffer = null;
-  let frequencyBuffer = null;
   let animationFrameId = null;
 
-  let recognition = null;
-  let isRecognizing = false;
   let assistantState = 'idle'; // 'idle' | 'listening' | 'thinking' | 'speaking'
+  let nextPlayTime = 0;
   
-  // Real-time Audio Metrics
-  let currentVolume = 0;
+  // Real-time Audio & Pitch Metrics
   let smoothedVolume = 0;
   let currentPitchHz = 0;
   let smoothedPitchHz = 160;
-  let normalizedPitch = 0.3; // 0.0 (deep bass) to 1.0 (high soprano)
-  let pitchRegister = 'Mid';
+  let normalizedPitch = 0.35;
+  let pitchRegister = 'Mid Register';
 
   // DOM Elements
   let overlayEl = null;
@@ -39,60 +42,15 @@ const DhruvaVoiceOrb = (() => {
   let micBtnEl = null;
   let permWarningEl = null;
 
-  // Knowledge base for conversational local guidance
-  const culturalResponses = [
-    {
-      keywords: ['varanasi', 'kashi', 'banaras', 'ganga', 'aarti'],
-      reply: "Varanasi is the timeless spiritual heart of India. I can guide you through the sunrise Subah-e-Banaras boat ride, Kashi Vishwanath temple corridor, and evening Ganga Aarti.",
-      actionUrl: 'trip.html?dest=varanasi'
-    },
-    {
-      keywords: ['hampi', 'ruins', 'vijayanagara', 'stone chariot'],
-      reply: "Hampi is an extraordinary open-air granite museum. Would you like to explore the 14th-century Vijaya Vittala temple and coracle river crossing?",
-      actionUrl: 'trip.html?dest=hampi'
-    },
-    {
-      keywords: ['jaipur', 'pink city', 'amer', 'fort', 'hawa mahal', 'rajasthan'],
-      reply: "Jaipur showcases regal Rajput palaces and vibrant bazaars. Let's plan your visit to Amer Fort, Sheesh Mahal, and block-printing workshops.",
-      actionUrl: 'trip.html?dest=jaipur'
-    },
-    {
-      keywords: ['madurai', 'meenakshi', 'tamil', 'temple'],
-      reply: "Madurai is ancient Tamil civilization's crown with the magnificent 14 sculpted gopurams of Meenakshi Amman Temple.",
-      actionUrl: 'trip.html?dest=madurai'
-    },
-    {
-      keywords: ['kolkata', 'durga puja', 'victoria memorial', 'calcutta', 'bengal'],
-      reply: "Kolkata represents India's intellectual renaissance, terracotta craftsmanship, and vibrant culinary heritage.",
-      actionUrl: 'trip.html?dest=kolkata'
-    },
-    {
-      keywords: ['best time', 'season', 'weather', 'when to visit'],
-      reply: "The ideal visiting window across most of India is October through March, offering crisp sunshine and pleasant morning ghat walks.",
-      actionUrl: 'explore.html?section=best-time'
-    },
-    {
-      keywords: ['explore', 'places', 'monuments', 'destinations'],
-      reply: "Opening DHRUVA's cultural directory featuring heritage capitals across North, South, East, and West India.",
-      actionUrl: 'explore.html'
-    },
-    {
-      keywords: ['plan', 'itinerary', 'trip', 'generate'],
-      reply: "Let's craft your personalized journey. Starting the conversational trip planner.",
-      actionUrl: 'trip.html'
-    }
-  ];
-
   // Initialize UI & Bindings
   const init = () => {
     if (isInitialized) return;
     injectVoiceOverlay();
     bindGlobalButtons();
-    initSpeechRecognition();
     isInitialized = true;
   };
 
-  // Inject ChatGPT-Style Voice Overlay Markup
+  // Inject Voice Guide Overlay HTML Markup
   const injectVoiceOverlay = () => {
     let existing = document.getElementById('dhruva-voice-orb-overlay');
     if (existing) existing.remove();
@@ -103,7 +61,7 @@ const DhruvaVoiceOrb = (() => {
     overlay.innerHTML = `
       <div class="voice-orb-perm-warning" id="voice-perm-warning">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-        <span>Microphone access needed for live voice & pitch tracking. Tap the mic button to grant permission.</span>
+        <span>Microphone access required for voice conversation. Tap the microphone icon to grant access.</span>
       </div>
 
       <header class="voice-orb-header">
@@ -118,7 +76,7 @@ const DhruvaVoiceOrb = (() => {
         </button>
       </header>
 
-      <!-- Central Animated Voice Orb -->
+      <!-- Central Animated Voice Stage -->
       <div class="voice-orb-stage">
         <div class="voice-orb-canvas-wrapper">
           <div class="voice-orb-glow-backdrop" id="voice-glow-backdrop"></div>
@@ -131,11 +89,11 @@ const DhruvaVoiceOrb = (() => {
             <span id="voice-state-text">Ready • Tap to Speak</span>
           </div>
 
-          <!-- Live Vocal Pitch Indicator Badge -->
+          <!-- Vocal Pitch Tracking Badge -->
           <div>
             <span class="voice-orb-pitch-badge" id="voice-pitch-badge">
               <span class="voice-orb-pitch-dot"></span>
-              <span id="voice-pitch-text">🎵 Pitch: Listening...</span>
+              <span id="voice-pitch-text">🎵 Ready • Tap to Speak</span>
             </span>
           </div>
 
@@ -143,16 +101,18 @@ const DhruvaVoiceOrb = (() => {
           <div class="voice-orb-response" id="voice-response"></div>
         </div>
 
+        <!-- Quick Guidance Prompts -->
         <div class="voice-orb-suggestions">
-          <button class="voice-orb-suggestion-pill" data-query="Plan a spiritual trip to Varanasi">"Spiritual trip to Varanasi"</button>
-          <button class="voice-orb-suggestion-pill" data-query="Explore UNESCO monuments in Hampi">"Monuments of Hampi"</button>
-          <button class="voice-orb-suggestion-pill" data-query="Best time to visit Jaipur">"Best time for Jaipur"</button>
+          <button class="voice-orb-suggestion-pill" data-query="Plan a 3-day spiritual trip to Puri">"3-Day Spiritual Trip to Puri"</button>
+          <button class="voice-orb-suggestion-pill" data-query="Explore temples of Bhubaneswar">"Temples of Bhubaneswar"</button>
+          <button class="voice-orb-suggestion-pill" data-query="Tell me about Konark Sun Temple">"Monuments of Konark"</button>
+          <button class="voice-orb-suggestion-pill" data-query="When are the festival dates for Rath Yatra in Puri?">"Festivals in Puri"</button>
         </div>
       </div>
 
       <!-- Bottom Voice Controls -->
       <div class="voice-orb-controls">
-        <button class="voice-orb-action-btn btn-secondary-action" id="voice-refresh-btn" title="Clear conversation" aria-label="Clear conversation">
+        <button class="voice-orb-action-btn btn-secondary-action" id="voice-refresh-btn" title="Reset conversation" aria-label="Reset conversation">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
         </button>
 
@@ -165,7 +125,7 @@ const DhruvaVoiceOrb = (() => {
           </svg>
         </button>
 
-        <button class="voice-orb-action-btn btn-secondary-action" id="voice-end-btn" title="End Session" aria-label="End Session">
+        <button class="voice-orb-action-btn btn-secondary-action" id="voice-end-btn" title="Close" aria-label="Close">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><rect x="9" y="9" width="6" height="6"></rect></svg>
         </button>
       </div>
@@ -183,7 +143,7 @@ const DhruvaVoiceOrb = (() => {
     micBtnEl = document.getElementById('voice-mic-btn');
     permWarningEl = document.getElementById('voice-perm-warning');
 
-    // Attach internal button events
+    // Attach listeners
     document.getElementById('voice-close-btn').addEventListener('click', close);
     document.getElementById('voice-end-btn').addEventListener('click', close);
     document.getElementById('voice-refresh-btn').addEventListener('click', resetConversation);
@@ -197,7 +157,7 @@ const DhruvaVoiceOrb = (() => {
     });
   };
 
-  // Bind any open-voice buttons across all pages
+  // Bind all microphone triggers across pages
   const bindGlobalButtons = () => {
     document.querySelectorAll('[data-action="open-voice"]').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -207,41 +167,39 @@ const DhruvaVoiceOrb = (() => {
     });
   };
 
-  // Open the Voice Orb
+  // Open the Voice Guide
   const open = async () => {
     if (!overlayEl) injectVoiceOverlay();
     isOpen = true;
     overlayEl.classList.add('active');
 
-    // Start Orb rendering loop
+    // Start Visualizer Loop
     startOrbRenderLoop();
 
-    // Start Live Microphone Access & Speech Recognition
+    // Start Microphone & WebSocket
     await startMicrophone();
-    startRecognition();
   };
 
-  // Close the Voice Orb
+  // Close the Voice Guide
   const close = () => {
     isOpen = false;
     if (overlayEl) overlayEl.classList.remove('active');
     
-    stopRecognition();
     stopMicrophone();
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
   };
 
-  // Reset conversation
+  // Reset Conversation Context
   const resetConversation = () => {
-    transcriptEl.textContent = '"Speak or hum your destination or question..."';
-    responseEl.textContent = '';
-    setAssistantState('listening');
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    if (transcriptEl) transcriptEl.textContent = '"Speak or hum your destination or question..."';
+    if (responseEl) responseEl.textContent = '';
+    setAssistantState('listening', 'Listening to your voice...');
+    stopMicrophone();
+    setTimeout(() => startMicrophone(), 300);
   };
 
-  // Update Assistant State
-  const setAssistantState = (state, text = null) => {
+  // Set Assistant State
+  const setAssistantState = (state, customText = null) => {
     assistantState = state;
     if (!overlayEl) return;
 
@@ -256,32 +214,105 @@ const DhruvaVoiceOrb = (() => {
     };
 
     if (stateLabelEl) {
-      stateLabelEl.textContent = text || labels[state] || 'Ready';
+      stateLabelEl.textContent = customText || labels[state] || 'Ready';
     }
   };
 
-  // Start Real Microphone via Web Audio API
+  // Start Real Microphone via Web Audio API & Connect WebSocket
   const startMicrophone = async () => {
     try {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        throw new Error('getUserMedia not supported in this browser environment');
+        throw new Error('getUserMedia not supported in this browser');
       }
 
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      // 1. Initialize Audio Contexts
+      if (!audioContext || audioContext.state === 'closed') {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+      }
+      if (audioContext.state === 'suspended') {
+        await audioContext.resume();
+      }
+
+      if (!playAudioContext || playAudioContext.state === 'closed') {
+        playAudioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+      }
+      if (playAudioContext.state === 'suspended') {
+        await playAudioContext.resume();
+      }
+      nextPlayTime = playAudioContext.currentTime;
+
+      // 2. Request mic stream
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        audio: {
+          channelCount: 1,
+          sampleRate: 16000,
+          echoCancellation: true,
+          noiseSuppression: true
+        }, 
+        video: false 
+      });
+
+      // 3. Connect to Python WebSocket Backend
+      const wsUrl = `ws://${window.location.hostname || 'localhost'}:8001`;
+      ws = new WebSocket(wsUrl);
+      ws.binaryType = "arraybuffer";
+
+      ws.onopen = () => {
+        console.log("WebSocket connected to Gemini Live Backend at", wsUrl);
+
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = 2048;
+        analyser.smoothingTimeConstant = 0.8;
+
+        microphone = audioContext.createMediaStreamSource(stream);
+        microphone.connect(analyser);
+
+        // 2048 samples = 128ms per chunk for responsive real-time streaming
+        processor = audioContext.createScriptProcessor(2048, 1, 1);
+        processor.onaudioprocess = (e) => {
+            if (!ws || ws.readyState !== WebSocket.OPEN || isMuted) return;
+            
+            let inputData = e.inputBuffer.getChannelData(0);
+            let pcm16 = new Int16Array(inputData.length);
+            for (let i = 0; i < inputData.length; i++) {
+                let s = Math.max(-1, Math.min(1, inputData[i]));
+                pcm16[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+            }
+            ws.send(pcm16.buffer);
+        };
+
+        microphone.connect(processor);
+        processor.connect(audioContext.destination);
+        timeDomainBuffer = new Float32Array(analyser.fftSize);
+
+        if (permWarningEl) permWarningEl.classList.remove('show');
+        setAssistantState('listening');
+      };
+
+      ws.onmessage = (event) => {
+          if (event.data instanceof ArrayBuffer) {
+              playAudioChunk(event.data);
+          } else {
+              try {
+                  const data = JSON.parse(event.data);
+                  handleBackendEvent(data);
+              } catch (e) {
+                  console.warn("Failed to parse backend message:", e);
+              }
+          }
+      };
+
+      ws.onerror = (e) => {
+          console.warn("WebSocket error:", e);
+      };
+
+      ws.onclose = () => {
+          console.log("WebSocket closed");
+          if (isOpen) {
+            setAssistantState('idle', 'Disconnected');
+          }
+      };
       
-      audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      analyser = audioContext.createAnalyser();
-      analyser.fftSize = 2048; // High resolution for pitch autocorrelation
-      analyser.smoothingTimeConstant = 0.8;
-
-      microphone = audioContext.createMediaStreamSource(stream);
-      microphone.connect(analyser);
-
-      timeDomainBuffer = new Float32Array(analyser.fftSize);
-      frequencyBuffer = new Uint8Array(analyser.frequencyBinCount);
-
-      if (permWarningEl) permWarningEl.classList.remove('show');
-      setAssistantState('listening');
     } catch (err) {
       console.warn('Microphone access not granted or unavailable:', err);
       if (permWarningEl) permWarningEl.classList.add('show');
@@ -289,54 +320,114 @@ const DhruvaVoiceOrb = (() => {
     }
   };
 
-  // Stop Microphone
+  const playAudioChunk = (arrayBuffer) => {
+      if (!playAudioContext || playAudioContext.state === 'closed') return;
+      
+      setAssistantState('speaking', 'Dhruva is speaking...');
+      
+      let pcmData = new Int16Array(arrayBuffer);
+      let audioBuffer = playAudioContext.createBuffer(1, pcmData.length, 24000);
+      let channelData = audioBuffer.getChannelData(0);
+      
+      for (let i = 0; i < pcmData.length; i++) {
+          channelData[i] = pcmData[i] / 32768.0;
+      }
+
+      let source = playAudioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(playAudioContext.destination);
+
+      // Prevent gap or drift if previous playback ended a while ago
+      if (playAudioContext.currentTime > nextPlayTime + 0.3) {
+          nextPlayTime = playAudioContext.currentTime;
+      }
+
+      let scheduleTime = Math.max(playAudioContext.currentTime, nextPlayTime);
+      source.start(scheduleTime);
+      nextPlayTime = scheduleTime + audioBuffer.duration;
+
+      source.onended = () => {
+          // If this is the last queued chunk, switch back to listening
+          if (playAudioContext && playAudioContext.currentTime >= nextPlayTime - 0.08) {
+              setAssistantState('listening');
+          }
+      };
+  };
+
+  const handleBackendEvent = (event) => {
+      if (event.type === 'transcript') {
+          if (event.role === 'user' && transcriptEl) {
+              transcriptEl.textContent = `"${event.text}"`;
+          } else if (event.role === 'gemini' && responseEl) {
+              responseEl.textContent = event.text;
+          }
+      } else if (event.type === 'interrupted') {
+          console.log("[Interrupted] Flushing audio buffer");
+          if (playAudioContext) nextPlayTime = playAudioContext.currentTime;
+      } else if (event.type === 'tool_call') {
+          setAssistantState('thinking', `Executing ${event.name}...`);
+      } else if (event.type === 'navigation') {
+          handleVoiceNavigation(event.data);
+      } else if (event.type === 'error') {
+          if (responseEl) {
+              responseEl.textContent = event.message.includes("quota") 
+                  ? "Gemini Live API quota exceeded. Please wait a moment." 
+                  : `Voice Error: ${event.message}`;
+          }
+      }
+  };
+
+  // Stop Microphone & WS
   const stopMicrophone = () => {
+    if (processor) {
+      try { processor.disconnect(); } catch (e) {}
+    }
     if (microphone && microphone.mediaStream) {
-      microphone.mediaStream.getTracks().forEach(track => track.stop());
+      try { microphone.mediaStream.getTracks().forEach(track => track.stop()); } catch (e) {}
     }
     if (audioContext && audioContext.state !== 'closed') {
-      audioContext.close();
+      try { audioContext.close(); } catch (e) {}
     }
+    if (playAudioContext && playAudioContext.state !== 'closed') {
+      try { playAudioContext.close(); } catch (e) {}
+    }
+    if (ws) {
+      try { ws.close(); } catch (e) {}
+    }
+    
     audioContext = null;
+    playAudioContext = null;
     microphone = null;
     analyser = null;
+    processor = null;
+    ws = null;
   };
 
   // Toggle Microphone Mute
   const toggleMicrophone = () => {
     isMuted = !isMuted;
-    micBtnEl.classList.toggle('muted', isMuted);
+    if (micBtnEl) micBtnEl.classList.toggle('muted', isMuted);
     if (isMuted) {
-      stopRecognition();
       setAssistantState('idle', 'Microphone Muted');
       if (pitchBadgeEl) pitchBadgeEl.textContent = '🎵 Muted';
     } else {
-      startRecognition();
       setAssistantState('listening');
     }
   };
 
-  // High-Precision Autocorrelation Pitch Detection Algorithm
+  // Autocorrelation Pitch Detection
   const detectPitchFromBuffer = (buffer, sampleRate) => {
     let size = buffer.length;
     let rms = 0;
-
-    // Calculate Root Mean Square (RMS) volume
     for (let i = 0; i < size; i++) {
       let val = buffer[i];
       rms += val * val;
     }
     rms = Math.sqrt(rms / size);
+    if (rms < 0.015) return { pitchHz: 0, confidence: 0, rms };
 
-    // If signal is too quiet / background noise, return no pitch
-    if (rms < 0.015) {
-      return { pitchHz: 0, confidence: 0, rms };
-    }
-
-    // Autocorrelation Search Range (min 65Hz to max 1000Hz)
-    let minPeriod = Math.floor(sampleRate / 1000); // ~44 samples at 44.1kHz
-    let maxPeriod = Math.floor(sampleRate / 65);   // ~680 samples at 44.1kHz
-
+    let minPeriod = Math.floor(sampleRate / 1000);
+    let maxPeriod = Math.floor(sampleRate / 65);
     let bestCorrelation = 0;
     let bestPeriod = -1;
     let correlations = new Float32Array(maxPeriod + 1);
@@ -347,14 +438,12 @@ const DhruvaVoiceOrb = (() => {
         sum += buffer[i] * buffer[i + period];
       }
       correlations[period] = sum;
-
       if (sum > bestCorrelation) {
         bestCorrelation = sum;
         bestPeriod = period;
       }
     }
 
-    // Parabolic Interpolation for Sub-Sample Peak Pitch Accuracy
     if (bestPeriod > minPeriod && bestPeriod < maxPeriod) {
       let alpha = correlations[bestPeriod - 1];
       let beta = correlations[bestPeriod];
@@ -362,188 +451,82 @@ const DhruvaVoiceOrb = (() => {
       let delta = (alpha - gamma) / (2 * (alpha - 2 * beta + gamma));
       let exactPeriod = bestPeriod + delta;
       let pitchHz = sampleRate / exactPeriod;
-
-      let confidence = bestCorrelation / (rms * rms * size);
-      return { pitchHz, confidence, rms };
+      return { pitchHz, confidence: bestCorrelation / correlations[0], rms };
     }
-
     return { pitchHz: 0, confidence: 0, rms };
   };
 
-  // Web Speech Recognition (Speech-to-Text)
-  const initSpeechRecognition = () => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      console.info('SpeechRecognition API not available in this browser; fallback mode active.');
+  // Process Quick Suggestion text through WebSocket
+  const handleUserInput = (inputText) => {
+    if (!inputText || !inputText.trim() || !ws || ws.readyState !== WebSocket.OPEN) return;
+    setAssistantState('thinking');
+    if (transcriptEl) transcriptEl.textContent = `"${inputText}"`;
+    ws.send(inputText);
+  };
+
+  // Handle Dynamic UI Navigation
+  const handleVoiceNavigation = (navAction) => {
+    if (!navAction) return;
+
+    const isInsidePages = window.location.pathname.includes('/pages/');
+
+    if (navAction.action === 'open_modal' && navAction.place) {
+      setTimeout(() => {
+        close();
+        if (typeof DhruvaComponents !== 'undefined' && DhruvaComponents.openPlaceDetailsModal) {
+          DhruvaComponents.openPlaceDetailsModal(navAction.place.id);
+        }
+      }, 1200);
       return;
     }
 
-    recognition = new SpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = 'en-IN';
-
-    recognition.onresult = (event) => {
-      let interim = '';
-      let final = '';
-
-      for (let i = event.resultIndex; i < event.results.length; ++i) {
-        if (event.results[i].isFinal) {
-          final += event.results[i][0].transcript;
-        } else {
-          interim += event.results[i][0].transcript;
-        }
-      }
-
-      const text = final || interim;
-      if (text && transcriptEl) {
-        transcriptEl.textContent = `"${text}"`;
-      }
-
-      if (final) {
-        handleUserInput(final);
-      }
-    };
-
-    recognition.onerror = (e) => {
-      if (e.error !== 'no-speech') {
-        console.warn('Speech recognition status:', e.error);
-      }
-    };
-
-    recognition.onend = () => {
-      if (isOpen && !isMuted && isRecognizing) {
-        try { recognition.start(); } catch (e) {}
-      }
-    };
-  };
-
-  const startRecognition = () => {
-    if (recognition && !isRecognizing) {
-      try {
-        recognition.start();
-        isRecognizing = true;
-      } catch (e) {}
+    let targetUrl = null;
+    if (navAction.screen === 'itinerary' || navAction.action === 'view_itinerary') {
+      targetUrl = isInsidePages ? 'itinerary.html' : 'pages/itinerary.html';
+    } else if (navAction.screen === 'explore') {
+      const qParams = navAction.query_params || {};
+      const searchStr = new URLSearchParams(qParams).toString();
+      targetUrl = (isInsidePages ? 'explore.html' : 'pages/explore.html') + (searchStr ? '?' + searchStr : '');
+    } else if (navAction.screen === 'trip_planner' || navAction.screen === 'trip') {
+      targetUrl = isInsidePages ? 'trip.html' : 'pages/trip.html';
+    } else if (navAction.screen === 'home') {
+      targetUrl = isInsidePages ? '../index.html' : 'index.html';
     }
-  };
 
-  const stopRecognition = () => {
-    if (recognition && isRecognizing) {
-      try {
-        recognition.stop();
-        isRecognizing = false;
-      } catch (e) {}
-    }
-  };
-
-  // Process User Input & Respond
-  const handleUserInput = (inputText) => {
-    if (!inputText || !inputText.trim()) return;
-
-    setAssistantState('thinking');
-    transcriptEl.textContent = `"${inputText}"`;
-
-    setTimeout(() => {
-      const lower = inputText.toLowerCase();
-      let matched = culturalResponses.find(item => 
-        item.keywords.some(k => lower.includes(k))
-      );
-
-      if (!matched) {
-        matched = {
-          reply: `I heard "${inputText}". DHRUVA can guide you to explore sacred temples, ancient forts, or synthesize a customized multi-day cultural plan.`,
-          actionUrl: 'pages/explore.html'
-        };
-      }
-
-      responseEl.textContent = matched.reply;
-      speakResponse(matched.reply, matched.actionUrl);
-    }, 700);
-  };
-
-  // Text-to-Speech Vocalization
-  const speakResponse = (text, redirectUrl = null) => {
-    setAssistantState('speaking');
-
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 1.0;
-      utterance.pitch = 1.05;
-
-      const voices = window.speechSynthesis.getVoices();
-      const preferredVoice = voices.find(v => v.lang.includes('en-IN') || v.name.includes('India') || v.name.includes('Natural') || v.lang.includes('en-GB'));
-      if (preferredVoice) utterance.voice = preferredVoice;
-
-      utterance.onend = () => {
-        setAssistantState('listening');
-        if (redirectUrl) {
-          setTimeout(() => {
+    if (targetUrl) {
+        setTimeout(() => {
             close();
-            const target = redirectUrl.startsWith('pages/') ? redirectUrl : (window.location.pathname.includes('/pages/') ? redirectUrl.replace('pages/', '') : `pages/${redirectUrl}`);
-            window.location.href = target;
-          }, 1000);
-        }
-      };
-
-      utterance.onerror = () => {
-        setAssistantState('listening');
-      };
-
-      window.speechSynthesis.speak(utterance);
-    } else {
-      setTimeout(() => {
-        setAssistantState('listening');
-        if (redirectUrl) {
-          close();
-          window.location.href = window.location.pathname.includes('/pages/') ? redirectUrl.replace('pages/', '') : `pages/${redirectUrl}`;
-        }
-      }, 3500);
+            window.location.href = targetUrl;
+        }, 1200);
     }
   };
 
-  // ChatGPT-Style Pitch-Reactive Canvas Orb Engine (Silky Smooth & Aesthetic)
+  // Audio-Reactive Canvas Orb Visualizer
   let time = 0;
   const startOrbRenderLoop = () => {
     if (!canvasEl || !ctx) return;
 
     const render = () => {
       if (!isOpen) return;
-
-      // Gentle, calm time progression
       time += 0.016;
-
       let audioEnergy = 0;
 
-      // Real-time live audio processing
       if (analyser && timeDomainBuffer && !isMuted) {
         analyser.getFloatTimeDomainData(timeDomainBuffer);
-        const pitchData = detectPitchFromBuffer(timeDomainBuffer, audioContext.sampleRate);
-
-        audioEnergy = pitchData.rms * 2.8; // Gentle energy scaling
+        const pitchData = detectPitchFromBuffer(timeDomainBuffer, audioContext ? audioContext.sampleRate : 16000);
+        audioEnergy = pitchData.rms * 2.8;
 
         if (pitchData.pitchHz > 60 && pitchData.pitchHz < 900) {
           currentPitchHz = pitchData.pitchHz;
-          // Smooth damping to eliminate jitter
           smoothedPitchHz += (currentPitchHz - smoothedPitchHz) * 0.09;
-
-          // Normalized Pitch: 80Hz (Bass = 0.0) to 480Hz (High = 1.0)
           normalizedPitch += ((Math.min(Math.max((smoothedPitchHz - 80) / 400, 0), 1)) - normalizedPitch) * 0.08;
 
-          if (smoothedPitchHz < 145) {
-            pitchRegister = 'Deep Bass';
-          } else if (smoothedPitchHz < 275) {
-            pitchRegister = 'Warm Mid';
-          } else {
-            pitchRegister = 'High Register';
-          }
+          if (smoothedPitchHz < 145) pitchRegister = 'Deep Bass';
+          else if (smoothedPitchHz < 275) pitchRegister = 'Warm Mid';
+          else pitchRegister = 'High Register';
 
           if (pitchBadgeEl) {
             pitchBadgeEl.textContent = `🎵 Pitch: ${Math.round(smoothedPitchHz)} Hz • ${pitchRegister}`;
-          }
-        } else if (audioEnergy < 0.035) {
-          if (pitchBadgeEl && assistantState === 'listening') {
-            pitchBadgeEl.textContent = `🎵 Speak or Hum into Mic`;
           }
         }
       } else if (assistantState === 'speaking') {
@@ -556,20 +539,16 @@ const DhruvaVoiceOrb = (() => {
         normalizedPitch += (0.5 - normalizedPitch) * 0.08;
         if (pitchBadgeEl) pitchBadgeEl.textContent = `🎵 Synthesizing...`;
       } else {
-        // Idle calming breath
         audioEnergy = 0.05 + 0.02 * Math.sin(time * 1.2);
         if (pitchBadgeEl) pitchBadgeEl.textContent = `🎵 Ready • Tap to Speak`;
       }
 
-      // Buttery smooth volume damping
       smoothedVolume += (audioEnergy - smoothedVolume) * 0.08;
 
       const width = canvasEl.width;
       const height = canvasEl.height;
       const centerX = width / 2;
       const centerY = height / 2;
-
-      // Base radius with pleasant breathing scale for compact corner canvas
       const baseRadius = 45 + smoothedVolume * 20;
 
       ctx.clearRect(0, 0, width, height);
@@ -580,20 +559,16 @@ const DhruvaVoiceOrb = (() => {
       for (let layer = numLayers; layer >= 1; layer--) {
         ctx.beginPath();
         const layerRadius = baseRadius * (0.65 + layer * 0.22);
-        const points = 64; // High resolution vertex circle for ultra smoothness
+        const points = 64;
 
         for (let i = 0; i <= points; i++) {
           const angle = (i / points) * Math.PI * 2;
-          
-          // Harmonic superposition creating aesthetic silk-like fluid flow
           const h1 = Math.sin(angle * 2 + time * 1.2 + layer * 0.6) * 0.55;
           const h2 = Math.sin(angle * 3 - time * 0.8 + layer * 0.9) * 0.35;
           const h3 = Math.sin(angle * (3 + Math.round(normalizedPitch * 3)) + time * 1.6) * (0.2 + normalizedPitch * 0.3);
-          
           const totalDistortion = (h1 + h2 + h3);
           const rippleAmplitude = (8 + smoothedVolume * 18) * (0.7 + normalizedPitch * 0.5);
           const r = layerRadius + totalDistortion * rippleAmplitude;
-          
           const x = centerX + Math.cos(angle) * r;
           const y = centerY + Math.sin(angle) * r;
 
@@ -603,7 +578,6 @@ const DhruvaVoiceOrb = (() => {
 
         ctx.closePath();
 
-        // Soft, calmed color gradients
         const grad = ctx.createRadialGradient(
           centerX - 8 * Math.sin(time * 0.8),
           centerY - 8 * Math.cos(time * 0.8),
@@ -613,34 +587,18 @@ const DhruvaVoiceOrb = (() => {
           layerRadius * 1.25
         );
 
-        if (normalizedPitch > 0.65) {
-          // High Pitch: Ethereal champagne gold & warm solar glow
-          grad.addColorStop(0, `rgba(255, 252, 240, ${0.72 / layer})`);
-          grad.addColorStop(0.35, `rgba(224, 182, 90, ${0.50 / layer})`);
-          grad.addColorStop(0.70, `rgba(185, 130, 45, ${0.30 / layer})`);
-          grad.addColorStop(1, `rgba(35, 74, 53, 0)`);
-        } else if (normalizedPitch > 0.3) {
-          // Mid Pitch: Dhruva signature pearl green & antique gold
-          grad.addColorStop(0, `rgba(255, 253, 248, ${0.75 / layer})`);
-          grad.addColorStop(0.35, `rgba(185, 154, 91, ${0.48 / layer})`);
-          grad.addColorStop(0.75, `rgba(35, 74, 53, ${0.30 / layer})`);
-          grad.addColorStop(1, `rgba(23, 53, 37, 0)`);
-        } else {
-          // Deep Bass Pitch: Soft earthy jade & gentle bronze
-          grad.addColorStop(0, `rgba(235, 242, 233, ${0.68 / layer})`);
-          grad.addColorStop(0.40, `rgba(71, 113, 77, ${0.48 / layer})`);
-          grad.addColorStop(0.80, `rgba(23, 53, 37, ${0.32 / layer})`);
-          grad.addColorStop(1, `rgba(13, 29, 20, 0)`);
-        }
+        // Golden Brass & Temple Jade Hue
+        grad.addColorStop(0, `rgba(255, 253, 248, ${0.75 / layer})`);
+        grad.addColorStop(0.35, `rgba(185, 154, 91, ${0.48 / layer})`);
+        grad.addColorStop(0.75, `rgba(35, 74, 53, ${0.30 / layer})`);
+        grad.addColorStop(1, `rgba(23, 53, 37, 0)`);
 
         ctx.fillStyle = grad;
         ctx.fill();
       }
 
-      // Elegant Central Guiding Star Core (Calm and restrained)
-      const starScale = (1 + smoothedVolume * 0.25);
+      // Guiding Star Core
       const starSpikes = 8;
-      
       ctx.fillStyle = 'rgba(255, 253, 248, 0.92)';
       ctx.shadowColor = 'rgba(185, 154, 91, 0.5)';
       ctx.shadowBlur = 8 + smoothedVolume * 8;
@@ -648,27 +606,33 @@ const DhruvaVoiceOrb = (() => {
       ctx.beginPath();
       for (let s = 0; s < starSpikes; s++) {
         const starAngle = (s / starSpikes) * Math.PI * 2 + time * 0.25;
-        const starR = (s % 2 === 0 ? 12 : 5) * starScale;
-        const sx = centerX + Math.cos(starAngle) * starR;
-        const sy = centerY + Math.sin(starAngle) * starR;
-        if (s === 0) ctx.moveTo(sx, sy);
-        else ctx.lineTo(sx, sy);
+        const outerR = 9 + smoothedVolume * 6;
+        const innerR = 3;
+        const ox = centerX + Math.cos(starAngle) * outerR;
+        const oy = centerY + Math.sin(starAngle) * outerR;
+        const ix = centerX + Math.cos(starAngle + Math.PI / starSpikes) * innerR;
+        const iy = centerY + Math.sin(starAngle + Math.PI / starSpikes) * innerR;
+
+        if (s === 0) ctx.moveTo(ox, oy);
+        else ctx.lineTo(ox, oy);
+        ctx.lineTo(ix, iy);
       }
       ctx.closePath();
       ctx.fill();
-
       ctx.restore();
 
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    animationFrameId = requestAnimationFrame(render);
   };
 
   return {
     init,
     open,
     close,
+    toggleMicrophone,
+    resetConversation,
     handleUserInput
   };
 })();

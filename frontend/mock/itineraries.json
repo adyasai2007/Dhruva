@@ -1,379 +1,88 @@
 [
   {
-    "id": "itin-varanasi-3day",
-    "destinationId": "varanasi",
-    "title": "Sacred Kashi: Spiritual Immersion & Living Heritage",
-    "tagline": "3 Days along the Sacred Ganges, Ancient Ghats & Classical Weaving Lanes",
+    "id": "itin-bhubaneswar",
+    "destinationId": "bhubaneswar",
+    "cityId": 1,
+    "title": "Sacred Kalinga: Temples, Caves & Master Crafts of Bhubaneswar",
+    "tagline": "3 Days through 1,000 Years of Architecture, Living Shrines & Tribal Artisans",
     "totalDays": 3,
     "pace": "Comfortable & Mindful",
-    "idealAudience": "Cultural Seekers, Seniors, Families",
-    "heroImage": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=80",
+    "idealAudience": "Cultural Seekers, Seniors, Mindful Travelers",
+    "heroImage": "https://s7ap1.scene7.com/is/image/incredibleindia/lingaraj-temple-bhubaneshwar-odisha-1-attr-hero?qlt=82&ts=1742165306173",
     "days": [
       {
         "dayNumber": 1,
-        "theme": "Subah-e-Banaras & The Sacred Ganga Aarti",
+        "theme": "Sacred Sanctums & Ancient Heritage",
         "dateLabel": "Day 1",
-        "schedule": [
-          {
-            "timeSlot": "05:30 AM - 08:30 AM",
-            "period": "Morning",
-            "placeId": "dashashwamedh-ghat",
-            "title": "Subah-e-Banaras Sunrise Boat Journey",
-            "activity": "Private hand-rowed wooden boat ride from Assi Ghat to Manikarnika Ghat witnessing morning prayers, classical morning ragas, and ritual ablutions in golden sunlight.",
-            "duration": "2.5 Hours",
-            "culturalNote": "The morning sun hitting the centuries-old palace facades is a transformative experience documented by travelers since ancient times.",
-            "transition": "15 min gentle walk through riverside lanes to traditional breakfast halwai.",
-            "practicalTip": "Carry a light shawl in winter; tea vendors on boats serve ginger chai in clay kulhad cups."
-          },
-          {
-            "timeSlot": "09:00 AM - 10:30 AM",
-            "period": "Midday",
-            "placeId": null,
-            "title": "Traditional Banarasi Breakfast: Kachori Gali",
-            "activity": "Savor piping hot Bedmi Kachori with spicy aloo subzi, fresh jalebis fried in desi ghee, and creamy malai lassi in Chowk.",
-            "duration": "1.5 Hours",
-            "culturalNote": "Banarasi breakfast culture is a leisurely social ritual enjoyed by local scholars and residents alike.",
-            "transition": "10 min walk to Kashi Vishwanath Corridor.",
-            "practicalTip": "Netram or Ram Bhandar are iconic century-old establishments."
-          },
-          {
-            "timeSlot": "11:00 AM - 01:30 PM",
-            "period": "Afternoon",
-            "placeId": "kashi-vishwanath-corridor",
-            "title": "Kashi Vishwanath Temple & Corridor Darshan",
-            "activity": "Explore the grand marble corridor and sacred sanctum of the Jyotirlinga, admiring the gilded spire and heritage architecture.",
-            "duration": "2.5 Hours",
-            "culturalNote": "Believed to be the cosmic axis of spiritual enlightenment in Vedic cosmology.",
-            "transition": "Short electric rickshaw back to hotel for restful afternoon break.",
-            "practicalTip": "Leave smartphones in authorized locker rooms at Gate 4."
-          },
-          {
-            "timeSlot": "05:30 PM - 08:00 PM",
-            "period": "Evening",
-            "placeId": "dashashwamedh-ghat",
-            "title": "Grand Dashashwamedh Ghat Ganga Aarti",
-            "activity": "Reserved comfortable boat seating to witness the choreographed evening Aarti ritual with tiered brass lamps, conch shell blasts, and floating floral diyas.",
-            "duration": "2.5 Hours",
-            "culturalNote": "A living Vedic ceremony that has taken place uninterrupted every single evening for generations.",
-            "transition": "Return stroll to hotel or ghat-side sitar recital.",
-            "practicalTip": "Reserve a center boat 1 hour before twilight for the best photographic angle."
-          }
-        ]
+        "schedule": []
       },
       {
         "dayNumber": 2,
-        "theme": "The Path of Enlightenment at Sarnath & Master Weavers",
+        "theme": "Living Traditions & Craft Quarters",
         "dateLabel": "Day 2",
-        "schedule": [
-          {
-            "timeSlot": "09:00 AM - 12:30 PM",
-            "period": "Morning",
-            "placeId": "sarnath-dhamek-stupa",
-            "title": "Sarnath Archaeological Park & Museum",
-            "activity": "Walk among the ruins of Dhamek Stupa where Lord Buddha delivered his first sermon. Visit the Museum housing the original Ashokan Lion Capital.",
-            "duration": "3.5 Hours",
-            "culturalNote": "The birthplace of the Buddhist Sangha and symbol of India's philosophical renaissance under Emperor Ashoka.",
-            "transition": "25 min comfortable AC car ride back to old city.",
-            "practicalTip": "Museum entry ticket includes the excavated Buddhist monastery compound."
-          },
-          {
-            "timeSlot": "01:00 PM - 02:30 PM",
-            "period": "Midday",
-            "placeId": null,
-            "title": "Satvik Banarasi Thali Luncheon",
-            "activity": "Experience an authentic Sattvic lunch prepared without onion and garlic, featuring local seasonal vegetables, lentils, and fragrant baati.",
-            "duration": "1.5 Hours",
-            "culturalNote": "Culinary philosophy centered on pure flavors and digestive wellness.",
-            "transition": "10 min rickshaw ride to Madanpura craft district.",
-            "practicalTip": "Try the thali at Apsara or Cantonment heritage restaurants."
-          },
-          {
-            "timeSlot": "03:30 PM - 06:00 PM",
-            "period": "Afternoon",
-            "placeId": "madanpura-silk-weaving",
-            "title": "Banarasi Silk Weaving & Heritage Craft Walk",
-            "activity": "Visit traditional weaver havelis in Madanpura. Observe the intricate Jacquard loom operation and purchase authentic GI-tagged silk sarees directly from master artisans.",
-            "duration": "2.5 Hours",
-            "culturalNote": "Textile craft passed down through families since the Vedic era, celebrated for pure gold zari brocade.",
-            "transition": "15 min ride to Assi Ghat.",
-            "practicalTip": "Ask the weaver to explain the difference between Kadhwa and Kadiyal weaving techniques."
-          },
-          {
-            "timeSlot": "06:30 PM - 08:30 PM",
-            "period": "Evening",
-            "placeId": null,
-            "title": "Assi Ghat Cultural Recital & Herbal Chai",
-            "activity": "Listen to classical Hindustani Dhrupad vocal or sitar performance at Assi Ghat cultural stage accompanied by hot lemon-ginger herbal tea.",
-            "duration": "2 Hours",
-            "culturalNote": "Banaras is a UNESCO City of Music, birthplace of legendary maestros like Ustad Bismillah Khan and Pandit Ravi Shankar.",
-            "transition": "Evening leisure walk along the promenade.",
-            "practicalTip": "Open air seating with comfortable rugs provided."
-          }
-        ]
+        "schedule": []
       },
       {
         "dayNumber": 3,
-        "theme": "Hidden Havelis, Sanskrit Scholars & Culinary Heritage",
+        "theme": "Sculptural Marvels & Coastal Reverie",
         "dateLabel": "Day 3",
-        "schedule": [
-          {
-            "timeSlot": "07:30 AM - 10:00 AM",
-            "period": "Morning",
-            "placeId": null,
-            "title": "Heritage Haveli & Ancient Alleyway Walk",
-            "activity": "Guided cultural walk through the hidden labyrinths of Pucca Mahal, visiting traditional wrestling akharas, ancient Sanskrit libraries, and sacred Kund water tanks.",
-            "duration": "2.5 Hours",
-            "culturalNote": "The architectural layout of Kashi's galis is designed to provide natural shade and cooling throughout the seasons.",
-            "transition": "Pause at Blue Lassi shop for a sweet curd refreshment.",
-            "practicalTip": "Wear walking shoes with good grip on polished stone flagstones."
-          },
-          {
-            "timeSlot": "11:00 AM - 01:00 PM",
-            "period": "Midday",
-            "placeId": null,
-            "title": "Bharat Kala Bhavan Museum (BHU Campus)",
-            "activity": "Visit the university campus art museum housing rare Mughal miniature paintings, ancient Chola bronzes, and Buddhist terracotta sculptures.",
-            "duration": "2 Hours",
-            "culturalNote": "One of India's richest university art and archaeological collections.",
-            "transition": "Drive to lunch in Lanka cantonment.",
-            "practicalTip": "The green tree-lined campus of Banaras Hindu University offers a restful environment."
-          },
-          {
-            "timeSlot": "04:30 PM - 07:00 PM",
-            "period": "Evening",
-            "placeId": null,
-            "title": "Twilight Boat Cruise & Banarasi Paan Farewell",
-            "activity": "Relaxing twilight boat ride across all 84 ghats from Ravidas Ghat to Rajghat. End the journey tasting the famous aromatic Maghai Banarasi Paan.",
-            "duration": "2.5 Hours",
-            "culturalNote": "Paan chewing in Banaras is an art form elevated by betel leaf connoisseurs.",
-            "transition": "Transfer to railway station or airport.",
-            "practicalTip": "Keshav Tambool Bhandar near Lanka serves the quintessential silver-foil Banarasi paan."
-          }
-        ]
+        "schedule": []
       }
     ]
   },
   {
-    "id": "itin-jaipur-3day",
-    "destinationId": "jaipur",
-    "title": "Royal Rajasthan: Forts, Palaces & Master Crafts",
-    "tagline": "3 Days in the Pink City experiencing Amber Fortress, Astronomical Marvels & Vibrant Bazaars",
+    "id": "itin-puri",
+    "destinationId": "puri",
+    "cityId": 2,
+    "title": "Eternal Char Dham: Coastal Sanctums & The Sun Temple",
+    "tagline": "3 Days along Sacred Bay of Bengal Waters, Jagannath Mahaprasad & Konark Chariot",
     "totalDays": 3,
-    "pace": "Moderate & Immersive",
-    "idealAudience": "Culture Lovers, Photographers, Families",
-    "heroImage": "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=80",
+    "pace": "Comfortable & Mindful",
+    "idealAudience": "Cultural Seekers, Seniors, Mindful Travelers",
+    "heroImage": "https://s7ap1.scene7.com/is/image/incredibleindia/konark-temple-puri-odisha-1-attr-hero?qlt=82&ts=1726674697395",
     "days": [
       {
         "dayNumber": 1,
-        "theme": "The Crown of Amer & Royal Mirror Palaces",
+        "theme": "Sacred Sanctums & Ancient Heritage",
         "dateLabel": "Day 1",
-        "schedule": [
-          {
-            "timeSlot": "08:30 AM - 12:30 PM",
-            "period": "Morning",
-            "placeId": "amer-fort-jaipur",
-            "title": "Amer Fort & Sheesh Mahal Tour",
-            "activity": "Explore the magnificent hilltop royal chambers of Diwan-e-Aam, Sukh Niwas, and the glittering Sheesh Mahal mirror palace overlooking Maota Lake.",
-            "duration": "4 Hours",
-            "culturalNote": "Masterpiece of Rajput defensive architecture and Mughal-influenced court aesthetics.",
-            "transition": "15 min drive to Jal Mahal photo viewpoint.",
-            "practicalTip": "Hire a government-licensed guide at the Suraj Pol gate."
-          },
-          {
-            "timeSlot": "01:00 PM - 02:30 PM",
-            "period": "Midday",
-            "placeId": null,
-            "title": "Authentic Rajasthani Lunch: Dal Baati Churma",
-            "activity": "Feast on roasted wheat baatis dipped in desi ghee, panchmel dal, spicy garlic chutney, and sweet crushed churma.",
-            "duration": "1.5 Hours",
-            "culturalNote": "The quintessential royal and warrior meal of arid Rajasthan.",
-            "transition": "20 min car ride to Pink City center.",
-            "practicalTip": "LMB (Laxmi Misthan Bhandar) in Johari Bazaar or 1135 AD at Amer Fort."
-          },
-          {
-            "timeSlot": "03:30 PM - 06:30 PM",
-            "period": "Afternoon",
-            "placeId": "hawa-mahal-jaipur",
-            "title": "Hawa Mahal & City Palace Royal Quarters",
-            "activity": "Marvel at the 953 lattice windows of Palace of Winds and stroll the royal courtyards, textiles gallery, and arms museum of the Maharaja's City Palace.",
-            "duration": "3 Hours",
-            "culturalNote": "Jaipur was planned in 1727 by Maharaja Sawai Jai Singh II with architect Vidyadhar Bhattacharya.",
-            "transition": "Short walk into Bapu Bazaar.",
-            "practicalTip": "Buy the composite entry ticket covering both Hawa Mahal and Jantar Mantar."
-          }
-        ]
+        "schedule": []
       },
       {
         "dayNumber": 2,
-        "theme": "Astronomy, Blue Pottery & Heritage Bazaars",
+        "theme": "Living Traditions & Craft Quarters",
         "dateLabel": "Day 2",
-        "schedule": [
-          {
-            "timeSlot": "09:00 AM - 11:30 AM",
-            "period": "Morning",
-            "placeId": null,
-            "title": "Jantar Mantar UNESCO Astronomical Observatory",
-            "activity": "Witness the world's largest stone sundial (Samrat Yantra) accurate to within two seconds, and nineteen ancient astronomical architectural instruments.",
-            "duration": "2.5 Hours",
-            "culturalNote": "A testament to 18th-century Indian scientific innovation and cosmic measurement.",
-            "transition": "10 min walk to Johari Bazaar gem workshops.",
-            "practicalTip": "Visit in mid-morning when the sun casts sharp geometric shadows on the stone dials."
-          },
-          {
-            "timeSlot": "12:00 PM - 03:00 PM",
-            "period": "Midday",
-            "placeId": null,
-            "title": "Block Printing & Sanganeri Craft Experience",
-            "activity": "Visit artisan studio in Sanganer/Civil Lines to try hand-carved teakwood block printing with natural vegetable dyes on fine mulmul cotton.",
-            "duration": "3 Hours",
-            "culturalNote": "Sanganeri and Bagru block prints represent centuries of community dye mastery.",
-            "transition": "Drive to Nahargarh Fort for sunset.",
-            "practicalTip": "Pick up genuine certified hand-block tablecloths and quilts."
-          },
-          {
-            "timeSlot": "05:00 PM - 07:30 PM",
-            "period": "Evening",
-            "placeId": null,
-            "title": "Sunset View from Nahargarh Fort Ramparts",
-            "activity": "Watch the glowing amber sunset over the entire Pink City skyline from the lofty stone battlements of Nahargarh Fort.",
-            "duration": "2.5 Hours",
-            "culturalNote": "The hilltop fortification that guarded the northern defenses of the Jaipur state.",
-            "transition": "Dinner in a heritage courtyard restaurant.",
-            "practicalTip": "Padao open terrace cafe offers panoramic city views."
-          }
-        ]
+        "schedule": []
       },
       {
         "dayNumber": 3,
-        "theme": "Sacred Temples, Stepwells & Royal Cenotaphs",
+        "theme": "Sculptural Marvels & Coastal Reverie",
         "dateLabel": "Day 3",
-        "schedule": [
-          {
-            "timeSlot": "08:30 AM - 11:00 AM",
-            "period": "Morning",
-            "placeId": null,
-            "title": "Panna Meena Ka Kund Stepwell & Govind Dev Ji",
-            "activity": "Admire the mesmerizing symmetrical zigzag stairs of the 16th-century Panna Meena stepwell and attend morning aarti at Govind Dev Ji Temple.",
-            "duration": "2.5 Hours",
-            "culturalNote": "Ancient Indian hydraulic engineering combined with sacred geometry.",
-            "transition": "15 min drive to Gaitore Royal Cenotaphs.",
-            "practicalTip": "A quiet, peaceful morning destination ideal for photography."
-          },
-          {
-            "timeSlot": "11:30 AM - 02:00 PM",
-            "period": "Midday",
-            "placeId": null,
-            "title": "Gaitore Ki Chhatriyan & Albert Hall Museum",
-            "activity": "Stroll amidst delicately carved marble cenotaphs of the Kachwaha kings in a tranquil valley, followed by Indo-Saracenic Albert Hall Museum.",
-            "duration": "2.5 Hours",
-            "culturalNote": "Showcases the pinnacle of Rajput stone-carving artistry under open skies.",
-            "transition": "Lunch break in C-Scheme.",
-            "practicalTip": " Albert Hall looks spectacularly illuminated in the evening."
-          },
-          {
-            "timeSlot": "04:00 PM - 07:00 PM",
-            "period": "Evening",
-            "placeId": null,
-            "title": "Artisanal Bazaar Walk & Ghewar Tasting",
-            "activity": "Explore the vibrant spice, lac bangle, and brassware stalls of Kishanpole and Tripolia Bazaars. Conclude tasting traditional honeycomb Ghewar.",
-            "duration": "3 Hours",
-            "culturalNote": "Jaipur's bazaars have remained organized by guild and craft since the 18th century.",
-            "transition": "Farewell transfer.",
-            "practicalTip": "Rawat Mishthan Bhandar for fresh Pyaaz Kachori and Mawa Ghewar."
-          }
-        ]
+        "schedule": []
       }
     ]
   },
   {
-    "id": "itin-hampi-2day",
-    "destinationId": "hampi",
-    "title": "The Golden Empire: Ruins, Chariots & Sacred Boulder Hills",
-    "tagline": "2 Days across the UNESCO World Heritage monuments of the Vijayanagara Empire",
+    "id": "itin-cuttack",
+    "destinationId": "cuttack",
+    "cityId": 3,
+    "title": "The Millennium Silver City: River Citadel & Maritime Legacies",
+    "tagline": "2 Days across Ancient Fortifications, River Island Shrines & Silver Filigree",
     "totalDays": 2,
-    "pace": "Active & Immersive",
-    "idealAudience": "History Enthusiasts, Photographers, Architecture Lovers",
-    "heroImage": "https://images.unsplash.com/photo-1600100397608-f010f443b71a?auto=format&fit=crop&w=1200&q=80",
+    "pace": "Comfortable & Mindful",
+    "idealAudience": "Cultural Seekers, Seniors, Mindful Travelers",
+    "heroImage": "https://s7ap1.scene7.com/is/image/incredibleindia/barabati-fort-cuttack-odisha-1-attr-hero?qlt=82&ts=1726663491030",
     "days": [
       {
         "dayNumber": 1,
-        "theme": "The Sacred Center & Vittala Stone Chariot",
+        "theme": "Sacred Sanctums & Ancient Heritage",
         "dateLabel": "Day 1",
-        "schedule": [
-          {
-            "timeSlot": "06:30 AM - 09:30 AM",
-            "period": "Morning",
-            "placeId": "vittala-temple-hampi",
-            "title": "Vijaya Vittala Temple Complex & Stone Chariot",
-            "activity": "Morning excursion to the legendary Stone Chariot and Ranga Mandapa with musical stone pillars in soft dawn light.",
-            "duration": "3 Hours",
-            "culturalNote": "Peak of 16th-century Vijayanagara Dravidian temple craftsmanship.",
-            "transition": "Short walk along the river path to King's Balance.",
-            "practicalTip": "Electric cart shuttle available from parking."
-          },
-          {
-            "timeSlot": "10:30 AM - 01:00 PM",
-            "period": "Midday",
-            "placeId": "virupaksha-temple-hampi",
-            "title": "Virupaksha Temple & Ancient Hampi Bazaar",
-            "activity": "Visit the 7th-century sacred sanctum, witness temple elephant blessings, and view the ancient bazaar stone colonnades.",
-            "duration": "2.5 Hours",
-            "culturalNote": "Continuously active worship site dedicated to Lord Shiva for over 1,300 years.",
-            "transition": "Traditional South Indian lunch in Kamalapur.",
-            "practicalTip": "Observe the pinhole camera effect in the inner sanctum wall."
-          },
-          {
-            "timeSlot": "04:30 PM - 06:45 PM",
-            "period": "Evening",
-            "placeId": null,
-            "title": "Sunset from Hemakuta Hill & Monolithic Ganesha",
-            "activity": "Gentle climb up Hemakuta Hill dotted with pre-Vijayanagara triple-chamber shrines. Watch panoramic golden sunset over boulder hills.",
-            "duration": "2.25 Hours",
-            "culturalNote": "Mythological setting of the wedding of Shiva and Pampa (Parvati).",
-            "transition": "Walk down to Sasivekalu Ganesha statue.",
-            "practicalTip": "Wear grippy rubber-soled footwear on smooth granite slopes."
-          }
-        ]
+        "schedule": []
       },
       {
         "dayNumber": 2,
-        "theme": "The Royal Center & Coracle River Crossing",
+        "theme": "Living Traditions & Craft Quarters",
         "dateLabel": "Day 2",
-        "schedule": [
-          {
-            "timeSlot": "08:30 AM - 11:30 AM",
-            "period": "Morning",
-            "placeId": null,
-            "title": "Royal Enclosure, Stepped Tank & Lotus Mahal",
-            "activity": "Explore the Mahanavami Dibba platform, geometric Pushkarini stepped tank, Zenana enclosure, Lotus Mahal, and the Elephant Stables.",
-            "duration": "3 Hours",
-            "culturalNote": "Fascinating blend of Islamic arch architecture and Hindu stonework (Indo-Islamic synthesis).",
-            "transition": "Short drive to Tungabhadra riverbanks.",
-            "practicalTip": "The symmetrical stepped tank has an active stone aqueduct system."
-          },
-          {
-            "timeSlot": "12:00 PM - 02:30 PM",
-            "period": "Midday",
-            "placeId": null,
-            "title": "Traditional Banana Leaf Meals & Pomegranate Juice",
-            "activity": "Enjoy piping hot rice, sambar, rasam, kootu, and coconut payasam served on fresh banana leaf.",
-            "duration": "1.5 Hours",
-            "culturalNote": "Authentic North Karnataka rural cuisine with jowar rotis and spicy peanut chutneys.",
-            "transition": "Transfer to Anegundi river bank.",
-            "practicalTip": "Mango Tree or local family-run eateries in Kamalapura."
-          },
-          {
-            "timeSlot": "04:00 PM - 06:30 PM",
-            "period": "Evening",
-            "placeId": null,
-            "title": "Tungabhadra Coracle Boat Ride & Anegundi Village",
-            "activity": "Glide across the river in a traditional round reed coracle boat. Visit the ancient village of Anegundi and artisan banana fiber crafts.",
-            "duration": "2.5 Hours",
-            "culturalNote": "Anegundi is identified with Kishkindha, the monkey kingdom in the epic Ramayana.",
-            "transition": "Farewell sunset reflection.",
-            "practicalTip": "Life jackets provided by licensed coracle boat operators."
-          }
-        ]
+        "schedule": []
       }
     ]
   }

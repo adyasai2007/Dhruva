@@ -284,8 +284,12 @@
   <script src="../js/voice-orb.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
-      let allDestinations = await DhruvaApp.fetchMockData('destinations.json');
-      let allPlaces = await DhruvaApp.fetchMockData('places.json');
+      let apiDest = await DhruvaApp.apiGet('/api/cities');
+      let mockDestinations = await DhruvaApp.fetchMockData('destinations.json');
+      let allDestinations = (apiDest && Array.isArray(apiDest) && apiDest.length > 0) ? mockDestinations : mockDestinations;
+
+      let apiPlaces = await DhruvaApp.apiGet('/api/places');
+      let allPlaces = (apiPlaces && Array.isArray(apiPlaces) && apiPlaces.length > 0) ? apiPlaces : await DhruvaApp.fetchMockData('places.json');
       let allEvents = await DhruvaApp.fetchMockData('events.json');
       window._cachedPlaces = allPlaces;
 

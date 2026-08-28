@@ -271,7 +271,7 @@
         <div id="planner-step-1">
           <h2 class="font-serif" style="font-size: 1.625rem; margin-bottom: var(--space-2);">Where would you like to travel?</h2>
           <p class="text-secondary" style="font-size: var(--font-size-sm); margin-bottom: var(--space-6);">
-            Choose from India’s sacred spiritual centers, royal kingdoms, or historic coastal ports.
+            Choose from Odisha’s sacred temple capital, the coastal Char Dham of Puri, or the historic river citadel of Cuttack.
           </p>
 
           <div id="planner-destinations-grid" class="planner-destinations-selector">
@@ -281,24 +281,93 @@
 
         <!-- Step 2: Dates & Duration -->
         <div id="planner-step-2" style="display: none;">
-          <h2 class="font-serif" style="font-size: 1.625rem; margin-bottom: var(--space-2);">When and for how long are you traveling?</h2>
+          <h2 class="font-serif" style="font-size: 1.625rem; margin-bottom: var(--space-2);">When and how are you traveling?</h2>
           <p class="text-secondary" style="font-size: var(--font-size-sm); margin-bottom: var(--space-6);">
-            Select your starting date and number of days to personalize day-by-day schedules.
+            Select your travel style and exploration time budget.
           </p>
+
+          <!-- Trip Mode Selector -->
+          <div class="form-group" style="margin-bottom: var(--space-6);">
+            <label class="form-label" style="font-weight: 600;">Trip Style</label>
+            <div style="display: flex; gap: var(--space-3); margin-top: var(--space-2);">
+              <button type="button" class="btn btn-primary btn-sm" id="btn-mode-full" onclick="DhruvaPlanner.setTripMode('full_trip')">
+                🗓️ Full Trip (Multi-Day Chaining)
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-mode-quick" onclick="DhruvaPlanner.setTripMode('quick_visit')">
+                ⚡ Quick Visit (Express / Limited Time)
+              </button>
+            </div>
+          </div>
 
           <div class="form-group">
             <label class="form-label" for="planner-start-date">Approximate Start Date</label>
             <input type="date" id="planner-start-date" class="form-input" style="max-width: 320px;">
           </div>
 
-          <div class="form-group" style="margin-top: var(--space-6);">
-            <label class="form-label">How many days will you spend exploring?</label>
+          <!-- Full Trip Duration -->
+          <div id="full-trip-duration-group" class="form-group" style="margin-top: var(--space-6);">
+            <label class="form-label" style="font-weight: 600;">How many days will you spend exploring?</label>
             <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-2);">
-              <button type="button" class="btn btn-secondary btn-sm" data-duration-days="1">1 Day (Glimpse)</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-duration-days="1">1 Day</button>
               <button type="button" class="btn btn-secondary btn-sm" data-duration-days="2">2 Days (Weekend)</button>
               <button type="button" class="btn btn-secondary btn-sm active" data-duration-days="3">3 Days (Classic)</button>
               <button type="button" class="btn btn-secondary btn-sm" data-duration-days="4">4 Days (Deep Dive)</button>
-              <button type="button" class="btn btn-secondary btn-sm" data-duration-days="5">5+ Days (Immersive)</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-duration-days="5">5 Days (Extended)</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-duration-days="7">7 Days (Week)</button>
+            </div>
+
+            <!-- Custom Days Numeric Stepper -->
+            <div id="custom-days-container" style="margin-top: var(--space-4); display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;">
+              <label for="planner-custom-days-input" style="font-size: var(--font-size-sm); color: var(--color-text-secondary); font-weight: 500;">
+                Or enter custom days:
+              </label>
+              <div style="display: inline-flex; align-items: center; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); overflow: hidden; box-shadow: var(--shadow-sm);">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="DhruvaPlanner.adjustDays(-1)" style="border: none; border-radius: 0; padding: 6px 14px; font-size: 1.2rem; line-height: 1; cursor: pointer;" title="Decrease days">−</button>
+                <input type="number" id="planner-custom-days-input" min="1" max="30" value="3" style="width: 64px; text-align: center; border: none; font-weight: 700; font-size: 1rem; color: var(--color-primary-dark); background: transparent; padding: 4px 0;" oninput="DhruvaPlanner.setCustomDays(this.value)">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="DhruvaPlanner.adjustDays(1)" style="border: none; border-radius: 0; padding: 6px 14px; font-size: 1.2rem; line-height: 1; cursor: pointer;" title="Increase days">+</button>
+              </div>
+              <span style="font-size: var(--font-size-xs); color: var(--color-text-muted);">Days (1 - 30 days customizable)</span>
+            </div>
+          </div>
+
+          <!-- Quick Visit Duration -->
+          <div id="quick-visit-duration-group" class="form-group" style="margin-top: var(--space-6); display: none;">
+            <label class="form-label" style="font-weight: 600;">Available Exploration Time Budget</label>
+            <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-2);">
+              <button type="button" class="btn btn-secondary btn-sm" data-quick-minutes="120" onclick="DhruvaPlanner.setQuickMinutes(120)">2 Hours (120 min)</button>
+              <button type="button" class="btn btn-secondary btn-sm active" data-quick-minutes="240" onclick="DhruvaPlanner.setQuickMinutes(240)">4 Hours (240 min)</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-quick-minutes="360" onclick="DhruvaPlanner.setQuickMinutes(360)">6 Hours (360 min)</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-quick-minutes="480" onclick="DhruvaPlanner.setQuickMinutes(480)">8 Hours (480 min)</button>
+            </div>
+
+            <!-- Custom Hours Numeric Stepper -->
+            <div id="custom-quick-container" style="margin-top: var(--space-4); display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;">
+              <label for="planner-custom-hours-input" style="font-size: var(--font-size-sm); color: var(--color-text-secondary); font-weight: 500;">
+                Or enter custom hours:
+              </label>
+              <div style="display: inline-flex; align-items: center; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); overflow: hidden; box-shadow: var(--shadow-sm);">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="DhruvaPlanner.adjustHours(-1)" style="border: none; border-radius: 0; padding: 6px 14px; font-size: 1.2rem; line-height: 1; cursor: pointer;" title="Decrease hours">−</button>
+                <input type="number" id="planner-custom-hours-input" min="1" max="14" value="4" style="width: 64px; text-align: center; border: none; font-weight: 700; font-size: 1rem; color: var(--color-primary-dark); background: transparent; padding: 4px 0;" oninput="DhruvaPlanner.setCustomHours(this.value)">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="DhruvaPlanner.adjustHours(1)" style="border: none; border-radius: 0; padding: 6px 14px; font-size: 1.2rem; line-height: 1; cursor: pointer;" title="Increase hours">+</button>
+              </div>
+              <span style="font-size: var(--font-size-xs); color: var(--color-text-muted);">Hours (1 - 14 hours customizable)</span>
+            </div>
+          </div>
+
+          <!-- Daily Exploration Window (Start & End Time) -->
+          <div style="margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px dashed var(--color-border);">
+            <label class="form-label" style="font-weight: 600; font-size: var(--font-size-sm); margin-bottom: var(--space-2);">
+              Daily Exploration Window
+            </label>
+            <div style="display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: var(--space-2);">
+                <span style="font-size: var(--font-size-xs); color: var(--color-text-secondary);">Start Time:</span>
+                <input type="time" id="planner-start-time" class="form-input" value="08:30" style="max-width: 130px; padding: 6px 10px;" onchange="DhruvaPlanner.setTimeWindow('start', this.value)">
+              </div>
+              <div style="display: flex; align-items: center; gap: var(--space-2);">
+                <span style="font-size: var(--font-size-xs); color: var(--color-text-secondary);">End Time:</span>
+                <input type="time" id="planner-end-time" class="form-input" value="19:30" style="max-width: 130px; padding: 6px 10px;" onchange="DhruvaPlanner.setTimeWindow('end', this.value)">
+              </div>
             </div>
           </div>
         </div>
@@ -314,9 +383,9 @@
             <button type="button" class="planner-dest-option selected" data-pace-option="Comfortable & Mindful" style="text-align: left; width: 100%;">
               <div style="font-size: 1.75rem; margin-right: var(--space-2);">🌿</div>
               <div style="flex: 1;">
-                <h4 class="font-serif" style="font-size: 1.15rem;">Comfortable & Mindful (Recommended for 40-65+)</h4>
+                <h4 class="font-serif" style="font-size: 1.15rem;">Comfortable & Mindful (Senior-Friendly Pacing)</h4>
                 <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: 1.4;">
-                  1-2 key places per half-day, unhurried morning boat rides, restful midday breaks, senior-accessible routes.
+                  1-2 key sanctums per session, generous transit buffers, shaded resting periods, senior-accessible routes.
                 </p>
               </div>
             </button>
@@ -336,18 +405,18 @@
               <div style="flex: 1;">
                 <h4 class="font-serif" style="font-size: 1.15rem;">Full Immersion & Photography</h4>
                 <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: 1.4;">
-                  Dawn to dusk exploration: early sunrise photography, hidden havelis, artisan quarters, and night aartis.
+                  Dawn to dusk exploration: early morning photography, ancient caves, artisan quarters, and evening aartis.
                 </p>
               </div>
             </button>
           </div>
         </div>
 
-        <!-- Step 4: Interests -->
+        <!-- Step 4: Interests & Mandatory Places -->
         <div id="planner-step-4" style="display: none;">
           <h2 class="font-serif" style="font-size: 1.625rem; margin-bottom: var(--space-2);">What cultural experiences inspire you?</h2>
           <p class="text-secondary" style="font-size: var(--font-size-sm); margin-bottom: var(--space-6);">
-            Select all that apply to guide DHRUVA's recommendation engine.
+            Select your preferences and any must-see places to guide DHRUVA's optimization engine.
           </p>
 
           <div class="chips-container" style="gap: var(--space-3);">
@@ -358,19 +427,26 @@
               <span class="chip-icon">🪔</span> Temples & Spiritual Shrines
             </div>
             <div class="chip-selectable" data-interest-name="Architecture">
-              <span class="chip-icon">🏰</span> Forts & Palatial Architecture
+              <span class="chip-icon">🏰</span> Kalinga Architecture
             </div>
             <div class="chip-selectable active" data-interest-name="Local Culture">
-              <span class="chip-icon">🧵</span> Handloom & Artisan Crafts
-            </div>
-            <div class="chip-selectable" data-interest-name="Food">
-              <span class="chip-icon">🍲</span> Culinary Traditions & Thalis
+              <span class="chip-icon">🧵</span> Handloom & Master Crafts
             </div>
             <div class="chip-selectable" data-interest-name="Nature">
-              <span class="chip-icon">🌊</span> Rivers, Ghats & Landscapes
+              <span class="chip-icon">🌊</span> Lakes, Lagoons & Beaches
             </div>
-            <div class="chip-selectable" data-interest-name="Festivals">
-              <span class="chip-icon">🎆</span> Cultural Festivals & Music
+          </div>
+
+          <!-- Must-See Places (Mandatory Constraints) -->
+          <div style="margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--color-border);">
+            <h3 class="font-serif" style="font-size: 1.15rem; color: var(--color-primary-dark); margin-bottom: var(--space-1);">
+              ⭐ Must-See Places (Mandatory Hard Constraints)
+            </h3>
+            <p class="text-secondary" style="font-size: var(--font-size-xs); margin-bottom: var(--space-4);">
+              Select any specific monuments you definitely want to visit. The algorithm will prioritize these places and schedule them first.
+            </p>
+            <div id="planner-mandatory-places-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-3); max-height: 220px; overflow-y: auto; padding: var(--space-3); background: var(--color-surface-soft); border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+              <span class="text-muted" style="font-size: var(--font-size-xs);">Loading places for selected city...</span>
             </div>
           </div>
         </div>
@@ -401,6 +477,11 @@
           <div>
             <span class="text-muted" style="text-transform: uppercase; font-size: 0.6875rem; letter-spacing: 0.06em;">Duration</span>
             <p id="summary-duration" style="font-weight: 600; color: var(--color-text); margin-top: 2px;">3 Days</p>
+          </div>
+
+          <div>
+            <span class="text-muted" style="text-transform: uppercase; font-size: 0.6875rem; letter-spacing: 0.06em;">Daily Window</span>
+            <p id="summary-window" style="font-weight: 600; color: var(--color-text); margin-top: 2px;">08:30 AM – 07:30 PM</p>
           </div>
 
           <div>

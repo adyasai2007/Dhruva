@@ -25,8 +25,8 @@ const DhruvaApp = (() => {
         'Local Culture',
         'History'
       ],
-      savedDestinations: ['varanasi', 'hampi'],
-      savedPlaces: ['dashashwamedh-ghat', 'vittala-temple-hampi'],
+      savedDestinations: ['bhubaneswar', 'puri'],
+      savedPlaces: [8, 17],
       activeTrips: []
     },
     settings: {
@@ -232,6 +232,65 @@ const DhruvaApp = (() => {
   };
 
   // Global App Initialization
+  // REST API Client helpers for Dhruva Backend
+  const apiBase = window.location.origin;
+
+  const apiGet = async (endpoint) => {
+    const clean = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    try {
+      const res = await fetch(`${apiBase}${clean}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (e) {
+      console.warn(`apiGet (${clean}) failed:`, e);
+      return null;
+    }
+  };
+
+  const apiPost = async (endpoint, data) => {
+    const clean = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    try {
+      const res = await fetch(`${apiBase}${clean}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const json = await res.json();
+      return { ok: res.ok, status: res.status, data: json };
+    } catch (e) {
+      console.warn(`apiPost (${clean}) failed:`, e);
+      return { ok: false, status: 500, error: e.message };
+    }
+  };
+
+  const apiPatch = async (endpoint, data) => {
+    const clean = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    try {
+      const res = await fetch(`${apiBase}${clean}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const json = await res.json();
+      return { ok: res.ok, status: res.status, data: json };
+    } catch (e) {
+      console.warn(`apiPatch (${clean}) failed:`, e);
+      return { ok: false, status: 500, error: e.message };
+    }
+  };
+
+  const apiDelete = async (endpoint) => {
+    const clean = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    try {
+      const res = await fetch(`${apiBase}${clean}`, { method: 'DELETE' });
+      const json = await res.json();
+      return { ok: res.ok, status: res.status, data: json };
+    } catch (e) {
+      console.warn(`apiDelete (${clean}) failed:`, e);
+      return { ok: false, status: 500, error: e.message };
+    }
+  };
+
   const init = () => {
     initTheme();
     applyAccessibilitySettings();
@@ -247,6 +306,10 @@ const DhruvaApp = (() => {
     saveUser,
     updateHeaderUser,
     fetchMockData,
+    apiGet,
+    apiPost,
+    apiPatch,
+    apiDelete,
     showToast,
     toggleSaveDestination,
     saveGeneratedPlan,

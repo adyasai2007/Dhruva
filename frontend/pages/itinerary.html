@@ -176,6 +176,16 @@
 
       <!-- Action Buttons -->
       <div class="itinerary-actions-bar">
+        <button id="shuffle-plan-btn" class="btn btn-secondary btn-sm" onclick="shuffleCurrentItinerary()" title="Generate alternative itinerary variation (up to 3 times)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="16 3 21 3 21 8"></polyline>
+            <line x1="4" y1="20" x2="21" y2="3"></line>
+            <polyline points="21 16 21 21 16 21"></polyline>
+            <line x1="15" y1="15" x2="21" y2="21"></line>
+            <line x1="4" y1="4" x2="9" y2="9"></line>
+          </svg>
+          Shuffle Itinerary
+        </button>
         <button id="save-plan-btn" class="btn btn-primary btn-sm" onclick="saveActivePlanToStorage()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
@@ -245,18 +255,20 @@
       const state = DhruvaApp.getState();
 
       const urlParams = new URLSearchParams(window.location.search);
-      const destParam = urlParams.get('dest') || 'varanasi';
+      const destParam = urlParams.get('dest') || 'bhubaneswar';
       const planId = urlParams.get('planId');
+      const tripId = urlParams.get('tripId');
 
       // Resolve itinerary from current state or mock dataset
       if (state.currentPlan && (!planId || state.currentPlan.id === planId)) {
         activeItinerary = state.currentPlan;
+        if (tripId && !activeItinerary.tripId) activeItinerary.tripId = tripId;
       } else {
-        const found = itineraries.find(i => i.destinationId === destParam) || itineraries[0];
+        const found = itineraries.find(i => i.destinationId === destParam.toLowerCase()) || itineraries[0];
         activeItinerary = {
           id: found.id,
           destinationId: found.destinationId,
-          destinationName: destParam.charAt(0).toUpperCase() + destParam.slice(1),
+          destinationName: found.destinationName || (destParam.charAt(0).toUpperCase() + destParam.slice(1)),
           title: found.title,
           tagline: found.tagline,
           heroImage: found.heroImage,
@@ -270,75 +282,129 @@
     });
 
     const renderItineraryView = (itin) => {
-      document.getElementById('itin-title').textContent = itin.title;
-      document.getElementById('itin-tagline').textContent = itin.tagline;
-      document.getElementById('itin-hero-image').src = itin.heroImage;
-      document.getElementById('itin-pace-badge').textContent = itin.pace;
-      document.getElementById('itin-days-badge').textContent = `${itin.durationDays} Days Plan`;
-      document.getElementById('itin-destination-badge').textContent = itin.destinationName;
+      if (!itin) return;
+
+      const destName = itin.destinationName || itin.destination || 'Bhubaneswar';
+      const duration = itin.durationDays || (itin.days ? itin.days.length : 3);
+      const title = itin.title || `Cultural Journey in ${destName}`;
+      const tagline = itin.tagline || `${duration} Days of Sacred Heritage & Living Traditions`;
+      const heroImg = itin.heroImage || 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Lingaraj_Temple_%2C_Bhubaneswar.jpg/960px-Lingaraj_Temple_%2C_Bhubaneswar.jpg';
+      const pace = itin.pace || 'Comfortable & Mindful';
+
+      const titleEl = document.getElementById('itin-title');
+      const taglineEl = document.getElementById('itin-tagline');
+      const heroEl = document.getElementById('itin-hero-image');
+      const paceEl = document.getElementById('itin-pace-badge');
+      const daysEl = document.getElementById('itin-days-badge');
+      const destEl = document.getElementById('itin-destination-badge');
+
+      if (titleEl) titleEl.textContent = title;
+      if (taglineEl) taglineEl.textContent = tagline;
+      if (heroEl) heroEl.src = heroImg;
+      if (paceEl) paceEl.textContent = pace;
+      if (daysEl) daysEl.textContent = `${duration} Days Plan`;
+      if (destEl) destEl.textContent = destName;
       
       const modifyBtn = document.getElementById('modify-plan-btn');
       if (modifyBtn) {
-        modifyBtn.href = `trip.html?dest=${itin.destinationId}`;
+        modifyBtn.href = `trip.html?dest=${(itin.destinationId || destName).toLowerCase()}`;
       }
+
+      const rawDays = itin.days || [];
+      if (rawDays.length === 0) return;
 
       // Render Day Tabs
       const tabsContainer = document.getElementById('day-tabs-container');
-      tabsContainer.innerHTML = itin.days.map((day, idx) => `
-        <button class="day-tab-btn ${idx === 0 ? 'active' : ''}" data-day-index="${idx}" onclick="switchDayTab(${idx})">
-          Day 0${day.dayNumber}
-        </button>
-      `).join('');
+      if (tabsContainer) {
+        tabsContainer.innerHTML = rawDays.map((day, idx) => {
+          const dNum = day.dayNumber || day.day_number || (idx + 1);
+          return `
+            <button class="day-tab-btn ${idx === 0 ? 'active' : ''}" data-day-index="${idx}" onclick="switchDayTab(${idx})">
+              Day 0${dNum}
+            </button>
+          `;
+        }).join('');
+      }
 
       // Render Day Schedules
       const wrapper = document.getElementById('itinerary-days-wrapper');
-      wrapper.innerHTML = itin.days.map((day, idx) => `
-        <div id="itin-day-section-${idx}" class="itinerary-day-section" style="display: ${idx === 0 ? 'block' : 'none'};">
-          <div class="itinerary-day-card">
-            <div class="itinerary-day-header">
-              <div>
-                <span class="itinerary-day-badge">Day 0${day.dayNumber}</span>
-                <h3 class="itinerary-day-theme font-serif">${day.theme}</h3>
-              </div>
-              <span class="badge badge-primary">Curated Schedule</span>
-            </div>
+      if (wrapper) {
+        wrapper.innerHTML = rawDays.map((day, idx) => {
+          const dNum = day.dayNumber || day.day_number || (idx + 1);
+          const dTheme = day.theme || 'Sacred Sanctums & Cultural Heritage';
+          const items = day.schedule || day.activities || day.items || [];
 
-            <div class="timeline-flow">
-              ${day.schedule.map(item => `
-                <div class="timeline-item">
-                  <div class="timeline-node"></div>
-                  <span class="timeline-period-badge">${item.period}</span>
-                  <div class="timeline-time">${item.timeSlot} (${item.duration})</div>
-                  
-                  <div class="timeline-card">
-                    <h4 class="timeline-card-title font-serif">${item.title}</h4>
-                    <p class="timeline-card-activity">${item.activity}</p>
-                    
-                    ${item.culturalNote ? `
-                      <div class="cultural-note-box">
-                        <strong>Cultural Context:</strong> ${item.culturalNote}
-                      </div>
-                    ` : ''}
-
-                    ${item.practicalTip ? `
-                      <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: var(--space-2);">
-                        <strong>Mindful Tip:</strong> ${item.practicalTip}
-                      </p>
-                    ` : ''}
-
-                    ${item.transition ? `
-                      <div class="timeline-transition-pill">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        <span>Transition: ${item.transition}</span>
-                      </div>
-                    ` : ''}
+          return `
+            <div id="itin-day-section-${idx}" class="itinerary-day-section" style="display: ${idx === 0 ? 'block' : 'none'};">
+              <div class="itinerary-day-card">
+                <div class="itinerary-day-header">
+                  <div>
+                    <span class="itinerary-day-badge">Day 0${dNum}</span>
+                    <h3 class="itinerary-day-theme font-serif">${dTheme}</h3>
                   </div>
+                  <span class="badge badge-primary">Optimized Schedule</span>
                 </div>
-              `).join('')}
+
+                <div class="timeline-flow">
+                  ${items.map(item => {
+                    const tSlot = item.timeSlot || item.time_slot || (item.arrival_time ? `${item.arrival_time} - ${item.departure_time}` : 'Morning');
+                    const period = item.period || (tSlot.toLowerCase().includes('pm') || tSlot.includes('14:') || tSlot.includes('15:') || tSlot.includes('16:') || tSlot.includes('17:') ? 'Afternoon' : 'Morning');
+                    const dur = item.duration || (item.duration_hours ? `${item.duration_hours} hrs` : `${item.duration_minutes || 90} mins`);
+                    const titleStr = item.title || item.place_name || item.name || 'Cultural Visit';
+                    const actStr = item.activity || item.description || `Visit ${titleStr} and explore its sacred architecture.`;
+                    const cultNote = item.culturalNote || item.cultural_tip || (item.category ? `${item.category} • Cultural Sanctum` : 'Cultural Sanctum');
+                    const pracTip = item.practicalTip || item.cultural_tip || 'Mindful temple pacing with respectful attire.';
+                    const pid = item.placeId || item.place_id || null;
+                    const transition = item.transition || (item.travel_time_from_prev_minutes ? `${item.travel_time_from_prev_minutes} min transit (${item.travel_distance_km || 2} km)` : null);
+
+                    return `
+                      <div class="timeline-item">
+                        <div class="timeline-node"></div>
+                        <span class="timeline-period-badge">${period}</span>
+                        <div class="timeline-time">${tSlot} (${dur})</div>
+                        
+                        <div class="timeline-card">
+                          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                            <div>
+                              ${item.isMandatory || item.is_mandatory ? '<span class="badge badge-accent" style="margin-bottom: 4px; display: inline-block;">⭐ Mandatory Selection</span>' : ''}
+                              <h4 class="timeline-card-title font-serif">${titleStr}</h4>
+                            </div>
+                            ${pid ? `
+                              <button type="button" class="btn btn-outline btn-xs" style="font-size: 0.75rem; padding: 2px 8px; border-color: var(--color-border);" onclick="removePlaceFromCurrentItinerary(${pid})" title="Remove place from itinerary">
+                                ✕ Remove
+                              </button>
+                            ` : ''}
+                          </div>
+                          <p class="timeline-card-activity">${actStr}</p>
+                          
+                          ${cultNote ? `
+                            <div class="cultural-note-box">
+                              <strong>Cultural Context:</strong> ${cultNote}
+                            </div>
+                          ` : ''}
+
+                          ${pracTip ? `
+                            <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: var(--space-2);">
+                              <strong>Mindful Tip:</strong> ${pracTip}
+                            </p>
+                          ` : ''}
+
+                          ${transition ? `
+                            <div class="timeline-transition-pill">
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                              <span>${transition}</span>
+                            </div>
+                          ` : ''}
+                        </div>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      `).join('');
+          `;
+        }).join('');
+      }
     };
 
     const switchDayTab = (index) => {
@@ -350,9 +416,81 @@
       });
     };
 
+    const shuffleCurrentItinerary = async () => {
+      const tripId = activeItinerary?.tripId;
+      if (!tripId) {
+        DhruvaApp.showToast('Tip: Use the trip planner to generate a live dynamic trip with shuffle variations.', 'ℹ');
+        return;
+      }
+
+      DhruvaApp.showToast('Generating alternative itinerary variation...', '⏳');
+      const res = await DhruvaApp.apiPost(`/api/trips/${tripId}/shuffle`, {});
+
+      if (res.ok && res.data && res.data.status === 'success') {
+        const trip = res.data.trip;
+        const dayMap = {};
+        (trip.itinerary_items || []).forEach(it => {
+          if (!dayMap[it.day_number]) dayMap[it.day_number] = [];
+          const arrPart = it.arrival_time ? it.arrival_time.split(' ')[1].slice(0, 5) : '';
+          const depPart = it.departure_time ? it.departure_time.split(' ')[1].slice(0, 5) : '';
+          dayMap[it.day_number].push({
+            timeSlot: `${arrPart} - ${depPart}`,
+            period: (it.arrival_time && parseInt(it.arrival_time.split(' ')[1].split(':')[0]) < 12) ? 'Morning' : 'Afternoon',
+            placeId: it.place_id,
+            title: it.place ? it.place.name : `Place ${it.place_id}`,
+            activity: it.place ? (it.place.description || '') : '',
+            duration: `${it.visit_duration_minutes} Mins`,
+            culturalNote: it.place ? `${it.place.category} • ${it.place.sub_category || ''}` : 'Heritage Sanctum',
+            transition: `${it.travel_time_from_prev_minutes} min transit (${it.travel_distance_km} km)`,
+            practicalTip: 'Enjoy this alternative curated route.',
+            isMandatory: it.is_mandatory
+          });
+        });
+
+        activeItinerary.days = Object.keys(dayMap).map(d => ({
+          dayNumber: parseInt(d),
+          theme: `Day 0${d}: Cultural Immersion (Variation ${res.data.shuffle_count})`,
+          dateLabel: `Day 0${d}`,
+          schedule: dayMap[d]
+        }));
+
+        renderItineraryView(activeItinerary);
+        DhruvaApp.saveGeneratedPlan(activeItinerary);
+        DhruvaApp.showToast(`Itinerary Variation ${res.data.shuffle_count} of 3 applied!`, '✨');
+      } else if (res.status === 429) {
+        alert('Maximum shuffle limit of 3 reached. No further variations allowed for this trip.');
+      } else {
+        DhruvaApp.showToast('Could not generate alternative variation.', '⚠️');
+      }
+    };
+
+    const removePlaceFromCurrentItinerary = async (placeId) => {
+      const tripId = activeItinerary?.tripId;
+      if (tripId) {
+        const res = await DhruvaApp.apiPost(`/api/trips/${tripId}/remove-place`, { place_id: placeId });
+        if (res.ok && res.data && res.data.status === 'success') {
+          DhruvaApp.showToast('Place removed; downstream schedule rebalanced!', '✓');
+          activeItinerary.days.forEach(day => {
+            day.schedule = day.schedule.filter(item => item.placeId !== placeId);
+          });
+          renderItineraryView(activeItinerary);
+          DhruvaApp.saveGeneratedPlan(activeItinerary);
+          return;
+        }
+      }
+
+      activeItinerary.days.forEach(day => {
+        day.schedule = day.schedule.filter(item => item.placeId !== placeId);
+      });
+      renderItineraryView(activeItinerary);
+      DhruvaApp.saveGeneratedPlan(activeItinerary);
+      DhruvaApp.showToast('Place removed from schedule', '✓');
+    };
+
     const saveActivePlanToStorage = () => {
       if (activeItinerary) {
         DhruvaApp.saveGeneratedPlan(activeItinerary);
+        DhruvaApp.showToast('Itinerary saved to My Plan!', '★');
       }
     };
   </script>
