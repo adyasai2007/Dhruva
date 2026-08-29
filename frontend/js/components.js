@@ -3,15 +3,23 @@
  */
 
 const DhruvaComponents = (() => {
+  const fallbackImages = {
+    bhubaneswar: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Lingaraj_Temple_%2C_Bhubaneswar.jpg/960px-Lingaraj_Temple_%2C_Bhubaneswar.jpg',
+    puri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Konarka_Temple.jpg/960px-Konarka_Temple.jpg',
+    cuttack: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Entrance_of_Barabati_fort.jpg/960px-Entrance_of_Barabati_fort.jpg',
+    default: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Lingaraj_Temple_%2C_Bhubaneswar.jpg/960px-Lingaraj_Temple_%2C_Bhubaneswar.jpg'
+  };
+
   // Render Destination Card
   const renderDestinationCard = (dest, isSaved = false, isRootPath = false) => {
     const tripPageUrl = isRootPath ? `pages/trip.html?dest=${dest.id}` : `trip.html?dest=${dest.id}`;
     const explorePageUrl = isRootPath ? `pages/explore.html?dest=${dest.id}` : `explore.html?dest=${dest.id}`;
+    const imgSrc = dest.thumbnailImage || dest.heroImage || fallbackImages[dest.id] || fallbackImages.default;
 
     return `
       <article class="card-destination" data-destination-id="${dest.id}" data-region="${dest.region}">
         <div class="card-destination-image-box">
-          <img class="card-destination-image" src="${dest.thumbnailImage || dest.heroImage}" alt="${dest.name}" loading="lazy">
+          <img class="card-destination-image" src="${imgSrc}" alt="${dest.name}" loading="lazy" onerror="this.onerror=null; this.src='${fallbackImages[dest.id] || fallbackImages.default}';">
           <span class="badge card-destination-region">${dest.region}</span>
           <button class="card-destination-save-btn ${isSaved ? 'saved' : ''}" 
                   aria-label="Save ${dest.name} to my wishlist" 
@@ -50,12 +58,12 @@ const DhruvaComponents = (() => {
     const durationText = place.duration_label || place.recommendedDuration || (place.duration ? `${place.duration} hrs` : '2 hrs');
     const feeText = place.entry_fee || place.entryFee || 'Free entry';
     const subCat = place.sub_category ? `<span class="eyebrow" style="font-size: 0.75rem; color: var(--color-primary); margin-bottom: 2px;">${place.sub_category}</span>` : '';
-    const imgUrl = place.image_url || place.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Lingaraj_Temple_%2C_Bhubaneswar.jpg/960px-Lingaraj_Temple_%2C_Bhubaneswar.jpg';
+    const imgUrl = place.image_url || place.image || fallbackImages.default;
 
     return `
       <article class="card-place" data-place-id="${place.id}" data-category="${place.category}">
         <div class="card-place-image-wrap">
-          <img class="card-place-image" src="${imgUrl}" alt="${place.name}" loading="lazy">
+          <img class="card-place-image" src="${imgUrl}" alt="${place.name}" loading="lazy" onerror="this.onerror=null; this.src='${fallbackImages.default}';">
           <span class="badge card-place-category">${place.category}</span>
           ${matchPct ? `<span class="badge badge-accent" style="position: absolute; bottom: 10px; right: 10px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">✨ ${matchPct}% Match</span>` : ''}
         </div>

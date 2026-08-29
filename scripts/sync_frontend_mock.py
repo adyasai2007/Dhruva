@@ -21,12 +21,12 @@ def sync():
             "desc": "Explore iconic 11th-century sandstone shrines, Mukteshvara toranas, and ancient rock edicts across Bhubaneswar."
         },
         2: {
-            "hero": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Konark_Sun_Temple_2.jpg/960px-Konark_Sun_Temple_2.jpg",
+            "hero": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Konarka_Temple.jpg/960px-Konarka_Temple.jpg",
             "tagline": "Spiritual Sanctum of Lord Jagannath & Sun Temple",
             "desc": "Experience the sacred Jagannath Dham, Konark Sun Temple chariot architecture, and living heritage crafts of Raghurajpur."
         },
         3: {
-            "hero": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Barabati_Fort_Gate%2C_Cuttack.jpg/960px-Barabati_Fort_Gate%2C_Cuttack.jpg",
+            "hero": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Entrance_of_Barabati_fort.jpg/960px-Entrance_of_Barabati_fort.jpg",
             "tagline": "Millennium City of Silver Filigree & Barabati Legacy",
             "desc": "Discover the 14th-century Barabati Fort, maritime Bali Yatra traditions, and delicate Tarakasi silver craft quarters."
         }
